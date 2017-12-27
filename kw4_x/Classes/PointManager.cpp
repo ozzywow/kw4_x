@@ -185,8 +185,8 @@ bool PointManager::LoadXML()
 	pugi::xml_document _xmlDoc;
 	pugi::xml_node _xmlNode;
 	
-
-	pugi::xml_parse_result result = _xmlDoc.load_file("word_card_data_x.xml");	
+	std::string fullpath = FileUtils::getInstance()->fullPathForFilename("word_card_data_x.xml");
+	pugi::xml_parse_result result = _xmlDoc.load_file(fullpath.c_str());
 	if (!result)
 	{
 		return false;
