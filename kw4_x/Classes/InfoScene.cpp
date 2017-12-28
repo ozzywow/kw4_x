@@ -69,9 +69,9 @@ void InfoScene::DrawItemBox()
 	int nHeight = btn->getContentSize().height;
 	const Point	posOfDesc = Point(nWidth*0.5f, nHeight*-0.1f);
 
-	std::string strLevel("학습 단계");
+	std::string strLevel("Select Step");
 	strLevel = UTF8(strLevel);
-	std::string strStep("기능 설정");
+	std::string strStep("Setting");
 	strStep = UTF8(strStep);
 	PrintStyle(this, strLevel, sizeOfFont, posOfLable_level);
 	PrintStyle(this, strStep, sizeOfFont, posOfLable_hint);
@@ -82,13 +82,13 @@ void InfoScene::DrawItemBox()
 
 
 	m_btnLevel1 = MenuItemImage::create("btn_level_1_n-hd.png", "btn_level_1_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel1, this));	
-	PrintStyle(m_btnLevel1, "1단계", sizeofFont_s, posOfDesc);
+	PrintStyle(m_btnLevel1, "1 Step", sizeofFont_s, posOfDesc);
 
 	if (false == PointManager::Instance()->GetCartWithPID(PID_TOTAL))
 	{
 
 		m_btnLevel6 = MenuItemImage::create("btn_level_total_n-hd.png", "btn_level_total_s-hd.png", CC_CALLBACK_1(InfoScene::cfTotal, this));
-		PrintStyle(m_btnLevel6, "모든학습($2.99)", sizeofFont_s, posOfDesc);
+		PrintStyle(m_btnLevel6, "Whole steps($2.99)", sizeofFont_s, posOfDesc);
 
 		Sprite* lock = Sprite::create("lock_icon-hd.png");
 		lock->setOpacity(64);
@@ -102,7 +102,7 @@ void InfoScene::DrawItemBox()
 		if (false == PointManager::Instance()->GetCartWithPID(PID_STEP2))
 		{
 			m_btnLevel2 = MenuItemImage::create("btn_level_2_n-hd.png", "btn_level_2_n-hd.png", CC_CALLBACK_1(InfoScene::cfStep2, this));
-			PrintStyle(m_btnLevel2, "2단계($9.99)", sizeofFont_s, posOfDesc);
+			PrintStyle(m_btnLevel2, "2 Step($9.99)", sizeofFont_s, posOfDesc);
 
 			Sprite* lock = Sprite::create("lock_icon-hd.png");
 			lock->setOpacity(64);
@@ -119,7 +119,7 @@ void InfoScene::DrawItemBox()
 		else
 		{
 			m_btnLevel2 = MenuItemImage::create("btn_level_2_n-hd.png", "btn_level_2_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel2, this));
-			PrintStyle(m_btnLevel2, "2단계", sizeofFont_s, posOfDesc);
+			PrintStyle(m_btnLevel2, "2 Step", sizeofFont_s, posOfDesc);
 		}
 
 
@@ -128,7 +128,7 @@ void InfoScene::DrawItemBox()
 		if (false == PointManager::Instance()->GetCartWithPID(PID_STEP3))
 		{
 			m_btnLevel3 = MenuItemImage::create("btn_level_3_n-hd.png", "btn_level_3_n-hd.png", CC_CALLBACK_1(InfoScene::cfStep3, this))
-				PrintStyle(m_btnLevel3, "3단계($0.99)", sizeofFont_s, posOfDesc);
+				PrintStyle(m_btnLevel3, "3 Step($0.99)", sizeofFont_s, posOfDesc);
 
 			Sprite* lock = Sprite::create("lock_icon-hd.png");
 			lock->setOpacity(64);
@@ -145,7 +145,7 @@ void InfoScene::DrawItemBox()
 		else
 		{
 			m_btnLevel3 = MenuItemImage::create("btn_level_3_n-hd.png", "btn_level_3_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel3, this));
-			PrintStyle(m_btnLevel3, "3단계", sizeofFont_s, posOfDesc);
+			PrintStyle(m_btnLevel3, "3 Step", sizeofFont_s, posOfDesc);
 		}
 
 
@@ -154,7 +154,7 @@ void InfoScene::DrawItemBox()
 		if (false == PointManager::Instance()->GetCartWithPID(PID_STEP4))
 		{
 			m_btnLevel4 = MenuItemImage::create("btn_level_4_n-hd.png", "btn_level_4_n-hd.png", CC_CALLBACK_1(InfoScene::cfStep4, this))
-				PrintStyle(m_btnLevel4, "4단계($0.99)", sizeofFont_s, posOfDesc);
+				PrintStyle(m_btnLevel4, "4 Step($0.99)", sizeofFont_s, posOfDesc);
 
 			Sprite* lock = Sprite::create("lock_icon-hd.png");
 			lock->setOpacity(64);
@@ -171,7 +171,7 @@ void InfoScene::DrawItemBox()
 		else
 		{
 			m_btnLevel4 = MenuItemImage::create("btn_level_4_n-hd.png", "btn_level_4_n-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel4, this))
-				PrintStyle(m_btnLevel4, "4단계", sizeofFont_s, posOfDesc);
+				PrintStyle(m_btnLevel4, "4 Step", sizeofFont_s, posOfDesc);
 		}
 
 
@@ -179,7 +179,7 @@ void InfoScene::DrawItemBox()
 		if (false == PointManager::Instance()->GetCartWithPID(PID_STEP5))
 		{
 			m_btnLevel5 = MenuItemImage::create("btn_level_5_n-hd.png", "btn_level_5_n-hd.png", CC_CALLBACK_1(InfoScene::cfStep5, this))
-				PrintStyle(m_btnLevel5, "5단계($0.99)", sizeofFont_s, posOfDesc);
+				PrintStyle(m_btnLevel5, "5 Step($0.99)", sizeofFont_s, posOfDesc);
 
 			Sprite* lock = Sprite::create("lock_icon-hd.png");
 			lock->setOpacity(64);
@@ -196,7 +196,7 @@ void InfoScene::DrawItemBox()
 		else
 		{
 			m_btnLevel4 = MenuItemImage::create("btn_level_5_n-hd.png", "btn_level_5_n-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel5, this));
-			PrintStyle(m_btnLevel4, "5단계", sizeofFont_s, posOfDesc);
+			PrintStyle(m_btnLevel4, "5 Step", sizeofFont_s, posOfDesc);
 		}
 	}
 
@@ -208,11 +208,11 @@ void InfoScene::DrawItemBox()
 		m_btnLevel5 = MenuItemImage::create("btn_level_5_n-hd.png", "btn_level_5_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel5, this));
 		m_btnLevel6 = MenuItemImage::create("btn_level_6_n-hd.png", "btn_level_6_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel6, this));
 
-		PrintStyle(m_btnLevel1, "1단계", sizeofFont_s, posOfDesc);
-		PrintStyle(m_btnLevel2, "2단계", sizeofFont_s, posOfDesc);
-		PrintStyle(m_btnLevel3, "3단계", sizeofFont_s, posOfDesc);
-		PrintStyle(m_btnLevel4, "4단계", sizeofFont_s, posOfDesc);
-		PrintStyle(m_btnLevel5, "5단계", sizeofFont_s, posOfDesc);
+		PrintStyle(m_btnLevel1, "1 Step", sizeofFont_s, posOfDesc);
+		PrintStyle(m_btnLevel2, "2 Step", sizeofFont_s, posOfDesc);
+		PrintStyle(m_btnLevel3, "3 Step", sizeofFont_s, posOfDesc);
+		PrintStyle(m_btnLevel4, "4 Step", sizeofFont_s, posOfDesc);
+		PrintStyle(m_btnLevel5, "5 Step", sizeofFont_s, posOfDesc);
 	}
 
 #else //LITE_VER
@@ -224,15 +224,15 @@ void InfoScene::DrawItemBox()
 	m_btnLevel5 = MenuItemImage::create("UI4HD/btn_level_5_n-hd.png", "UI4HD/btn_level_5_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel5, this));
 	m_btnLevel6 = MenuItemImage::create("UI4HD/btn_level_x_n-hd.png", "UI4HD/btn_level_x_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel6, this));
 
-	std::string strStep1("1단계");
+	std::string strStep1("1 Step");
 	strStep1 = UTF8(strStep1);
-	std::string strStep2("2단계");
+	std::string strStep2("2 Step");
 	strStep2 = UTF8(strStep2);
-	std::string strStep3("3단계");
+	std::string strStep3("3 Step");
 	strStep3 = UTF8(strStep3);
-	std::string strStep4("4단계");
+	std::string strStep4("4 Step");
 	strStep4 = UTF8(strStep4);
-	std::string strStep5("5단계");
+	std::string strStep5("5 Step");
 	strStep5 = UTF8(strStep5);
 	PrintStyle(m_btnLevel1, strStep1, sizeofFont_s, posOfDesc);
 	PrintStyle(m_btnLevel2, strStep2, sizeofFont_s, posOfDesc);
@@ -271,13 +271,13 @@ void InfoScene::DrawItemBox()
 	this->addChild(mainMenu, 2, 2);
 
 
-	std::string strHintOpt("정답 표시");
+	std::string strHintOpt("SHOW HINT");
 	strHintOpt = UTF8(strHintOpt);
 	m_btnHintOpt = MenuItemImage::create("UI4HD/btn_hint_n-hd.png", "UI4HD/btn_hint_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedHintMenuItem, this));		
 	PrintStyle(m_btnHintOpt, strHintOpt, sizeofFont_s, posOfDesc);
 
 
-	std::string strReset("학습 초기화");
+	std::string strReset("RESET");
 	strReset = UTF8(strReset);
 	MenuItemImage* resetBtnItem = MenuItemImage::create("UI4HD/btn_eraser_n-hd.png", "UI4HD/btn_eraser_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedResetMenuItem, this));		
 	PrintStyle(resetBtnItem, strReset, sizeofFont_s, posOfDesc);
@@ -470,7 +470,7 @@ void InfoScene::callbackOnPushedResetMenuItem(Ref* sender)
 																				//버튼을 추가해야겠죠 닫기 버튼!!,
 	pPopupOK->addButton("UI4HD/btn_ok_s_00.png", "UI4HD/btn_ok_s_01.png", "", ui::Widget::TextureResType::LOCAL, Point(0, -70), "", 1);
 
-	std::string strWarning("확인 버튼을 누르면\n 학습정보와 사과가\n 모두 삭제됩니다.");
+	std::string strWarning("Touch OK Butten.\n If you want to reset\n game data.");
 	strWarning = UTF8(strWarning);
 	pPopupOK->setFontSize_Msg(sizeOfFont);
 	pPopupOK->setColor_Msg(Color3B::BLACK);
