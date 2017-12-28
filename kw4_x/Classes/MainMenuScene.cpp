@@ -29,8 +29,8 @@ bool MainMenuScene::init()
 	PointManager::Instance()->LoadXML();
 
 	auto director = Director::getInstance();
-	auto glview = director->getOpenGLView();
-	auto frameSize = glview->getFrameSize();// glview->getFrameSize();
+	auto glview = director->getOpenGLView();	
+	auto frameSize = glview->getDesignResolutionSize();
 
 	Sprite* background = Sprite::create("UI4HD/main_bg-hd.png");
 	background->setAnchorPoint(Point::ANCHOR_MIDDLE);

@@ -47,8 +47,9 @@ bool StudyScene::init()
 	}
 
 	auto director = Director::getInstance();
-	auto glview = director->getOpenGLView();
-	frameSize = glview->getFrameSize();
+	auto glview = director->getOpenGLView();	
+	frameSize = glview->getDesignResolutionSize();
+	
 
 	return true;
 }
@@ -116,7 +117,7 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 	const int sizeOfPadding = 5;
 	Menu* mainMenu = Menu::create(prevBtnItem, nextBtnItem, homeBtnItem, hintBtnItem, NULL);
 	mainMenu->alignItemsHorizontallyWithPadding(sizeOfPadding);
-	const Point posOfTopMenu(frameSize.width*0.5f, frameSize.height*0.92f);
+	const Point posOfTopMenu(frameSize.width*0.5f, frameSize.height*0.95f);
 	mainMenu->setAnchorPoint(Point::ANCHOR_MIDDLE_TOP);
 	mainMenu->setPosition(posOfTopMenu);
 
@@ -131,7 +132,7 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 		return ;
 	}
 	image->setAnchorPoint(Point::ANCHOR_MIDDLE_TOP);
-	Point posOfImage(frameSize.width*0.5f, frameSize.height*0.87);
+	Point posOfImage(frameSize.width*0.5f, frameSize.height*0.90);
 	image->setPosition(posOfImage);
 	
 
@@ -156,8 +157,8 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 	auto btn = Sprite::create("UI4HD/wordBG-hd.png");
 	auto btnSize = btn->getContentSize();
 	int buttonSize = btnSize.width;
-	int offsetWith = frameSize.width*0.17f;
-	int offsetHeight = frameSize.height*0.12f;
+	int offsetWith = frameSize.width*0.14f;
+	int offsetHeight = frameSize.height*0.09f;
 	for (int line = 0; line < 2; ++line)
 	{
 		for (int i = 0; i < 4; i++)
@@ -182,8 +183,8 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 
 
 	// 정답문자를 위치시킬 빈상자의 배열
-	int offsetAnswerX = frameSize.width * 0.17f;
-	int offsetAnswerY = frameSize.height * 0.29f;
+	int offsetAnswerX = frameSize.width * 0.145f;
+	int offsetAnswerY = frameSize.height * 0.28f;
 	for (int i = 0; i< 4; ++i)
 	{
 		arrayPoint[i] = Point((buttonSize*i)+((buttonSize*i)*0.28f) + offsetAnswerX, (buttonSize + offsetAnswerY));

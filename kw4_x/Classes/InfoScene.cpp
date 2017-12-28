@@ -29,8 +29,8 @@ bool InfoScene::init()
 	Sprite* background = Sprite::create("UI4HD/info_bg-hd.png") ;
 
 	auto director = Director::getInstance();
-	auto glview = director->getOpenGLView();
-	auto frameSize = glview->getFrameSize();
+	auto glview = director->getOpenGLView();	
+	auto frameSize = glview->getDesignResolutionSize();
 	background->setAnchorPoint(Point::ANCHOR_MIDDLE);
 	background->setPosition(frameSize.width*0.5f, frameSize.height*0.5f);
 
@@ -47,7 +47,7 @@ void InfoScene::DrawItemBox()
 {
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();
-	auto frameSize = glview->getFrameSize();
+	auto frameSize = glview->getDesignResolutionSize();
 
 	int level = PointManager::Instance()->GetLevel();
 
@@ -460,7 +460,7 @@ void InfoScene::callbackOnPushedResetMenuItem(Ref* sender)
 
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();
-	auto frameSize = glview->getFrameSize();
+	auto frameSize = glview->getDesignResolutionSize();
 	const int		sizeOfFont = frameSize.width*0.07f;
 
 

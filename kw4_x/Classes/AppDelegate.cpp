@@ -26,15 +26,15 @@ typedef struct tagResource
     char directory[128];
 } Resource;
 
-static Resource        resource1 = { cocos2d::Size(640, 960), "iphone4" };
-static Resource        resource2 = { cocos2d::Size(640, 1136), "iphoneSE5678" };
-static Resource     resource3 = { cocos2d::Size(2048, 1536), "ipad" };
-static Resource     resource4 = { cocos2d::Size(960, 1704), "iphone6p" };
-static Resource        resource5 = { cocos2d::Size(1125, 2436), "iphoneX" };
+static Resource			resource1 = { cocos2d::Size(640, 960), "iphone4" };
+static Resource			resource2 = { cocos2d::Size(640, 1136), "iphoneSE5678" };
+static Resource			resource3 = { cocos2d::Size(2048, 1536), "ipad" };
+static Resource			resource4 = { cocos2d::Size(960, 1704), "iphone6p" };
+static Resource			resource5 = { cocos2d::Size(1125, 960), "iphoneX" };
 
 
 
-static cocos2d::Size designResolutionSize = cocos2d::Size(640, 960);
+static cocos2d::Size designResolutionSize = cocos2d::Size(640, 1136);
 
 
 USING_NS_CC;

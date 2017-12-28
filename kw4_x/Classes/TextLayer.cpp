@@ -32,8 +32,8 @@ bool TextLayer::initWithVal(StudyScene* scene, Point destPos, std::string& wordT
 	m_studyScene = scene;
 
 	auto director = Director::getInstance();
-	auto glview = director->getOpenGLView();
-	auto frameSize = glview->getFrameSize();
+	auto glview = director->getOpenGLView();	
+	auto frameSize = glview->getDesignResolutionSize();
 
 	
 	m_backGround = Sprite::create("UI4HD/wordBG-hd.png");

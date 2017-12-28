@@ -32,7 +32,8 @@ bool AppleTreeScene::init()
 
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();
-	frameSize = glview->getFrameSize();
+	//frameSize = glview->getFrameSize();
+	frameSize = glview->getDesignResolutionSize();
 
 	Sprite* background = Sprite::create("UI4HD/tree_bg-hd.png");
 	background->setAnchorPoint(Point::ANCHOR_MIDDLE);

@@ -62,8 +62,8 @@ void TouchedHandleLayer::ReplaceLayerToAnswerBox(TextLayer* pLayer, Point locati
 {
 	// 네모상자 근처에 도달했으면 도킹해준다.
 	auto director = Director::getInstance();
-	auto glview = director->getOpenGLView();
-	auto frameSize = glview->getFrameSize();
+	auto glview = director->getOpenGLView();	
+	auto frameSize = glview->getDesignResolutionSize();
 	int offset = frameSize.width * 0.13f;	
 
 	for (int i = 0; i < 4; ++i)
@@ -209,8 +209,8 @@ bool TouchedHandleLayer::onTouchBegan(Touch* touch, Event* unused_event)
 		soundFactory->play(SOUND_FILE_tick_effect);
 				
 		auto director = Director::getInstance();
-		auto glview = director->getOpenGLView();
-		auto frameSize = glview->getFrameSize();
+		auto glview = director->getOpenGLView();		
+		auto frameSize = glview->getDesignResolutionSize();
 		const int sizeOfPopFont = frameSize.width*0.12f;		
 		Label* hanWord = Label::createWithSystemFont(touchedLayer->m_textStr, "Arial", sizeOfPopFont);
 		hanWord->setColor(Color3B(255, 255, 0));
