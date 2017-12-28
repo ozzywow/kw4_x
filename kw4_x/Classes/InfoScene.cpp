@@ -468,7 +468,8 @@ void InfoScene::callbackOnPushedResetMenuItem(Ref* sender)
 	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InfoScene::popCallback_ResetOk, this)); //콕백을 받을 함수를 설정해주시면 됩니다
 
 																				//버튼을 추가해야겠죠 닫기 버튼!!,
-	pPopupOK->addButton("UI4HD/btn_ok_s_00.png", "UI4HD/btn_ok_s_01.png", "", ui::Widget::TextureResType::LOCAL, Point(0, -70), "", 1);
+	pPopupOK->addButton("UI4HD/btn_ok_s_00.png", "UI4HD/btn_ok_s_00.png", "", ui::Widget::TextureResType::LOCAL, Point(-100, -70), "", 0);
+	pPopupOK->addButton("UI4HD/btn_ok_s_01.png", "UI4HD/btn_ok_s_01.png", "", ui::Widget::TextureResType::LOCAL, Point(100, -70), "", 1);
 
 	std::string strWarning("Touch OK Butten.\n If you want to reset\n game data.");
 	strWarning = UTF8(strWarning);
