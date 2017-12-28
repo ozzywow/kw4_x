@@ -30,7 +30,7 @@ bool MainMenuScene::init()
 
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();
-	auto frameSize = glview->getFrameSize();
+	auto frameSize = glview->getFrameSize();// glview->getFrameSize();
 
 	Sprite* background = Sprite::create("UI4HD/main_bg-hd.png");
 	background->setAnchorPoint(Point::ANCHOR_MIDDLE);

@@ -244,7 +244,7 @@ bool TouchedHandleLayer::onTouchBegan(Touch* touch, Event* unused_event)
 
 void TouchedHandleLayer::onTouchMoved(Touch* touch, Event* unused_event)
 {
-	if (m_studyScene->m_isSuccessed == false)  return;
+	if (m_studyScene->m_isSuccessed == true)  return;
 	if (m_touchedHandlerLayer == NULL) return;
 
 	Point location = touch->getLocation();
@@ -262,7 +262,7 @@ void TouchedHandleLayer::onTouchCancelled(Touch* touch, Event* unused_event)
 
 void TouchedHandleLayer::onTouchEnded(Touch* touch, Event *unused_event)
 {
-	if (m_studyScene->m_isSuccessed == false)  return;
+	if (m_studyScene->m_isSuccessed == true)  return;
 	if (m_touchedHandlerLayer == NULL) return;
 
 	Point location = touch->getLocation();

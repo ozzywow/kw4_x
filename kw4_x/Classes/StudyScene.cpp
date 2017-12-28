@@ -20,6 +20,7 @@ StudyScene::StudyScene()
 {
 	m_timeFuncAction = NULL;
 	m_lavar = NULL;
+	m_isSuccessed = false;
 }
 StudyScene::~StudyScene()
 {

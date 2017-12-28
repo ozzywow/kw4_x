@@ -18,13 +18,25 @@ using namespace cocos2d::experimental;
 using namespace CocosDenshion;
 #endif
 
-USING_NS_CC;
+
+typedef struct tagResource
+{
+	cocos2d::CCSize size;
+	char directory[128];
+} Resource;
+
+static Resource		resource1 = { cocos2d::Size(640, 960), "iphone4" };
+static Resource		resource2 = { cocos2d::Size(640, 1136), "iphone5" };
+static Resource		resource3 = { cocos2d::Size(750, 1334), "iphone6" };
+static Resource		resource4 = { cocos2d::Size(1125, 2436), "iphoneX" };
+static Resource		resource5 = { cocos2d::Size(1242, 2208), "iphone6p" };
+static Resource		resource6 = { cocos2d::Size(2048, 1536), "ipad" };
 
 static cocos2d::Size designResolutionSize = cocos2d::Size(640, 960);
-//static cocos2d::Size designResolutionSize = cocos2d::Size(320, 480);
-static cocos2d::Size smallResolutionSize = cocos2d::Size(640, 960);
-static cocos2d::Size mediumResolutionSize = cocos2d::Size(768, 1024);
-static cocos2d::Size largeResolutionSize = cocos2d::Size(1536, 2048);
+
+
+USING_NS_CC;
+
 
 
 AppDelegate::AppDelegate()
@@ -70,8 +82,49 @@ bool AppDelegate::applicationDidFinishLaunching() {
         director->setOpenGLView(glview);
     }
 
+
+	CCSize frameSize = glview->getFrameSize();
+	// resource6
+	if (frameSize.height > resource5.size.height)
+	{
+		//CCFileUtils::sharedFileUtils()->addSearchPath(resource6.directory);
+		director->setContentScaleFactor(resource6.size.height / designResolutionSize.height);
+	}
+	// resource5
+	else if (frameSize.height > resource4.size.height && frameSize.height < resource6.size.height)
+	{
+		//CCFileUtils::sharedFileUtils()->addSearchPath(resource5.directory);
+		director->setContentScaleFactor(resource5.size.height / designResolutionSize.height);
+	}
+	// resource4
+	else if (frameSize.height > resource3.size.height && frameSize.height < resource5.size.height)
+	{
+		//CCFileUtils::sharedFileUtils()->addSearchPath(resource4.directory);
+		director->setContentScaleFactor(resource4.size.height / designResolutionSize.height);
+	}
+	// resource3
+	else if (frameSize.height > resource2.size.height && frameSize.height < resource4.size.height)
+	{
+		//CCFileUtils::sharedFileUtils()->addSearchPath(resource3.directory);
+		director->setContentScaleFactor(resource3.size.height / designResolutionSize.height);
+	}
+	// resource2
+	else if (frameSize.height > resource1.size.height && frameSize.height < resource3.size.height)
+	{
+		//CCFileUtils::sharedFileUtils()->addSearchPath(resource2.directory);
+		director->setContentScaleFactor(resource2.size.height / designResolutionSize.height);
+	}
+	// resource1
+	else
+	{
+		//CCFileUtils::sharedFileUtils()->addSearchPath(resource1.directory);
+		director->setContentScaleFactor(resource1.size.height / designResolutionSize.height);
+	}
+
+
+
     // turn on display FPS
-    director->setDisplayStats(true);
+    director->setDisplayStats(false);
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0f / 60);
