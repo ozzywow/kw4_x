@@ -34,7 +34,7 @@ static Resource			resource5 = { cocos2d::Size(1125, 960), "iphoneX" };
 
 
 
-static cocos2d::Size designResolutionSize = cocos2d::Size(640, 1136);
+static cocos2d::Size designResolutionSize = cocos2d::Size(640, 960);
 
 
 USING_NS_CC;
@@ -84,6 +84,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
         director->setOpenGLView(glview);
     }
     
+	/*
     CCSize frameSize = glview->getFrameSize();
     // resource5
     if (frameSize.height > resource4.size.height)
@@ -115,7 +116,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
         //CCFileUtils::sharedFileUtils()->addSearchPath(resource1.directory);
         director->setContentScaleFactor(resource1.size.height / designResolutionSize.height);
     }
-    
+    */
     
     
     // turn on display FPS

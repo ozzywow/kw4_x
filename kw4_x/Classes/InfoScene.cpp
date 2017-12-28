@@ -461,16 +461,16 @@ void InfoScene::callbackOnPushedResetMenuItem(Ref* sender)
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();
 	auto frameSize = glview->getDesignResolutionSize();
-	const int		sizeOfFont = frameSize.width*0.07f;
+	const int		sizeOfFont = frameSize.width*0.05f;
 
 
 	UIPopupWindow *pPopupOK = UIPopupWindow::create(Sprite::create("UI4HD/black_bg.png"), Sprite::create("UI4HD/pop_common.png"));
 	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InfoScene::popCallback_ResetOk, this)); //콕백을 받을 함수를 설정해주시면 됩니다
 
 																				//버튼을 추가해야겠죠 닫기 버튼!!,
-	pPopupOK->addButton("UI4HD/btn_ok_s_00.png", "UI4HD/btn_ok_s_01.png", "", ui::Widget::TextureResType::LOCAL, Point(0, 100), "", 1);
+	pPopupOK->addButton("UI4HD/btn_ok_s_00.png", "UI4HD/btn_ok_s_01.png", "", ui::Widget::TextureResType::LOCAL, Point(0, -70), "", 1);
 
-	std::string strWarning("화인 버튼을 누르면\n 학습정보와 사과가\n 모두 삭제됩니다.");
+	std::string strWarning("확인 버튼을 누르면\n 학습정보와 사과가\n 모두 삭제됩니다.");
 	strWarning = UTF8(strWarning);
 	pPopupOK->setFontSize_Msg(sizeOfFont);
 	pPopupOK->setColor_Msg(Color3B::BLACK);
