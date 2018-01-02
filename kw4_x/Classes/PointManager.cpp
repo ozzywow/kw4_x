@@ -398,29 +398,44 @@ void	PointManager::GetNextScene(bool isEnter)
 	std::string text;
 	int level = 0;
 	bool isGotNextScene = false;
-	vtWordCards& cardListByLevel = m_mCardsByLevel[_level];
-	if (cardListByLevel.size() > m_currStage)
+
+	for (int l = _level; l <= 5; ++l)
 	{
-		for (int i = m_currStage; i< cardListByLevel.size(); ++i)
+		vtWordCards& cardListByLevel = m_mCardsByLevel[l];
+		if (cardListByLevel.size() > m_currStage)
 		{
-			WordCard& wordCard = cardListByLevel[i];
-			wordName = wordCard.word;
-			if (IsMasted(wordName) == true)
+			for (int i = m_currStage; i< cardListByLevel.size(); ++i)
 			{
-				continue;
-			}
+				WordCard& wordCard = cardListByLevel[i];
+				wordName = wordCard.word;
+				if (IsMasted(wordName) == true)
+				{
+					continue;
+				}
 
-			text = wordCard.text;
-			level = wordCard.level;
-			if (level != _level)
-			{
-				continue;
-			}
+				text = wordCard.text;
+				level = wordCard.level;
+				if (level != l)
+				{
+					continue;
+				}
 
-			isGotNextScene = true;
-			break;
+				isGotNextScene = true;
+				break;
+			}
 		}
+
+		if (false == isGotNextScene)
+		{
+			++_level;
+			m_currStage = 0;
+			continue;
+		}
+
+		break;
+		
 	}
+
 	
 
 	if (false == isGotNextScene)
