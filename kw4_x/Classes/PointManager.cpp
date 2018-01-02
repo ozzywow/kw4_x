@@ -1,5 +1,6 @@
 #pragma execution_character_set("utf-8")
 
+#include<iostream>
 #include "stdafx.h"
 #include "PointManager.h"
 #include "SoundFactory.h"
@@ -9,6 +10,7 @@
 #include "AppleTreeScene.h"
 #include "StudyScene.h"
 #include "MainMenuScene.h"
+#include "smartAssert.h"
 
 //using namespace pugi;
 
@@ -97,29 +99,57 @@ void	PointManager::SaveData()
 	UserDefault::getInstance()->setBoolForKey("hint", _hint);
 
 	pugi::xml_document _xmlDocForMastWords;
+	pugi::xml_node _rootnode = _xmlDocForMastWords.append_child("root");	
 	for (auto itr = m_mMastWords.begin(); itr != m_mMastWords.end(); ++itr)
-	{		
-		pugi::xml_attribute attr = _xmlDocForMastWords.append_attribute(itr->first.c_str());
-		attr.set_value(itr->second);		
-	}
-	
-	cocos2d::Data data;
-	//data.copy(_xmlDocForMastWords.value()
-	UserDefault::getInstance()->setDataForKey("mast_words", data);
+	{	
+		pugi::xml_node _node = _rootnode.append_child("mastwrod");		
+		pugi::xml_attribute attrWord = _node.append_attribute("word");
+		attrWord.set_value(itr->first.c_str());
 
+		pugi::xml_attribute attrIsMast = _node.append_attribute("ismast");
+		attrIsMast.set_value(itr->second);
+	}
+
+	std::string path = CCFileUtils::sharedFileUtils()->getWritablePath();
+	path.append("mast_words.xml");
+	_xmlDocForMastWords.save_file(path.c_str());
 }
 
 void	PointManager::LoadData() 
 {
 	m_currStage = UserDefault::getInstance()->getIntegerForKey("curr_stage");
+	if (m_currStage == 0) m_currStage = 1;
 	_point = UserDefault::getInstance()->getIntegerForKey("point");
 	_level = UserDefault::getInstance()->getIntegerForKey("level");
 	if (_level == 0) _level = 1;
-	_hint = UserDefault::getInstance()->getBoolForKey("hint");
+	_hint = UserDefault::getInstance()->getBoolForKey("hint");	
 
-	cocos2d::Data data = UserDefault::getInstance()->getDataForKey("mast_words");	
+	
 	pugi::xml_document _xmlDocForMastWords;
-	_xmlDocForMastWords.load_buffer(data.getBytes(), data.getSize());
+	pugi::xml_node _xmlNode;
+	std::string path = CCFileUtils::sharedFileUtils()->getWritablePath();
+	path.append("mast_words.xml");		
+	if (!FileUtils::sharedFileUtils()->isFileExist(path))
+	{		
+		FILE* dest = fopen(path.c_str(), "wb");		
+		fclose(dest);		
+	}
+
+	unsigned char* pBuffer = NULL;
+	ssize_t bufferSize = 0;
+	pBuffer = CCFileUtils::sharedFileUtils()->getFileData(path.c_str(), "r", &bufferSize);
+	if (_xmlDocForMastWords.load_buffer(pBuffer, bufferSize))
+	{
+		_xmlNode = _xmlDocForMastWords.child("root");
+		for (pugi::xml_node_iterator itr = _xmlNode.begin(); itr != _xmlNode.end(); ++itr)
+		{	
+			std::string word = itr->attribute("word").as_string();
+			bool isMast = itr->attribute("ismast").as_bool();			
+			m_mMastWords[word.c_str()] = isMast;
+		}
+	}
+
+	
 }
 
 void	PointManager::CheckMast(std::string& word) 
@@ -184,15 +214,19 @@ bool PointManager::LoadXML()
 {	
 	pugi::xml_document _xmlDoc;
 	pugi::xml_node _xmlNode;
+		
 	
 	std::string fullpath = FileUtils::getInstance()->fullPathForFilename("word_card_data_x.xml");
 	pugi::xml_parse_result result = _xmlDoc.load_file(fullpath.c_str());
 	if (!result)
 	{
+		assertSmartlyWithMsg(false, fullpath.c_str());
 		return false;
 	}	
 
 	_xmlNode = _xmlDoc.child("root");
+
+	
 
 	//std::string str = _xmlNode.print()
 
@@ -229,6 +263,8 @@ bool PointManager::LoadXML()
 
 void	PointManager::GetNextScene(bool isEnter)
 {
+	this->SaveData();
+
 	// 처음 진입이면 첫 패이지 부터 보여준다.
 	if (isEnter == true)
 	{

@@ -3,6 +3,7 @@
 #include "AppDelegate.h"
 #include "HelloWorldScene.h"
 #include "MainMenuScene.h"
+#include "PointManager.h"
 
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
@@ -128,7 +129,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     
     
     // Set the design resolution
-    glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);
+    glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::SHOW_ALL);
     
     // 데모에서는, 우리는 프레임의 세로길이에 따라 리소스를 선택한다.
     // 만약 리소스 사이즈가 디자인 해상도사이즈로 부터 다르다면, 개발자는 contentScaleFactor 설정이 필요하다.
@@ -162,10 +163,12 @@ bool AppDelegate::applicationDidFinishLaunching() {
     
     register_all_packages();
     
+
+	PointManager::Instance()->LoadXML();
+
     // create a scene. it's an autorelease object
-    //auto scene = HelloWorld::createScene();
-    auto scene = MainMenuScene::createScene();
-    
+    //auto scene = HelloWorld::createScene();	
+    auto scene = MainMenuScene::createScene();    
     // run
     director->runWithScene(scene);
     

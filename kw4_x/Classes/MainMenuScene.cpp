@@ -26,7 +26,8 @@ bool MainMenuScene::init()
 		return false;
 	}
 
-	PointManager::Instance()->LoadXML();
+	PointManager::Instance()->SaveData();
+	
 
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();	
