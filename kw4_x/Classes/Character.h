@@ -20,4 +20,13 @@ public:
 	Character(int id = 0 );
 	~Character();
 
+	void init(int id = 0)
+	{
+		index = id;
+		type = CT_NONE;
+		posX = 0.0f;
+		posY = 0.0f;
+		biteCount = 0;
+	}
+
 };

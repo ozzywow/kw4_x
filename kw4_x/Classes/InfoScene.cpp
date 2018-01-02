@@ -2,6 +2,7 @@
 
 #include "InfoScene.h"
 #include "PointManager.h"
+#include "CharacterFactory.h"
 #include "SoundFactory.h"
 #include "MainMenuScene.h"
 #include "UI_GameResultWindow.h"
@@ -490,7 +491,15 @@ void InfoScene::popCallback_ResetOk(Ref* pSender)
 	//혹은 콜백을 다르게 선업하셔도 됩니다. 그건 여러분 몫으로 콜백2 있으니 참고해서 만드심 됍니다
 	if (nTag == 1)
 	{
+		int level = PointManager::Instance()->GetLevel();
+		std::string revertLevelImgName = StringUtils::format("UI4HD/btn_level_%d_n-hd.png", level);
+		Sprite* revertLevelImage = Sprite::create(revertLevelImgName);
+		m_btnLevel2->setNormalImage(revertLevelImage);
+		ReflushSelectedMenuItem(1);
+
 		PointManager::Instance()->ResetMast();
+		CharacterFactory::Instance()->resetData();				
+		
 	}
 	pPopup->closePopup(); //팝업을 닫습니다. !! 팝업을 닫을시 필히 호출해주세요 이거 안해주면 팝업창 안사라집니다.  
 }

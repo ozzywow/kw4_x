@@ -250,6 +250,10 @@ bool	PointManager::IsMasted(std::string& word)
 
 void	PointManager::ResetMast() 
 {
+	m_currStage = 0;
+	_point = 0;
+	_level = 1;
+	_hint = false;
 	m_mMastWords.clear();
 }
 

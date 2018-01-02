@@ -211,8 +211,7 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 	}
 
 
-	//if (0 == (rand() % 25))
-	if (0 == (rand() % 2))
+	if (0 == (rand() % 25))	
 	{
 		this->TimeRun(10);
 	}

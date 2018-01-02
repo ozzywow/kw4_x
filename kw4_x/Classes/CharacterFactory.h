@@ -17,7 +17,8 @@ public:
 	~CharacterFactory();	
 	
 
-	void			reset();
+	void			init();
+	void			resetData();
 	Character*		NewCharacter();
 	Character*		GetCharacterWithID(int id);
 	int				FindAppleIDByPos(Point pos);

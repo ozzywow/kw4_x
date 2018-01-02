@@ -3,15 +3,16 @@
 
 CharacterFactory::CharacterFactory()
 {
-	reset();
+	init();
 }
 CharacterFactory::~CharacterFactory()
 {
 
 }
 
-void			CharacterFactory::reset()
-{
+
+void			CharacterFactory::init()
+{	
 	const float begginXOffset = 50;
 	const float Xoffset = 7;
 	const float yOffset = 50;
@@ -27,6 +28,16 @@ void			CharacterFactory::reset()
 		m_characterPool.push_back(pCharacter);
 	}
 }
+
+void			CharacterFactory::resetData()
+{
+	for (int i = 0; i < MAX_SIZE_OF_CHARACTER_POOL; ++i)
+	{
+		Character* pCharacter = m_characterPool[i];
+		pCharacter->init(i);
+	}
+}
+
 Character*		CharacterFactory::NewCharacter()
 {
 	for (int i = 0; i< MAX_SIZE_OF_CHARACTER_POOL; ++i)
