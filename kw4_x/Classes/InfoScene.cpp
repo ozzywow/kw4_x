@@ -490,13 +490,7 @@ void InfoScene::popCallback_ResetOk(Ref* pSender)
 	int nTag = pPopup->getResult();
 	//혹은 콜백을 다르게 선업하셔도 됩니다. 그건 여러분 몫으로 콜백2 있으니 참고해서 만드심 됍니다
 	if (nTag == 1)
-	{
-		int level = PointManager::Instance()->GetLevel();
-		std::string revertLevelImgName = StringUtils::format("UI4HD/btn_level_%d_n-hd.png", level);
-		Sprite* revertLevelImage = Sprite::create(revertLevelImgName);
-		m_btnLevel2->setNormalImage(revertLevelImage);
-		ReflushSelectedMenuItem(1);
-
+	{		
 		PointManager::Instance()->ResetMast();
 		CharacterFactory::Instance()->resetData();				
 		
