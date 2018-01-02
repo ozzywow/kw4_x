@@ -24,11 +24,11 @@ StudyScene::StudyScene()
 }
 StudyScene::~StudyScene()
 {
-	if (m_timeFuncAction)
-	{
-		m_timeFuncAction->release();
-		m_timeFuncAction = NULL;
-	}
+	//if (m_timeFuncAction)
+	//{
+	//	m_timeFuncAction->release();
+	//	m_timeFuncAction = NULL;
+	//}
 
 	if (m_lavar)
 	{
@@ -277,9 +277,9 @@ void		StudyScene::OnPassed()
 			pCharacter->type = CT_LAVER;
 		}
 
-		this->stopAction(m_timeFuncAction);
-		m_timeFuncAction->release();
-		m_timeFuncAction = NULL;
+		//this->stopAction(m_timeFuncAction);
+		//m_timeFuncAction->release();
+		//m_timeFuncAction = NULL;
 
 		m_lavar->stopAllActions();
 

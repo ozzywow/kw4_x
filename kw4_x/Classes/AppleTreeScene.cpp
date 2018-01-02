@@ -108,15 +108,17 @@ bool AppleTreeScene::initWithVal(bool isPlay)
 
 
 			int biteCount = pCharacter->biteCount;
-			std::string countUIFileName = StringUtils::format("UI4HD/bate_count_%d-hd.png", biteCount);
-
-
-			Sprite* pBiteCountSprite = Sprite::create(countUIFileName);
-			if (pBiteCountSprite)
+			if (biteCount > 0)
 			{
-				pBiteCountSprite->setPosition(pCharacterSprite->getContentSize().width*0.5f, pCharacterSprite->getContentSize().height*0.8f);
-				pCharacterSprite->addChild(pBiteCountSprite, 0);
+				std::string countUIFileName = StringUtils::format("UI4HD/bate_count_%d-hd.png", biteCount);
+				Sprite* pBiteCountSprite = Sprite::create(countUIFileName);
+				if (pBiteCountSprite)
+				{
+					pBiteCountSprite->setPosition(pCharacterSprite->getContentSize().width*0.5f, pCharacterSprite->getContentSize().height*0.8f);
+					pCharacterSprite->addChild(pBiteCountSprite, 0);
+				}
 			}
+			
 
 		}
 		else if (pCharacter->type == CT_FLY)
