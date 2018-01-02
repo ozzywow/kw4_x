@@ -51,7 +51,8 @@ bool MainMenuScene::init()
 
 #define LITE_VER 
 #ifdef LITE_VER
-	MenuItemImage* itemApp = MenuItemImage::create("kw_banner.png", "kw_banner.png", CC_CALLBACK_1(MainMenuScene::cfFullVersion, this));
+#if( CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+	MenuItemImage* itemApp = MenuItemImage::create("UI4HD/kw_banner-hd.png", "UI4HD/kw_banner-hd.png", CC_CALLBACK_1(MainMenuScene::cfFullVersion, this));
 
 	Menu* appMenu = Menu::create(itemApp, NULL);
 	appMenu->alignItemsHorizontallyWithPadding(5);
@@ -83,7 +84,7 @@ bool MainMenuScene::init()
 		
 	this->addChild(pCharacterSprite, 3, 3);
 	pCharacterSprite->setPosition(Point(frameSize.width*0.8f, frameSize.height*0.6f));
-
+#endif
 #endif
 	return true;
 
@@ -133,8 +134,9 @@ void MainMenuScene::callbackOnPushedBuyGameMenuItem(Ref* pSender)
 
 void MainMenuScene::cfFullVersion(Ref* pSender)
 {
-	//NSURL *appStoreUrl = [NSURL URLWithString : @"http://itunes.apple.com/app/id509909625?mt=8"];
-	//[[UIApplication sharedApplication] openURL:appStoreUrl];
-
+#if( CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+	NSURL *appStoreUrl = [NSURL URLWithString : @"http://itunes.apple.com/app/id509909625?mt=8"];
+	[[UIApplication sharedApplication] openURL:appStoreUrl];
+#endif
 }
 
