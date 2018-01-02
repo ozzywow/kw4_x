@@ -98,21 +98,51 @@ void	PointManager::SaveData()
 	UserDefault::getInstance()->setIntegerForKey("level", _level);
 	UserDefault::getInstance()->setBoolForKey("hint", _hint);
 
-	pugi::xml_document _xmlDocForMastWords;
-	pugi::xml_node _rootnode = _xmlDocForMastWords.append_child("root");	
-	for (auto itr = m_mMastWords.begin(); itr != m_mMastWords.end(); ++itr)
-	{	
-		pugi::xml_node _node = _rootnode.append_child("mastwrod");		
-		pugi::xml_attribute attrWord = _node.append_attribute("word");
-		attrWord.set_value(itr->first.c_str());
+	{
+		pugi::xml_document _xmlDocForMastWords;
+		pugi::xml_node _rootnode = _xmlDocForMastWords.append_child("root");
+		for (auto itr = m_mMastWords.begin(); itr != m_mMastWords.end(); ++itr)
+		{
+			pugi::xml_node _node = _rootnode.append_child("mastwrod");
+			pugi::xml_attribute attrWord = _node.append_attribute("word");
+			attrWord.set_value(itr->first.c_str());
 
-		pugi::xml_attribute attrIsMast = _node.append_attribute("ismast");
-		attrIsMast.set_value(itr->second);
+			pugi::xml_attribute attrIsMast = _node.append_attribute("ismast");
+			attrIsMast.set_value(itr->second);
+		}
+
+		std::string path = CCFileUtils::sharedFileUtils()->getWritablePath();
+		path.append("mast_words.xml");
+		_xmlDocForMastWords.save_file(path.c_str());
 	}
 
-	std::string path = CCFileUtils::sharedFileUtils()->getWritablePath();
-	path.append("mast_words.xml");
-	_xmlDocForMastWords.save_file(path.c_str());
+	// character
+	{
+		pugi::xml_document _xmlDocForMastWords;
+		pugi::xml_node _rootnode = _xmlDocForMastWords.append_child("root");
+
+		std::vector<Character*>& characterPool = CharacterFactory::Instance()->GetCharacterPool();
+		for (auto itr = characterPool.begin(); itr != characterPool.end(); ++itr)
+		{
+			Character* character = (*itr);
+			pugi::xml_node _node = _rootnode.append_child("character");
+			pugi::xml_attribute attrIndex = _node.append_attribute("index");
+			attrIndex.set_value(character->index);
+			pugi::xml_attribute attrType = _node.append_attribute("type");
+			attrType.set_value(character->type);
+			pugi::xml_attribute attrX = _node.append_attribute("x");
+			attrX.set_value(character->posX);
+			pugi::xml_attribute attrY = _node.append_attribute("y");
+			attrY.set_value(character->posY);
+			pugi::xml_attribute attrBiteCount = _node.append_attribute("bitecount");
+			attrBiteCount.set_value(character->biteCount);
+		}
+
+		std::string path = CCFileUtils::sharedFileUtils()->getWritablePath();
+		path.append("characters.xml");
+		_xmlDocForMastWords.save_file(path.c_str());
+	}
+	
 }
 
 void	PointManager::LoadData() 
@@ -125,29 +155,72 @@ void	PointManager::LoadData()
 	_hint = UserDefault::getInstance()->getBoolForKey("hint");	
 
 	
-	pugi::xml_document _xmlDocForMastWords;
-	pugi::xml_node _xmlNode;
-	std::string path = CCFileUtils::sharedFileUtils()->getWritablePath();
-	path.append("mast_words.xml");		
-	if (!FileUtils::sharedFileUtils()->isFileExist(path))
-	{		
-		FILE* dest = fopen(path.c_str(), "wb");		
-		fclose(dest);		
-	}
-
-	unsigned char* pBuffer = NULL;
-	ssize_t bufferSize = 0;
-	pBuffer = CCFileUtils::sharedFileUtils()->getFileData(path.c_str(), "r", &bufferSize);
-	if (_xmlDocForMastWords.load_buffer(pBuffer, bufferSize))
+	// mast_words
 	{
-		_xmlNode = _xmlDocForMastWords.child("root");
-		for (pugi::xml_node_iterator itr = _xmlNode.begin(); itr != _xmlNode.end(); ++itr)
-		{	
-			std::string word = itr->attribute("word").as_string();
-			bool isMast = itr->attribute("ismast").as_bool();			
-			m_mMastWords[word.c_str()] = isMast;
+		pugi::xml_document _xmlDocForMastWords;
+		pugi::xml_node _xmlNode;
+		std::string path = CCFileUtils::sharedFileUtils()->getWritablePath();
+		path.append("mast_words.xml");
+		if (!FileUtils::sharedFileUtils()->isFileExist(path))
+		{
+			FILE* dest = fopen(path.c_str(), "wb");
+			fclose(dest);
+		}
+
+		unsigned char* pBuffer = NULL;
+		ssize_t bufferSize = 0;
+		pBuffer = CCFileUtils::sharedFileUtils()->getFileData(path.c_str(), "r", &bufferSize);
+		if (_xmlDocForMastWords.load_buffer(pBuffer, bufferSize))
+		{
+			_xmlNode = _xmlDocForMastWords.child("root");
+			for (pugi::xml_node_iterator itr = _xmlNode.begin(); itr != _xmlNode.end(); ++itr)
+			{
+				std::string word = itr->attribute("word").as_string();
+				bool isMast = itr->attribute("ismast").as_bool();
+				m_mMastWords[word.c_str()] = isMast;
+			}
 		}
 	}
+
+
+	// character
+	{
+		pugi::xml_document _xmlDocForMastWords;
+		pugi::xml_node _xmlNode;
+		std::string path = CCFileUtils::sharedFileUtils()->getWritablePath();
+		path.append("characters.xml");
+		if (!FileUtils::sharedFileUtils()->isFileExist(path))
+		{
+			FILE* dest = fopen(path.c_str(), "wb");
+			fclose(dest);
+		}
+
+		unsigned char* pBuffer = NULL;
+		ssize_t bufferSize = 0;
+		pBuffer = CCFileUtils::sharedFileUtils()->getFileData(path.c_str(), "r", &bufferSize);
+		if (_xmlDocForMastWords.load_buffer(pBuffer, bufferSize))
+		{
+			_xmlNode = _xmlDocForMastWords.child("root");
+			for (pugi::xml_node_iterator itr = _xmlNode.begin(); itr != _xmlNode.end(); ++itr)
+			{
+				int index = itr->attribute("index").as_int();
+				int type = itr->attribute("type").as_int();
+				int x = itr->attribute("x").as_int();
+				int y = itr->attribute("y").as_int();
+				int biteCount = itr->attribute("bitecount").as_int();
+				
+				Character* pCharacter = CharacterFactory::Instance()->GetCharacterWithID(index);
+				if (pCharacter)
+				{
+					pCharacter->type = type;
+					pCharacter->posX = x;
+					pCharacter->posY = y;
+					pCharacter->biteCount = biteCount;
+				}				
+			}
+		}
+	}
+	
 
 	
 }
@@ -370,7 +443,8 @@ void	PointManager::GetNextScene(bool isEnter)
 		else
 		{
 			// 여기서는 완료페이지를 보여주자..
-			auto appleScene = AppleTreeScene::createScene(false);
+			AppleTreeScene* appleScene = (AppleTreeScene*)AppleTreeScene::createScene(false);
+			appleScene->initWithVal(false);
 			TransitionSlideInL* sceneSlide = TransitionSlideInL::create(0.2f, appleScene);
 			auto director = Director::getInstance();
 			director->replaceScene(sceneSlide);			

@@ -114,7 +114,8 @@ void MainMenuScene::callbackOnPushedControlGameMenuItem(Ref* pSender)
 
 void MainMenuScene::callbackOnPushedAppleTreeGameMenuItem(Ref* pSender)
 {
-	auto appleScene = AppleTreeScene::createScene(false);
+	AppleTreeScene* appleScene = (AppleTreeScene*)AppleTreeScene::createScene(false);
+	appleScene->initWithVal(false);
 
 	TransitionSlideInL* sceneSlide = TransitionSlideInL::create(0.5, appleScene);
 	

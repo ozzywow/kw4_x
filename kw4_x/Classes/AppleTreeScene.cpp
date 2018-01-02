@@ -27,6 +27,13 @@ bool AppleTreeScene::init()
 		return false;
 	}
 
+	return true;	
+}
+
+
+bool AppleTreeScene::initWithVal(bool isPlay)
+{
+	m_isPlay = isPlay;
 	PointManager* pPointManager = PointManager::Instance();
 	pPointManager->SaveData();
 
@@ -49,7 +56,7 @@ bool AppleTreeScene::init()
 	else {
 		homeBtnItem = MenuItemImage::create("UI4HD/homeBtn_n-hd.png", "UI4HD/homeBtn_s-hd.png", CC_CALLBACK_1(AppleTreeScene::callbackOnPushedHomeMenuItem, this));
 	}
-	
+
 
 	const Point posOfMenu(frameSize.width*0.2f, frameSize.height*0.9f);
 
@@ -76,7 +83,7 @@ bool AppleTreeScene::init()
 		}
 		else if (pCharacter->type == CT_APPLE)
 		{
-			pCharacterSprite = Sprite::create("UI4HD/apple-hd.png") ;
+			pCharacterSprite = Sprite::create("UI4HD/apple-hd.png");
 		}
 		else if (pCharacter->type == CT_LAVER)
 		{
@@ -94,11 +101,11 @@ bool AppleTreeScene::init()
 			animationLavar->addSpriteFrameWithFile("UI4HD/lavar05-hd.png");
 			animationLavar->addSpriteFrameWithFile("UI4HD/lavar06-hd.png");
 			animationLavar->setDelayPerUnit(0.2f);
-			
+
 			Animate* animationLavarPlay = Animate::create(animationLavar);
 			RepeatForever* repeatForever = RepeatForever::create(animationLavarPlay);
 			pCharacterSprite->runAction(repeatForever);
-			
+
 
 			int biteCount = pCharacter->biteCount;
 			std::string countUIFileName = StringUtils::format("UI4HD/bate_count_%d-hd.png", biteCount);
@@ -108,7 +115,7 @@ bool AppleTreeScene::init()
 			if (pBiteCountSprite)
 			{
 				pBiteCountSprite->setPosition(pCharacterSprite->getContentSize().width*0.5f, pCharacterSprite->getContentSize().height*0.8f);
-				pCharacterSprite->addChild(pBiteCountSprite, 0);				
+				pCharacterSprite->addChild(pBiteCountSprite, 0);
 			}
 
 		}
@@ -122,7 +129,7 @@ bool AppleTreeScene::init()
 
 			Animation* animationLavar = Animation::create();
 			animationLavar->addSpriteFrameWithFile("UI4HD/change_fly_6-hd.png");
-			animationLavar->addSpriteFrameWithFile("UI4HD/change_fly_7-hd.png");			
+			animationLavar->addSpriteFrameWithFile("UI4HD/change_fly_7-hd.png");
 			animationLavar->setDelayPerUnit(0.3f);
 
 			Animate* animationLavarPlay = Animate::create(animationLavar);
@@ -134,7 +141,7 @@ bool AppleTreeScene::init()
 		}
 
 		pCharacterSprite->setUserData((void*)pCharacter);
-		this->addChild(pCharacterSprite, 1, 1);		
+		this->addChild(pCharacterSprite, 1, 1);
 		m_arrSprites.push_back(pCharacterSprite);
 		Point applePos((float)pCharacter->posX, (float)pCharacter->posY);
 		pCharacterSprite->setPosition(applePos);
@@ -142,7 +149,7 @@ bool AppleTreeScene::init()
 
 	// 터치 이벤트를 담당할 Layer를 만든 후 GameScene에 넣습니다.
 	auto listener = EventListenerTouchOneByOne::create();
-	listener->setSwallowTouches(true);	
+	listener->setSwallowTouches(true);
 	listener->onTouchBegan = CC_CALLBACK_2(AppleTreeScene::onTouchBegan, this);
 	listener->onTouchMoved = CC_CALLBACK_2(AppleTreeScene::onTouchMoved, this);
 	listener->onTouchEnded = CC_CALLBACK_2(AppleTreeScene::onTouchEnded, this);
@@ -154,9 +161,6 @@ bool AppleTreeScene::init()
 
 	return true;
 }
-
-
-
 
 
 Sprite* AppleTreeScene::ChangeToFly(int laverID)

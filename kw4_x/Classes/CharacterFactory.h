@@ -22,5 +22,6 @@ public:
 	Character*		GetCharacterWithID(int id);
 	int				FindAppleIDByPos(Point pos);
 	int				GetCountWithType(int ty);
+	std::vector<Character*>& GetCharacterPool() { return m_characterPool; }
 };
 

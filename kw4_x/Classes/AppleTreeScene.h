@@ -23,13 +23,14 @@ public:
 	static Scene* createScene(bool isPlay)
 	{
 		AppleTreeScene* pRes = AppleTreeScene::create();
-		pRes->m_isPlay = isPlay;
+		pRes->initWithVal(isPlay);
 		return pRes;
 	}
 	CREATE_FUNC(AppleTreeScene);
 
 
 	virtual bool init();
+	bool initWithVal(bool isPlay);
 
 	Sprite* ChangeToFly(int laverID);
 	void	RemoveApple(int appleID);
