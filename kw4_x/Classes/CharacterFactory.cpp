@@ -31,10 +31,18 @@ void			CharacterFactory::init()
 
 void			CharacterFactory::resetData()
 {
+	const float begginXOffset = 50;
+	const float Xoffset = 7;
+	const float yOffset = 50;
+
 	for (int i = 0; i < MAX_SIZE_OF_CHARACTER_POOL; ++i)
 	{
 		Character* pCharacter = m_characterPool[i];
 		pCharacter->init(i);
+
+		const float  offsetVal = begginXOffset + (i*Xoffset);
+		pCharacter->posX = offsetVal;
+		pCharacter->posY = yOffset;
 	}
 }
 
