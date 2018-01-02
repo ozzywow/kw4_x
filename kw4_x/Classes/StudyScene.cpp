@@ -211,7 +211,8 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 	}
 
 
-	if (0 == (rand() % 25))
+	//if (0 == (rand() % 25))
+	if (0 == (rand() % 2))
 	{
 		this->TimeRun(10);
 	}
@@ -406,8 +407,7 @@ void		StudyScene::ChangeEmotion(int emotionID)
 
 void		StudyScene::DrowApple(bool showEffect, bool isRedrow)
 {
-	this->removeChildByTag(kGameSceneTagAppleSpecial, true);
-
+	
 	const Point posOfBigApple(frameSize.width*0.15f, frameSize.height*0.85f);
 	const int sizeOfCountFont = frameSize.width*0.065f;
 	
@@ -432,11 +432,6 @@ void		StudyScene::DrowApple(bool showEffect, bool isRedrow)
 	int point = PointManager::Instance()->GetPoint();
 	if (point > 0)
 	{
-		for (int i = 0; i<5; ++i)
-		{		
-			this->removeChildByTag(kGameSceneTagApplePoint + i, true);
-		}
-
 		const int yPos = frameSize.height*0.5f;
 		for (int i = 0; i < point; ++i)
 		{
@@ -468,8 +463,7 @@ void		StudyScene::ShowHint()
 	const int sizeOfFont = frameSize.width*0.12f;
 	int lenth = m_wordName.size()/3;
 	for (int i = 0; i< lenth; ++i)
-	{
-		this->removeChildByTag(kGameSecceTagHintLayer + i, true);
+	{		
 		std::string singleWord = m_wordName.substr(i * 3, 3);
 		Label* singleWordLayer = Label::createWithSystemFont(singleWord, "Arial", sizeOfFont);
 		singleWordLayer->setColor(Color3B(120, 120, 120));
