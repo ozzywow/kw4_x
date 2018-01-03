@@ -148,7 +148,7 @@ void	PointManager::SaveData()
 void	PointManager::LoadData() 
 {
 	m_currStage = UserDefault::getInstance()->getIntegerForKey("curr_stage");
-	if (m_currStage == 0) m_currStage = 1;
+	//if (m_currStage == 0) m_currStage = 1;
 	_point = UserDefault::getInstance()->getIntegerForKey("point");
 	_level = UserDefault::getInstance()->getIntegerForKey("level");
 	if (_level == 0) _level = 1;
@@ -338,20 +338,10 @@ bool PointManager::LoadXML()
 	return true;
 }
 
-void	PointManager::GetNextScene(bool isEnter)
+void	PointManager::GetNextScene(bool isEnter, bool isNextStage)
 {
 	this->SaveData();
-
-	// 처음 진입이면 첫 패이지 부터 보여준다.
-	if (isEnter == true)
-	{
-		m_currStage = 0;
-	}
-	else
-	{
-		++m_currStage;
-	}
-
+	
 //#define LITE_VER
 #ifdef LITE_VER
 	if (_level > 1)
@@ -391,9 +381,17 @@ void	PointManager::GetNextScene(bool isEnter)
 	}
 #endif //LITE_VER
 
-	int max_stage = m_mCardsByWord.size();
+	if (isNextStage)
+	{
+		++m_currStage;
+	}
 
+	if (isEnter)
+	{
+		m_currStage = 0;
+	}
 
+	
 	std::string wordName;
 	std::string text;
 	int level = 0;
@@ -402,85 +400,45 @@ void	PointManager::GetNextScene(bool isEnter)
 	for (int l = _level; l <= 5; ++l)
 	{
 		vtWordCards& cardListByLevel = m_mCardsByLevel[l];
-		if (cardListByLevel.size() > m_currStage)
+		for (int i = m_currStage ; i< cardListByLevel.size(); ++i)
 		{
-			for (int i = m_currStage; i< cardListByLevel.size(); ++i)
+			WordCard& wordCard = cardListByLevel[i];
+			wordName = wordCard.word;
+			if (IsMasted(wordName) == true)
 			{
-				WordCard& wordCard = cardListByLevel[i];
-				wordName = wordCard.word;
-				if (IsMasted(wordName) == true)
-				{
-					continue;
-				}
-
-				text = wordCard.text;
-				level = wordCard.level;
-				if (level != l)
-				{
-					continue;
-				}
-
-				isGotNextScene = true;
-				break;
+				continue;
 			}
+
+			text = wordCard.text;
+			level = wordCard.level;
+			if (level != l)
+			{
+				continue;
+			}
+			
+			isGotNextScene = true;			
+			m_currStage = i;
+			break;
 		}
 
-		if (false == isGotNextScene)
-		{
-			++_level;
-			m_currStage = 0;
-			continue;
-		}
-
-		break;
-		
+		if (isGotNextScene) { break; }
 	}
 
 	
 
 	if (false == isGotNextScene)
 	{
-		// 해당 레벨을 모두 완료했으니 레벨을 올려준다.
-		if (_level <= 5)
-		{
-			++_level;
-			m_currStage = 0;
+		AppleTreeScene* appleScene = (AppleTreeScene*)AppleTreeScene::createScene(false);
+		appleScene->initWithVal(false);
+		TransitionSlideInL* sceneSlide = TransitionSlideInL::create(0.2f, appleScene);
+		auto director = Director::getInstance();
+		director->replaceScene(sceneSlide);
 
-			if (_level > 1)
-			{
-				//[self GetNextScene:NO] ;
-				//NSString* message = [NSString stringWithFormat : @"%d 단계를 완료했어요.", _level-1] ;
-				//ConfirmScene* confirmScene = [[ConfirmScene node] initWithString:message];
-				//[[CCDirector sharedDirector] replaceScene:[CCTransitionSlideInR transitionWithDuration : 0.2 scene : confirmScene]];	//슬라이드
-
-			}
-
-
-			return;
-
-		}
-		else
-		{
-			// 여기서는 완료페이지를 보여주자..
-			AppleTreeScene* appleScene = (AppleTreeScene*)AppleTreeScene::createScene(false);
-			appleScene->initWithVal(false);
-			TransitionSlideInL* sceneSlide = TransitionSlideInL::create(0.2f, appleScene);
-			auto director = Director::getInstance();
-			director->replaceScene(sceneSlide);			
-
-			return;
-
-		}
-	}
-
-
-	auto studyScene = StudyScene::createScene(wordName, level, text);
-	if (NULL == studyScene)
-	{
-		GetNextScene(isEnter);		
 		return;
 	}
 
+
+	auto studyScene = StudyScene::createScene(wordName, level, text);	
 	auto director = Director::getInstance();	
 	if (isEnter == true)
 	{
@@ -492,7 +450,7 @@ void	PointManager::GetNextScene(bool isEnter)
 		TransitionPageTurn* scenePageTurn = TransitionPageTurn::create(0.2f, studyScene, false);
 		director->replaceScene(scenePageTurn);
 	}
-
+	
 }
 
 void	PointManager::GetPrevSecene()
@@ -504,44 +462,27 @@ void	PointManager::GetPrevSecene()
 		TransitionSlideInR* sceneSlide = TransitionSlideInR::create(0.2f, mainScene);
 		auto director = Director::getInstance();
 		director->replaceScene(mainScene);
-	}
-
-	vtWordCards& cardListByLevel = m_mCardsByLevel[_level];
-	int max_stage = cardListByLevel.size();
-
-
-	std::string wordName;
-	std::string text;
-	int level = 0;
-	for (; m_currStage<max_stage; --m_currStage)
-	{
-		// 첫 페이지에서 이전버튼이 눌려지면 홈으로 간다.
-		if (m_currStage < 0)
-		{
-			m_currStage = 0;
-			auto mainScene = MainMenuScene::createScene();
-			TransitionSlideInR* sceneSlide = TransitionSlideInR::create(0.2f, mainScene);
-			auto director = Director::getInstance();
-			director->replaceScene(mainScene);
-			return;
-		}
-
-		WordCard& wordCard = cardListByLevel[m_currStage];
-
-
-		wordName = wordCard.word;		
-		text = wordCard.text;
-		level = wordCard.level;
-		break;
-	}
-
-
-	auto studyScene = StudyScene::createScene(wordName, level, text);
-	if (studyScene == studyScene)
-	{
 		return;
 	}
 
+	
+
+	vtWordCards& cardListByLevel = m_mCardsByLevel[_level];
+	int max_stage = cardListByLevel.size();
+	if (m_currStage < max_stage)
+	{
+		--m_currStage;
+	}
+	else{ 
+		m_currStage = 0; 
+	}
+			
+	WordCard& wordCard = cardListByLevel[m_currStage];
+	std::string wordName = wordCard.word;
+	std::string text = wordCard.text;
+	int level = wordCard.level;
+
+	auto studyScene = StudyScene::createScene(wordName, level, text);
 	TransitionSlideInL* sceneSlide = TransitionSlideInL::create(0.2f, studyScene);
 	auto director = Director::getInstance();
 	director->replaceScene(studyScene);

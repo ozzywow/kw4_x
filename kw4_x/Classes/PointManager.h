@@ -74,8 +74,8 @@ public:
 	bool	GetHintOption();
 	void	SetHintOption(bool opt);
 
-	bool LoadXML();
-	void	GetNextScene(bool isEnter);
+	bool	LoadXML();
+	void	GetNextScene(bool isEnter, bool isNextStage = false);
 	void	GetPrevSecene();
 
 	void	SetCartWithPID(int pid,  bool bBought);

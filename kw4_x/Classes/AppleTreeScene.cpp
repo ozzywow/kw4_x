@@ -324,7 +324,7 @@ void	AppleTreeScene::callbackOnPushedHomeMenuItem(Ref* pSender)
 
 void	AppleTreeScene::callbackOnPushedNewGameMenuItem(Ref* pSender)
 {
-	PointManager::Instance()->GetNextScene(true);
+	PointManager::Instance()->GetNextScene(true, true);
 }
 
 void	AppleTreeScene::callbackOnPushedBuyMenuItem(Ref* pSender)

@@ -95,12 +95,12 @@ void MainMenuScene::callbackOnPushedNewGameMenuItem(Ref* pSender)
 {	
 	SoundFactory* sound = SoundFactory::Instance();
 	sound->play(SOUND_FILE_fighting_voice);
-	PointManager::Instance()->GetNextScene(true);
+	PointManager::Instance()->GetNextScene(true, false);
 }
 
 void MainMenuScene::callbackOnPushedContinueMenuItem(Ref* pSender)
 {
-	PointManager::Instance()->GetNextScene(true);
+	PointManager::Instance()->GetNextScene(true, false);
 }
 
 void MainMenuScene::callbackOnPushedControlGameMenuItem(Ref* pSender)

@@ -179,6 +179,8 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 		std::string singleWord = m_wordName.substr(i*3, 3);
 		tmpLayer->setWorldText(singleWord);
 		m_arrayTextLayer.push_back(tmpLayer);
+		
+		m_arrayAnswerLayer.push_back(tmpLayer);
 	}
 
 
@@ -237,7 +239,7 @@ void		StudyScene::OnPassed()
 
 	PointManager* pointManager = PointManager::Instance();
 	pointManager->CheckMast(m_wordName);
-	pointManager->AddPoint(1);
+	pointManager->AddPoint(1);	
 	this->DrowApple(true, true);
 
 	float invervalTime = 1.0;
@@ -347,8 +349,8 @@ void		StudyScene::TurnPage()
 
 	SoundFactory* sound = SoundFactory::Instance();
 	sound->play(SOUND_FILE_turnpage_effect);
-	
-	pointManager->GetNextScene(false);
+		
+	pointManager->GetNextScene(false, true);
 }
 void		StudyScene::GoAppleTreeScene()
 {
