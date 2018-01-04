@@ -452,11 +452,8 @@ void AppleTreeScene::onTouchEnded(Touch* touch, Event *unused_event)
 				this->RemoveApple(biteAppleID);
 
 			}
-			else
-			{
-				pCharacter->posX = (int)location.x;
-				pCharacter->posY = (int)location.y;
-			}
+			pCharacter->posX = (int)location.x;
+			pCharacter->posY = (int)location.y;
 
 		}
 
