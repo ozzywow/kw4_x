@@ -16,7 +16,7 @@ void			CharacterFactory::init()
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();
 	auto frameSize = glview->getDesignResolutionSize();
-	float H_OFFSET = (frameSize.height - FRAME_HEIGHT)*0.5;
+	float H_OFFSET = frameSize.height - FRAME_HEIGHT;
 
 	const float begginXOffset = 50;
 	const float Xoffset = 7;
@@ -39,7 +39,7 @@ void			CharacterFactory::resetData()
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();
 	auto frameSize = glview->getDesignResolutionSize();
-	float H_OFFSET = (frameSize.height - FRAME_HEIGHT)*0.5;
+	float H_OFFSET = frameSize.height - FRAME_HEIGHT;
 
 	const float begginXOffset = 50;
 	const float Xoffset = 7;

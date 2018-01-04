@@ -402,7 +402,7 @@ void		StudyScene::ChangeEmotion(int emotionID)
 	
 	const Point posOfBox(FRAME_WIDTH*0.88f, H_OFFSET + (FRAME_HEIGHT*0.55f));
 	faceBtn->setPosition(posOfBox);
-	auto actionTo = JumpTo::create(jumpCount / 2, posOfBox, H_OFFSET + (FRAME_HEIGHT*0.03f), jumpCount);
+	auto actionTo = JumpTo::create(jumpCount / 2, posOfBox, FRAME_HEIGHT*0.03f, jumpCount);
 	faceBtn->runAction(actionTo);
 	this->addChild(faceBtn, kGameSceneTagAvatar, kGameSceneTagAvatar);
 }
