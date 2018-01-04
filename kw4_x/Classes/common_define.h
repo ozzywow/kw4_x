@@ -4,6 +4,8 @@
 
 #define MAX_SIZE_OF_CHARACTER_POOL  128
 
+#define FRAME_HEIGHT				960.0f
+#define FRAME_WIDTH					640.0f
 
 enum 
 {

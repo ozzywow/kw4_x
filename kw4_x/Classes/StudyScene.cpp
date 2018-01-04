@@ -49,6 +49,7 @@ bool StudyScene::init()
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();	
 	frameSize = glview->getDesignResolutionSize();
+	H_OFFSET = (frameSize.height - FRAME_HEIGHT)*0.5;
 	
 
 	return true;
@@ -69,16 +70,16 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 	Sprite* backGround = NULL;
 	if (level == 5)
 	{
-		backGround = Sprite::create("UI4HD/playScene_5-hd.png");
+		backGround = Sprite::create("UI4HD/playScene_5-hdx.png");
 
 		// TODO : 의성어,의태어 버젼일 경우 예문 출력
-		Point posOfTextLabel(frameSize.width*0.5f, frameSize.height*0.6f); //position of create
-		int sizeOfTextFont = frameSize.width*0.08f;
+		Point posOfTextLabel(FRAME_WIDTH*0.5f, H_OFFSET+(FRAME_HEIGHT*0.6f)); //position of create
+		int sizeOfTextFont = FRAME_WIDTH*0.08f;
 
 		// lable of shadow
 		Size sizeOfTextBox;
-		sizeOfTextBox.width = frameSize.width;
-		sizeOfTextBox.height = frameSize.height*0.3f;
+		sizeOfTextBox.width = FRAME_WIDTH;
+		sizeOfTextBox.height = H_OFFSET + (FRAME_HEIGHT*0.3f);
 
 		//text = [text stringByReplacingOccurrencesOfString : @"/n" withString:@"\n"];
 		//[[NSString stringWithUTF8String:(char *)sqlite3_column_text(statement, 0)] stringByReplacingCharactersInRange:@"/n" withString:@"\n"];
@@ -90,7 +91,7 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 	}
 	else
 	{
-		backGround = Sprite::create("UI4HD/playScene-hd.png");
+		backGround = Sprite::create("UI4HD/playScene-hdx.png");
 	}
 
 
@@ -117,7 +118,7 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 	const int sizeOfPadding = 5;
 	Menu* mainMenu = Menu::create(prevBtnItem, nextBtnItem, homeBtnItem, hintBtnItem, NULL);
 	mainMenu->alignItemsHorizontallyWithPadding(sizeOfPadding);
-	const Point posOfTopMenu(frameSize.width*0.5f, frameSize.height*0.95f);
+	const Point posOfTopMenu(FRAME_WIDTH*0.5f, H_OFFSET + (FRAME_HEIGHT*0.95f));
 	mainMenu->setAnchorPoint(Point::ANCHOR_MIDDLE_TOP);
 	mainMenu->setPosition(posOfTopMenu);
 
@@ -132,22 +133,22 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 		return ;
 	}
 	image->setAnchorPoint(Point::ANCHOR_MIDDLE_TOP);
-	Point posOfImage(frameSize.width*0.5f, frameSize.height*0.90);
+	Point posOfImage(FRAME_WIDTH*0.5f, H_OFFSET + (FRAME_HEIGHT*0.90f));
 	image->setPosition(posOfImage);
 	
 
 	this->addChild(image, kGameSceneTagImg, kGameSceneTagImg);
 
 	Sprite* faceBtn = Sprite::create("UI4HD/boxboySmile-hd.png");
-	Point posOfBox(frameSize.width*0.88f, frameSize.height*0.55);
+	Point posOfBox(FRAME_WIDTH*0.88f, H_OFFSET + (FRAME_HEIGHT*0.55f));
 	faceBtn->setPosition(posOfBox);
 	this->addChild(faceBtn, kGameSceneTagAvatar, kGameSceneTagAvatar);
 
 
-	const Point posOfLevel(frameSize.width*0.82f, frameSize.height*0.82);
+	const Point posOfLevel(FRAME_WIDTH*0.82f, H_OFFSET + (FRAME_HEIGHT*0.82f));
 	std::string levelLable = StringUtils::format("%d단계", level);
 	levelLable = UTF8(levelLable);
-	PrintStyle(this, levelLable, frameSize.width*0.07f, posOfLevel);
+	PrintStyle(this, levelLable, FRAME_WIDTH*0.07f, posOfLevel);
 
 	this->DrowApple(false, false);
 
@@ -157,8 +158,8 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 	auto btn = Sprite::create("UI4HD/wordBG-hd.png");
 	auto btnSize = btn->getContentSize();
 	int buttonSize = btnSize.width;
-	int offsetWith = frameSize.width*0.14f;
-	int offsetHeight = frameSize.height*0.09f;
+	int offsetWith = FRAME_WIDTH*0.14f;
+	int offsetHeight = H_OFFSET + (FRAME_HEIGHT*0.09f);
 	for (int line = 0; line < 2; ++line)
 	{
 		for (int i = 0; i < 4; i++)
@@ -185,8 +186,8 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 
 
 	// 정답문자를 위치시킬 빈상자의 배열
-	int offsetAnswerX = frameSize.width * 0.145f;
-	int offsetAnswerY = frameSize.height * 0.28f;
+	int offsetAnswerX = FRAME_WIDTH * 0.145f;
+	int offsetAnswerY = H_OFFSET + (FRAME_HEIGHT* 0.28f);
 	for (int i = 0; i< 4; ++i)
 	{
 		arrayPoint[i] = Point((buttonSize*i)+((buttonSize*i)*0.28f) + offsetAnswerX, (buttonSize + offsetAnswerY));
@@ -399,9 +400,9 @@ void		StudyScene::ChangeEmotion(int emotionID)
 	}
 
 	
-	const Point posOfBox(frameSize.width*0.88f, frameSize.height*0.55f);
+	const Point posOfBox(FRAME_WIDTH*0.88f, H_OFFSET + (FRAME_HEIGHT*0.55f));
 	faceBtn->setPosition(posOfBox);
-	auto actionTo = JumpTo::create(jumpCount / 2, posOfBox, frameSize.height*0.03f, jumpCount);
+	auto actionTo = JumpTo::create(jumpCount / 2, posOfBox, H_OFFSET + (FRAME_HEIGHT*0.03f), jumpCount);
 	faceBtn->runAction(actionTo);
 	this->addChild(faceBtn, kGameSceneTagAvatar, kGameSceneTagAvatar);
 }
@@ -409,8 +410,8 @@ void		StudyScene::ChangeEmotion(int emotionID)
 void		StudyScene::DrowApple(bool showEffect, bool isRedrow)
 {
 	
-	const Point posOfBigApple(frameSize.width*0.15f, frameSize.height*0.85f);
-	const int sizeOfCountFont = frameSize.width*0.065f;
+	const Point posOfBigApple(FRAME_WIDTH*0.15f, H_OFFSET + (FRAME_HEIGHT*0.85f));
+	const int sizeOfCountFont = FRAME_WIDTH*0.065f;
 	
 
 	//BIG사과를 그려준다.
@@ -429,11 +430,11 @@ void		StudyScene::DrowApple(bool showEffect, bool isRedrow)
 	this->addChild(bigapple, kGameSceneTagAppleSpecial, kGameSceneTagAppleSpecial);
 
 	//사과를 그려준다.
-	float appleOffset = frameSize.width*0.1f;
+	float appleOffset = FRAME_WIDTH*0.1f;
 	int point = PointManager::Instance()->GetPoint();
 	if (point > 0)
 	{
-		const int yPos = frameSize.height*0.5f;
+		const int yPos = H_OFFSET + (FRAME_HEIGHT*0.5f);
 		for (int i = 0; i < point; ++i)
 		{
 			Sprite* apple = Sprite::create("UI4HD/applePart-hd.png");
@@ -461,7 +462,7 @@ void		StudyScene::DrowStar()
 }
 void		StudyScene::ShowHint()
 {
-	const int sizeOfFont = frameSize.width*0.12f;
+	const int sizeOfFont = FRAME_WIDTH*0.12f;
 	int lenth = m_wordName.size()/3;
 	for (int i = 0; i< lenth; ++i)
 	{		
@@ -494,8 +495,8 @@ void		StudyScene::TimeRun(int sec)
 	RepeatForever *repeat = RepeatForever::create(animate);
 	m_lavar->runAction(repeat);
 
-	const Point posOfBeggin(Point(frameSize.width*0.0f, frameSize.height*0.5f));
-	const Point posOfEnd(Point(frameSize.width*1.0f, frameSize.height*0.5f));
+	const Point posOfBeggin(Point(FRAME_WIDTH*0.0f, H_OFFSET+(FRAME_HEIGHT*0.5f)));
+	const Point posOfEnd(Point(FRAME_WIDTH*1.0f, H_OFFSET+(FRAME_HEIGHT*0.5f)));
 
 	m_lavar->setPosition(posOfBeggin);
 	Point destPos = posOfEnd;
@@ -577,7 +578,7 @@ void StudyScene::callbackOnPushedNextBtnItem(Ref* sender)
 	for (int i = 0; i<sizeOfArray; ++i)
 	{
 		TextLayer* pAnswerLayer = m_arrayAnswerLayer[i];
-		auto actionTo = JumpTo::create(2.0f, Point(0, 0), frameSize.height*0.03f, 4);
+		auto actionTo = JumpTo::create(2.0f, Point(0, 0), FRAME_HEIGHT*0.03f, 4);
 		pAnswerLayer->runAction(actionTo);
 	}
 
@@ -608,7 +609,7 @@ void StudyScene::callbackOnPushedHintBtnItem(Ref* sender)
 	{
 		TextLayer* pAnswerLayer = m_arrayAnswerLayer[i];
 
-		auto actionTo = JumpTo::create(1.0f, Point::ZERO, frameSize.height*0.03f, 2);
+		auto actionTo = JumpTo::create(1.0f, Point::ZERO, FRAME_HEIGHT*0.03f, 2);
 		pAnswerLayer->runAction(actionTo);
 
 		SoundFactory* soundFactory = SoundFactory::Instance();

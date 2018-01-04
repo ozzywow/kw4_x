@@ -40,6 +40,7 @@ public:
 	Sprite*						m_lavar;
 
 	cocos2d::Size				frameSize;
+	float						H_OFFSET;
 
 public:
 	StudyScene();

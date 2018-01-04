@@ -13,6 +13,11 @@ CharacterFactory::~CharacterFactory()
 
 void			CharacterFactory::init()
 {	
+	auto director = Director::getInstance();
+	auto glview = director->getOpenGLView();
+	auto frameSize = glview->getDesignResolutionSize();
+	float H_OFFSET = (frameSize.height - FRAME_HEIGHT)*0.5;
+
 	const float begginXOffset = 50;
 	const float Xoffset = 7;
 	const float yOffset = 50;
@@ -23,7 +28,7 @@ void			CharacterFactory::init()
 
 		Character* pCharacter = new Character(i);
 		pCharacter->posX = offsetVal;
-		pCharacter->posY = yOffset;
+		pCharacter->posY = H_OFFSET + yOffset;
 
 		m_characterPool.push_back(pCharacter);
 	}
@@ -31,6 +36,11 @@ void			CharacterFactory::init()
 
 void			CharacterFactory::resetData()
 {
+	auto director = Director::getInstance();
+	auto glview = director->getOpenGLView();
+	auto frameSize = glview->getDesignResolutionSize();
+	float H_OFFSET = (frameSize.height - FRAME_HEIGHT)*0.5;
+
 	const float begginXOffset = 50;
 	const float Xoffset = 7;
 	const float yOffset = 50;
@@ -42,7 +52,7 @@ void			CharacterFactory::resetData()
 
 		const float  offsetVal = begginXOffset + (i*Xoffset);
 		pCharacter->posX = offsetVal;
-		pCharacter->posY = yOffset;
+		pCharacter->posY = H_OFFSET + yOffset;
 	}
 }
 

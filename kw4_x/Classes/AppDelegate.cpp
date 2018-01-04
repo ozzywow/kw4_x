@@ -35,7 +35,7 @@ static Resource			resource5 = { cocos2d::Size(1125, 960), "iphoneX" };
 
 
 
-static cocos2d::Size designResolutionSize = cocos2d::Size(640, 960);
+static cocos2d::Size designResolutionSize = cocos2d::Size(FRAME_WIDTH, FRAME_HEIGHT);
 
 
 USING_NS_CC;
@@ -78,7 +78,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto glview = director->getOpenGLView();
     if(!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        glview = GLViewImpl::createWithRect("kw4_iphone", cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
+        glview = GLViewImpl::createWithRect("kw4_iphone", cocos2d::Rect(0, 0, designResolutionSize.width, 1386));
 #else
         glview = GLViewImpl::create("kw4_iphone");
 #endif
@@ -129,7 +129,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     
     
     // Set the design resolution
-    glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::SHOW_ALL);
+    glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::FIXED_WIDTH);
     
     // 데모에서는, 우리는 프레임의 세로길이에 따라 리소스를 선택한다.
     // 만약 리소스 사이즈가 디자인 해상도사이즈로 부터 다르다면, 개발자는 contentScaleFactor 설정이 필요하다.

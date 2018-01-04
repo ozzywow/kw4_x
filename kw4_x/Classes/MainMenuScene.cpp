@@ -26,14 +26,19 @@ bool MainMenuScene::init()
 		return false;
 	}
 
+	LayerColor* layer = LayerColor::create();	
+	layer->initWithColor(Color4B(255, 255, 255, 255));
+	this->addChild(layer, 0);
+
 	PointManager::Instance()->SaveData();
 	
 
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();	
-	auto frameSize = glview->getDesignResolutionSize();
+	auto frameSize = glview->getDesignResolutionSize();	
+	auto H_OFFSET = (frameSize.height - FRAME_HEIGHT)*0.5;
 
-	Sprite* background = Sprite::create("UI4HD/main_bg-hd.png");
+	Sprite* background = Sprite::create("UI4HD/main_bg-hdx.png");
 	background->setAnchorPoint(Point::ANCHOR_MIDDLE);
 	background->setPosition(frameSize.width*0.5f, frameSize.height*0.5f);
 	this->addChild(background, 0, 0);
@@ -44,8 +49,8 @@ bool MainMenuScene::init()
 	//MenuItemImage* buyMenuItem = MenuItemImage::create("UI4HD/buyBtn_n-hd.png", "UI4HD/buyBtn_s-hd.png", CC_CALLBACK_1(MainMenuScene::callbackOnPushedBuyGameMenuItem, this));
 		
 	Menu* mainMenu = Menu::create(playMenuItem, infoMenuItem, appleTreeMenuItem, NULL);
-	mainMenu->alignItemsVerticallyWithPadding(15);
-	mainMenu->setPosition(Point((frameSize.width * 0.5f), (frameSize.height * 0.3f)));
+	mainMenu->alignItemsVerticallyWithPadding(20);
+	mainMenu->setPosition(Point((FRAME_WIDTH * 0.5f), H_OFFSET+(FRAME_HEIGHT * 0.3f)));
 		
 	this->addChild(mainMenu, 0, 0);
 

@@ -33,7 +33,7 @@ bool InfoScene::init()
 	auto glview = director->getOpenGLView();	
 	auto frameSize = glview->getDesignResolutionSize();
 	background->setAnchorPoint(Point::ANCHOR_MIDDLE);
-	background->setPosition(frameSize.width*0.5f, frameSize.height*0.5f);
+	background->setPosition(frameSize.width* 0.5f, frameSize.height * 0.5f);
 
 	this->addChild(background, 0, 0);
 
@@ -49,20 +49,21 @@ void InfoScene::DrawItemBox()
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();
 	auto frameSize = glview->getDesignResolutionSize();
+	float H_OFFSET = (frameSize.height - FRAME_HEIGHT)*0.5;
 
 	int level = PointManager::Instance()->GetLevel();
 
-	const int		sizeOfFont = frameSize.width*0.07f;
-	const int       sizeofFont_s = frameSize.width*0.04f;
-	const Point	posOfMainMenu = Point(frameSize.width*0.2f, frameSize.height*0.9f);
+	const int		sizeOfFont = FRAME_WIDTH*0.07f;
+	const int       sizeofFont_s = FRAME_WIDTH*0.04f;
+	const Point	posOfMainMenu = Point(FRAME_WIDTH*0.2f, H_OFFSET+(FRAME_HEIGHT*0.9f));
 
-	const Point	posOfLable_level = Point(frameSize.width*0.5f, frameSize.height*0.85f);
-	const Point	posOfSelectMenu1 = Point(frameSize.width*0.5f, frameSize.height*0.72f);
-	const Point	posOfSelectMenu2 = Point(frameSize.width*0.5f, frameSize.height*0.49f);
+	const Point	posOfLable_level = Point(FRAME_WIDTH*0.5f, H_OFFSET+(FRAME_HEIGHT*0.85f));
+	const Point	posOfSelectMenu1 = Point(FRAME_WIDTH*0.5f, H_OFFSET+(FRAME_HEIGHT*0.72f));
+	const Point	posOfSelectMenu2 = Point(FRAME_WIDTH*0.5f, H_OFFSET+(FRAME_HEIGHT*0.49f));
 
-	const Point	posOfLable_hint = Point(frameSize.width*0.5f, frameSize.height*0.32f);
+	const Point	posOfLable_hint = Point(FRAME_WIDTH*0.5f, H_OFFSET+(FRAME_HEIGHT*0.32f));
 
-	const Point	posOfOptonMenu = Point(frameSize.width*0.5f, frameSize.height*0.2f);
+	const Point	posOfOptonMenu = Point(FRAME_WIDTH*0.5f, H_OFFSET+(FRAME_HEIGHT*0.2f));
 	const int       blinkTime = 80000;
 
 	Sprite* btn = Sprite::create("UI4HD/btn_level_1_n-hd.png");
@@ -462,7 +463,7 @@ void InfoScene::callbackOnPushedResetMenuItem(Ref* sender)
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();
 	auto frameSize = glview->getDesignResolutionSize();
-	const int		sizeOfFont = frameSize.width*0.05f;
+	const int		sizeOfFont = FRAME_WIDTH*0.05f;
 
 
 	UIPopupWindow *pPopupOK = UIPopupWindow::create(Sprite::create("UI4HD/black_bg.png"), Sprite::create("UI4HD/pop_common.png"));
