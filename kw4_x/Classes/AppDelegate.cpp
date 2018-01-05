@@ -29,9 +29,9 @@ typedef struct tagResource
 
 static Resource			resource1 = { cocos2d::Size(640, 960), "iphone4" };
 static Resource			resource2 = { cocos2d::Size(640, 1136), "iphoneSE5678" };
-static Resource			resource3 = { cocos2d::Size(2048, 1536), "ipad" };
+static Resource			resource3 = { cocos2d::Size(1536/2, 2048/2), "ipad" };
 static Resource			resource4 = { cocos2d::Size(960, 1704), "iphone6p" };
-static Resource			resource5 = { cocos2d::Size(1125, 960), "iphoneX" };
+static Resource			resource5 = { cocos2d::Size(1125/2, 2436/2), "iphoneX" };
 
 
 
@@ -78,48 +78,14 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto glview = director->getOpenGLView();
     if(!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        glview = GLViewImpl::createWithRect("kw4_iphone", cocos2d::Rect(0, 0, designResolutionSize.width, 1386));
+        glview = GLViewImpl::createWithRect("kw4_iphone", cocos2d::Rect(0, 0, resource3.size.width, resource3.size.height));
 #else
         glview = GLViewImpl::create("kw4_iphone");
 #endif
         director->setOpenGLView(glview);
     }
-    
-	/*
-    CCSize frameSize = glview->getFrameSize();
-    // resource5
-    if (frameSize.height > resource4.size.height)
-    {
-        //CCFileUtils::sharedFileUtils()->addSearchPath(resource5.directory);
-        director->setContentScaleFactor(resource5.size.height / designResolutionSize.height);
-    }
-    // resource4
-    else if (frameSize.height > resource3.size.height && frameSize.height < resource5.size.height)
-    {
-        //CCFileUtils::sharedFileUtils()->addSearchPath(resource4.directory);
-        director->setContentScaleFactor(resource4.size.height / designResolutionSize.height);
-    }
-    // resource3
-    else if (frameSize.height > resource2.size.height && frameSize.height < resource4.size.height)
-    {
-        //CCFileUtils::sharedFileUtils()->addSearchPath(resource3.directory);
-        director->setContentScaleFactor(resource3.size.height / designResolutionSize.height);
-    }
-    // resource2
-    else if (frameSize.height > resource1.size.height && frameSize.height < resource3.size.height)
-    {
-        //CCFileUtils::sharedFileUtils()->addSearchPath(resource2.directory);
-        director->setContentScaleFactor(resource2.size.height / designResolutionSize.height);
-    }
-    // resource1
-    else
-    {
-        //CCFileUtils::sharedFileUtils()->addSearchPath(resource1.directory);
-        director->setContentScaleFactor(resource1.size.height / designResolutionSize.height);
-    }
-    */
-    
-    
+
+	    
     // turn on display FPS
     director->setDisplayStats(false);
     
@@ -127,9 +93,24 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setAnimationInterval(1.0f / 60);
     
     
+	auto frame_size = glview->getDesignResolutionSize();
+	float sourceRate = designResolutionSize.height / designResolutionSize.width;
+	float targetRate = frame_size.height / frame_size.width;
+	if (sourceRate < targetRate)
+	{
+		// Set the design resolution
+		glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::FIXED_WIDTH);		
+	}
+	else
+	{
+		// Set the design resolution
+		glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::SHOW_ALL);
+	}
     
-    // Set the design resolution
-    glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::FIXED_WIDTH);
+    
+	
+
+
     
     // 데모에서는, 우리는 프레임의 세로길이에 따라 리소스를 선택한다.
     // 만약 리소스 사이즈가 디자인 해상도사이즈로 부터 다르다면, 개발자는 contentScaleFactor 설정이 필요하다.

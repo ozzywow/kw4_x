@@ -38,7 +38,16 @@ bool MainMenuScene::init()
 	auto frameSize = glview->getDesignResolutionSize();	
 	auto H_OFFSET = (frameSize.height - FRAME_HEIGHT)*0.5;
 
-	Sprite* background = Sprite::create("UI4HD/main_bg-hdx.png");
+	Sprite* background = NULL;
+	if (ResolutionPolicy::FIXED_WIDTH == glview->getResolutionPolicy())
+	{
+		background = Sprite::create("UI4HD/main_bg-hdx.png");
+	}
+	else
+	{
+		background = Sprite::create("UI4HD/main_bg-hd.png");
+	}
+	
 	background->setAnchorPoint(Point::ANCHOR_MIDDLE);
 	background->setPosition(frameSize.width*0.5f, frameSize.height*0.5f);
 	this->addChild(background, 0, 0);

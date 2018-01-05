@@ -66,11 +66,21 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 	TextLayer* pEmptyLayer = WordFactory::Instance()->GetEmptyLayer();
 	m_wordQueue.assign(4, pEmptyLayer);
 	
-
+	auto director = Director::getInstance();
+	auto glview = director->getOpenGLView();
 	Sprite* backGround = NULL;
 	if (level == 5)
 	{
-		backGround = Sprite::create("UI4HD/playScene_5-hdx.png");
+		Sprite* background = NULL;
+		if (ResolutionPolicy::FIXED_WIDTH == glview->getResolutionPolicy())
+		{
+			backGround = Sprite::create("UI4HD/playScene_5-hdx.png");
+		}
+		else
+		{
+			backGround = Sprite::create("UI4HD/playScene_5-hd.png");
+		}
+		
 
 		// TODO : 의성어,의태어 버젼일 경우 예문 출력
 		Point posOfTextLabel(FRAME_WIDTH*0.5f, H_OFFSET+(FRAME_HEIGHT*0.6f)); //position of create
@@ -91,7 +101,15 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 	}
 	else
 	{
-		backGround = Sprite::create("UI4HD/playScene-hdx.png");
+		if (ResolutionPolicy::FIXED_WIDTH == glview->getResolutionPolicy())
+		{
+			backGround = Sprite::create("UI4HD/playScene-hdx.png");
+		}
+		else
+		{
+			backGround = Sprite::create("UI4HD/playScene-hd.png");
+		}
+		
 	}
 
 
@@ -146,7 +164,7 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 
 
 	const Point posOfLevel(FRAME_WIDTH*0.82f, H_OFFSET + (FRAME_HEIGHT*0.82f));
-	std::string levelLable = StringUtils::format("%d단계", level);
+	std::string levelLable = StringUtils::format("%d Level", level);
 	levelLable = UTF8(levelLable);
 	PrintStyle(this, levelLable, FRAME_WIDTH*0.07f, posOfLevel);
 
