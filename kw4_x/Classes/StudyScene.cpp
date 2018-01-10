@@ -71,15 +71,7 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 	Sprite* backGround = NULL;
 	if (level == 5)
 	{
-		Sprite* background = NULL;
-		if (ResolutionPolicy::FIXED_WIDTH == glview->getResolutionPolicy())
-		{
-			backGround = Sprite::create("UI4HD/playScene_5-hdx.png");
-		}
-		else
-		{
-			backGround = Sprite::create("UI4HD/playScene_5-hd.png");
-		}
+		backGround = Sprite::create("UI4HD/playScene_5-hdx.png");
 		
 
 		// TODO : 의성어,의태어 버젼일 경우 예문 출력
@@ -101,15 +93,7 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 	}
 	else
 	{
-		if (ResolutionPolicy::FIXED_WIDTH == glview->getResolutionPolicy())
-		{
-			backGround = Sprite::create("UI4HD/playScene-hdx.png");
-		}
-		else
-		{
-			backGround = Sprite::create("UI4HD/playScene-hd.png");
-		}
-		
+		backGround = Sprite::create("UI4HD/playScene-hdx.png");
 	}
 
 
