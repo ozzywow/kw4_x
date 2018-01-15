@@ -1,11 +1,20 @@
 #pragma once
 #include <stdlib.h>
-
-
+#include "cocos2d.h"
+using namespace cocos2d;
 #define MAX_SIZE_OF_CHARACTER_POOL  128
 
 #define FRAME_HEIGHT				960.0f
 #define FRAME_WIDTH					640.0f
+
+
+#define ckConsumableBaseFeatureId "com.ozzywow.kw4iphonelite"
+#define ckProductIdStep2 "com.ozzywow.kw4iphonelite.step2"
+#define ckProductIdStep3 "com.ozzywow.kw4iphonelite.step3"
+#define ckProductIdStep4 "com.ozzywow.kw4iphonelite.step4"
+#define ckProductIdStep5 "com.ozzywow.kw4iphonelite.step5"
+#define ckProductIdTotal "com.ozzywow.kw4iphonelite.total"
+
 
 enum 
 {

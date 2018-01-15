@@ -16,7 +16,6 @@
 //  A note on redistribution
 //	While I'm ok with modifications to this source code, 
 //	if you are re-publishing after editing, please retain the above copyright notices
-
 #import <Foundation/Foundation.h>
 #import <StoreKit/StoreKit.h>
 

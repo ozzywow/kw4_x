@@ -4,6 +4,8 @@
 #include "HelloWorldScene.h"
 #include "MainMenuScene.h"
 #include "PointManager.h"
+#include "MKStoreManager_cpp.h"
+
 
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
@@ -152,6 +154,59 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto scene = MainMenuScene::createScene();    
     // run
     director->runWithScene(scene);
+    
+ 
+#define LITE_VER
+#ifdef LITE_VER
+    if( CMKStoreManager::Instance()->isFeaturePurchased(ckProductIdTotal) )
+    {
+        PointManager::Instance()->SetCartWithPID(PID_STEP2, true);
+        PointManager::Instance()->SetCartWithPID(PID_STEP3, true);
+        PointManager::Instance()->SetCartWithPID(PID_STEP4, true);
+        PointManager::Instance()->SetCartWithPID(PID_STEP5, true);
+        PointManager::Instance()->SetCartWithPID(PID_TOTAL, true);
+    }
+    else
+    {
+        PointManager::Instance()->SetCartWithPID(PID_TOTAL, false);
+        
+        if(CMKStoreManager::Instance()->isFeaturePurchased(ckProductIdStep2))
+        {
+            PointManager::Instance()->SetCartWithPID(PID_STEP2, true);
+        }
+        else
+        {
+            PointManager::Instance()->SetCartWithPID(PID_STEP2, false);
+        }
+        
+        if(CMKStoreManager::Instance()->isFeaturePurchased(ckProductIdStep3))
+        {
+            PointManager::Instance()->SetCartWithPID(PID_STEP3, true);
+        }
+        else
+        {
+            PointManager::Instance()->SetCartWithPID(PID_STEP3, false);
+        }
+        
+        if(CMKStoreManager::Instance()->isFeaturePurchased(ckProductIdStep4))
+        {
+            PointManager::Instance()->SetCartWithPID(PID_STEP4, true);
+        }
+        else
+        {
+            PointManager::Instance()->SetCartWithPID(PID_STEP4, false);
+        }
+        
+        if(CMKStoreManager::Instance()->isFeaturePurchased(ckProductIdStep5))
+        {
+            PointManager::Instance()->SetCartWithPID(PID_STEP5, true);
+        }
+        else
+        {
+            PointManager::Instance()->SetCartWithPID(PID_STEP5, false);
+        }
+    }
+#endif //LITE_VER
     
     return true;
 }

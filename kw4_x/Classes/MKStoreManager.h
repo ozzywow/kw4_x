@@ -60,7 +60,7 @@
 + (MKStoreManager*)sharedManager;
 
 // this is a static method, since it doesn't require the store manager to be initialized prior to calling
-+ (BOOL) isFeaturePurchased:(NSString*) featureId; 
++ (BOOL) isFeaturePurchased:(NSString*) featureId;
 
 // these three are not static methods, since you have to initialize the store with your product ids before calling this function
 - (void) buyFeature:(NSString*) featureId;
