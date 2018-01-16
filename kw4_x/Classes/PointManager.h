@@ -80,6 +80,4 @@ public:
 
 	void	SetCartWithPID(int pid,  bool bBought);
 	bool	GetCartWithPID(int pid);
-
-	void	ToggleIndicator(bool lock);
 };

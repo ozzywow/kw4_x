@@ -6,6 +6,7 @@
 #include "SoundFactory.h"
 #include "MainMenuScene.h"
 #include "UI_GameResultWindow.h"
+#include "MKStoreManager_cpp.h"
 
 
 
@@ -38,6 +39,8 @@ bool InfoScene::init()
 	this->addChild(background, 0, 0);
 
 	this->DrawItemBox();
+
+	this->isProgress = false;
 
 	return true;
 }
@@ -592,8 +595,8 @@ void InfoScene::cfStep2(Ref* sender)
 	isProgress = true;
 
 	this->PlayBuySound();
-	PointManager::Instance()->ToggleIndicator(true);	
-	//[[MKStoreManager sharedManager] buyFeature:kProductIdStep2];
+	CMKStoreManager::Instance()->ToggleIndicator(true);
+	CMKStoreManager::Instance()->buyFeature(ckProductIdStep2);	
 
 }
 
@@ -602,9 +605,9 @@ void InfoScene::cfStep3(Ref* sender)
 	if (isProgress == true) return;
 	isProgress = true;
 
-	this->PlayBuySound();
-	PointManager::Instance()->ToggleIndicator(true);
-	//[[MKStoreManager sharedManager] buyFeature:kProductIdStep3];
+	this->PlayBuySound();	
+	CMKStoreManager::Instance()->ToggleIndicator(true);
+	CMKStoreManager::Instance()->buyFeature(ckProductIdStep3);	
 }
 
 void InfoScene::cfStep4(Ref* sender)
@@ -612,9 +615,9 @@ void InfoScene::cfStep4(Ref* sender)
 	if (isProgress == true) return;
 	isProgress = true;
 
-	this->PlayBuySound();
-	PointManager::Instance()->ToggleIndicator(true);
-	//[[MKStoreManager sharedManager] buyFeature:kProductIdStep4];
+	this->PlayBuySound();	
+	CMKStoreManager::Instance()->ToggleIndicator(true);
+	CMKStoreManager::Instance()->buyFeature(ckProductIdStep4);	
 }
 
 void InfoScene::cfStep5(Ref* sender)
@@ -622,9 +625,9 @@ void InfoScene::cfStep5(Ref* sender)
 	if (isProgress == true) return;
 	isProgress = true;
 
-	this->PlayBuySound();
-	PointManager::Instance()->ToggleIndicator(true);
-	//[[MKStoreManager sharedManager] buyFeature:kProductIdStep5];
+	this->PlayBuySound();	
+	CMKStoreManager::Instance()->ToggleIndicator(true);
+	CMKStoreManager::Instance()->buyFeature(ckProductIdStep5);	
 }
 
 void InfoScene::cfTotal(Ref* sender)
@@ -633,8 +636,19 @@ void InfoScene::cfTotal(Ref* sender)
 	isProgress = true;
 
 	this->PlayBuySound();
-	PointManager::Instance()->ToggleIndicator(true);
-	//[[MKStoreManager sharedManager] buyFeature:kProductIdStep6];
+	CMKStoreManager::Instance()->ToggleIndicator(true);
+	CMKStoreManager::Instance()->buyFeature(ckProductIdTotal);	
 }
 
+void InfoScene::productFetchComplete()
+{
 
+}
+void InfoScene::productPurchased(std::string productId)
+{
+
+}
+void InfoScene::transactionCanceled()
+{
+
+}

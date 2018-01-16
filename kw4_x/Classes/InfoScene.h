@@ -2,9 +2,10 @@
 
 
 #include "cocos2d.h"
+#include "MKStoreManagerDelegate.h"
 using namespace cocos2d;
 
-class InfoScene : public Scene
+class InfoScene : public Scene , public MKStoreManagerDelegate
 {
 public:
 
@@ -56,5 +57,7 @@ public:
 	void cfStep5(Ref* sender);
 	void cfTotal(Ref* sender);
 
-
+	virtual void productFetchComplete();
+	virtual void productPurchased(std::string productId);
+	virtual void transactionCanceled();
 };

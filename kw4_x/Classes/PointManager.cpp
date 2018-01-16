@@ -521,22 +521,3 @@ bool	PointManager::GetCartWithPID(int pid)
 	return m_vCart[pid];
 }
 
-void	PointManager::ToggleIndicator(bool lock)
-{
-	/*
-	if (nil == m_activity)
-	{
-		m_activity
-			= [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(320 / 2, 480 / 2, 40.0, 40.0)];
-
-		[m_rootView addSubview : m_activity];
-	}
-
-	if (false == Lock)
-		[m_activity stopAnimating];
-	else
-		[m_activity startAnimating];
-
-	return;
-	*/
-}
