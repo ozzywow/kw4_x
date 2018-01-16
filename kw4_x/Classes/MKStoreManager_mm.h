@@ -8,7 +8,7 @@ class iosLink_MKStoreManager
 {
 public:
 	static bool isFeaturePurchased(std::string featureId);
-	static void buyFeature(std::string featureId, void(*fp)(std::string));
+	static void buyFeature(std::string featureId);
 	static void setDelegate(MKStoreManagerDelegate* delegate);
 };
 

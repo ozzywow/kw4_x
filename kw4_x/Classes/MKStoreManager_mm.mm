@@ -14,7 +14,7 @@ bool iosLink_MKStoreManager::isFeaturePurchased(std::string featureId)
     return (bool)bRes;
 }
 
-void iosLink_MKStoreManager::buyFeature(std::string featureId, void(*fp)(std::string))
+void iosLink_MKStoreManager::buyFeature(std::string featureId)
 {
     NSString* obejctiveString =  [NSString stringWithUTF8String:featureId.c_str()];
 	[[MKStoreManager sharedManager] buyFeature:obejctiveString];
