@@ -101,16 +101,16 @@ void InfoScene::DrawItemBox()
 	std::string strSaleStep5("5 Step($0.99)");
 	strStep5 = UTF8(strSaleStep5);
 
-	m_btnLevel1 = MenuItemImage::create("btn_level_1_n-hd.png", "btn_level_1_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel1, this));	
+	m_btnLevel1 = MenuItemImage::create("UI4HD/btn_level_1_n-hd.png", "UI4HD/btn_level_1_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel1, this));	
 	PrintStyle(m_btnLevel1, strStep1, sizeofFont_s, posOfDesc);
 
 	if (false == PointManager::Instance()->GetCartWithPID(PID_TOTAL))
 	{
 
-		m_btnLevel6 = MenuItemImage::create("btn_level_total_n-hd.png", "btn_level_total_s-hd.png", CC_CALLBACK_1(InfoScene::cfTotal, this));
+		m_btnLevel6 = MenuItemImage::create("UI4HD/btn_level_total_n-hd.png", "UI4HD/btn_level_total_s-hd.png", CC_CALLBACK_1(InfoScene::cfTotal, this));
 		PrintStyle(m_btnLevel6, strSaleTotal, sizeofFont_s, posOfDesc);
 
-		Sprite* lock = Sprite::create("lock_icon-hd.png");
+		Sprite* lock = Sprite::create("UI4HD/lock_icon-hd.png");
 		lock->setOpacity(64);
 		lock->setPosition(nWidth / 2, nHeight / 2);
 		m_btnLevel6->addChild(lock);
@@ -121,10 +121,10 @@ void InfoScene::DrawItemBox()
 		//step2
 		if (false == PointManager::Instance()->GetCartWithPID(PID_STEP2))
 		{
-			m_btnLevel2 = MenuItemImage::create("btn_level_2_n-hd.png", "btn_level_2_n-hd.png", CC_CALLBACK_1(InfoScene::cfStep2, this));
+			m_btnLevel2 = MenuItemImage::create("UI4HD/btn_level_2_n-hd.png", "UI4HD/btn_level_2_n-hd.png", CC_CALLBACK_1(InfoScene::cfStep2, this));
 			PrintStyle(m_btnLevel2, strSaleStep2, sizeofFont_s, posOfDesc);
 
-			Sprite* lock = Sprite::create("lock_icon-hd.png");
+			Sprite* lock = Sprite::create("UI4HD/lock_icon-hd.png");
 			lock->setOpacity(64);
 			lock->setPosition(nWidth / 2, nHeight / 2);
 			m_btnLevel2->addChild(lock);
@@ -138,7 +138,7 @@ void InfoScene::DrawItemBox()
 		}
 		else
 		{
-			m_btnLevel2 = MenuItemImage::create("btn_level_2_n-hd.png", "btn_level_2_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel2, this));
+			m_btnLevel2 = MenuItemImage::create("UI4HD/btn_level_2_n-hd.png", "UI4HD/btn_level_2_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel2, this));
 			PrintStyle(m_btnLevel2, strStep2, sizeofFont_s, posOfDesc);
 		}
 
@@ -147,10 +147,10 @@ void InfoScene::DrawItemBox()
 		//step3
 		if (false == PointManager::Instance()->GetCartWithPID(PID_STEP3))
 		{
-			m_btnLevel3 = MenuItemImage::create("btn_level_3_n-hd.png", "btn_level_3_n-hd.png", CC_CALLBACK_1(InfoScene::cfStep3, this));
+			m_btnLevel3 = MenuItemImage::create("UI4HD/btn_level_3_n-hd.png", "UI4HD/btn_level_3_n-hd.png", CC_CALLBACK_1(InfoScene::cfStep3, this));
 			PrintStyle(m_btnLevel3, strSaleStep3, sizeofFont_s, posOfDesc);
 
-			Sprite* lock = Sprite::create("lock_icon-hd.png");
+			Sprite* lock = Sprite::create("UI4HD/lock_icon-hd.png");
 			lock->setOpacity(64);
 			lock->setPosition(nWidth / 2, nHeight / 2);
 			m_btnLevel3->addChild(lock);
@@ -164,7 +164,7 @@ void InfoScene::DrawItemBox()
 		}
 		else
 		{
-			m_btnLevel3 = MenuItemImage::create("btn_level_3_n-hd.png", "btn_level_3_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel3, this));
+			m_btnLevel3 = MenuItemImage::create("UI4HD/btn_level_3_n-hd.png", "UI4HD/btn_level_3_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel3, this));
 			PrintStyle(m_btnLevel3, strStep3, sizeofFont_s, posOfDesc);
 		}
 
@@ -173,10 +173,10 @@ void InfoScene::DrawItemBox()
 		//step4
 		if (false == PointManager::Instance()->GetCartWithPID(PID_STEP4))
 		{
-			m_btnLevel4 = MenuItemImage::create("btn_level_4_n-hd.png", "btn_level_4_n-hd.png", CC_CALLBACK_1(InfoScene::cfStep4, this));
+			m_btnLevel4 = MenuItemImage::create("UI4HD/btn_level_4_n-hd.png", "UI4HD/btn_level_4_n-hd.png", CC_CALLBACK_1(InfoScene::cfStep4, this));
 			PrintStyle(m_btnLevel4, strSaleStep4, sizeofFont_s, posOfDesc);
 
-			Sprite* lock = Sprite::create("lock_icon-hd.png");
+			Sprite* lock = Sprite::create("UI4HD/lock_icon-hd.png");
 			lock->setOpacity(64);
 			lock->setPosition(nWidth / 2, nHeight / 2);
 			m_btnLevel4->addChild(lock);
@@ -190,7 +190,7 @@ void InfoScene::DrawItemBox()
 		}
 		else
 		{
-			m_btnLevel4 = MenuItemImage::create("btn_level_4_n-hd.png", "btn_level_4_n-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel4, this));
+			m_btnLevel4 = MenuItemImage::create("UI4HD/btn_level_4_n-hd.png", "UI4HD/btn_level_4_n-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel4, this));
 			PrintStyle(m_btnLevel4, strStep4, sizeofFont_s, posOfDesc);
 		}
 
@@ -198,10 +198,10 @@ void InfoScene::DrawItemBox()
 		//step5
 		if (false == PointManager::Instance()->GetCartWithPID(PID_STEP5))
 		{
-			m_btnLevel5 = MenuItemImage::create("btn_level_5_n-hd.png", "btn_level_5_n-hd.png", CC_CALLBACK_1(InfoScene::cfStep5, this));
+			m_btnLevel5 = MenuItemImage::create("UI4HD/btn_level_5_n-hd.png", "UI4HD/btn_level_5_n-hd.png", CC_CALLBACK_1(InfoScene::cfStep5, this));
 			PrintStyle(m_btnLevel5, strSaleStep5, sizeofFont_s, posOfDesc);
 
-			Sprite* lock = Sprite::create("lock_icon-hd.png");
+			Sprite* lock = Sprite::create("UI4HD/lock_icon-hd.png");
 			lock->setOpacity(64);
 			lock->setPosition(nWidth / 2, nHeight / 2);
 			m_btnLevel5->addChild(lock);
@@ -215,18 +215,18 @@ void InfoScene::DrawItemBox()
 		}
 		else
 		{
-			m_btnLevel4 = MenuItemImage::create("btn_level_5_n-hd.png", "btn_level_5_n-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel5, this));
+			m_btnLevel4 = MenuItemImage::create("UI4HD/btn_level_5_n-hd.png", "UI4HD/btn_level_5_n-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel5, this));
 			PrintStyle(m_btnLevel4, strStep5, sizeofFont_s, posOfDesc);
 		}
 	}
 
 	else
 	{
-		m_btnLevel2 = MenuItemImage::create("btn_level_2_n-hd.png", "btn_level_2_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel2, this));
-		m_btnLevel3 = MenuItemImage::create("btn_level_3_n-hd.png", "btn_level_3_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel3, this));
-		m_btnLevel4 = MenuItemImage::create("btn_level_4_n-hd.png", "btn_level_4_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel4, this));
-		m_btnLevel5 = MenuItemImage::create("btn_level_5_n-hd.png", "btn_level_5_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel5, this));
-		m_btnLevel6 = MenuItemImage::create("btn_level_6_n-hd.png", "btn_level_6_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel6, this));
+		m_btnLevel2 = MenuItemImage::create("UI4HD/btn_level_2_n-hd.png", "UI4HD/btn_level_2_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel2, this));
+		m_btnLevel3 = MenuItemImage::create("UI4HD/btn_level_3_n-hd.png", "UI4HD/btn_level_3_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel3, this));
+		m_btnLevel4 = MenuItemImage::create("UI4HD/btn_level_4_n-hd.png", "UI4HD/btn_level_4_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel4, this));
+		m_btnLevel5 = MenuItemImage::create("UI4HD/btn_level_5_n-hd.png", "UI4HD/btn_level_5_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel5, this));
+		m_btnLevel6 = MenuItemImage::create("UI4HD/btn_level_6_n-hd.png", "UI4HD/btn_level_6_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel6, this));
 
 		PrintStyle(m_btnLevel1, strStep1, sizeofFont_s, posOfDesc);
 		PrintStyle(m_btnLevel2, strStep2, sizeofFont_s, posOfDesc);
