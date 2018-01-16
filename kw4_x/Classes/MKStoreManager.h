@@ -18,6 +18,8 @@
 //	While I'm ok with modifications to this source code, 
 //	if you are re-publishing after editing, please retain the above copyright notices
 
+#ifndef MK_STORE_MANAGER_H_
+#define MK_STORE_MANAGER_H_
 
 #import <Foundation/Foundation.h>
 #import <StoreKit/StoreKit.h>
@@ -76,3 +78,16 @@
 +(void)setDelegate:(id)newDelegate;
 
 @end
+
+
+
+@interface InterfaceMKStoreKitDelegate : NSObject<MKStoreKitDelegate>{
+}
+
+- (void)productFetchComplete;
+- (void)productPurchased:(NSString *)productId;
+- (void)transactionCanceled;
+@end
+
+
+#endif //MK_STORE_MANAGER_H_

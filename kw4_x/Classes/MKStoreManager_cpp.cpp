@@ -25,10 +25,7 @@ void CMKStoreManager::buyFeature(std::string featureId)
     iosLink_MKStoreManager::buyFeature(featureId);
 }
 
-void CMKStoreManager::SetDelegate(void* delegate)
-{
 
-}
 
 void CMKStoreManager::ToggleIndicator(bool lock)
 {

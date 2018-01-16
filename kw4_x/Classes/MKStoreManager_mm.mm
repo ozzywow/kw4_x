@@ -5,7 +5,12 @@
 
 USING_NS_CC;
 
-static MKStoreManagerDelegate* _mkdelegate;
+//static MKStoreManagerDelegate* _mkdelegate;
+static UIView*        _rootView;
+static UIActivityIndicatorView* _activity;
+
+UIViewController* getRootViewController();
+
 
 bool iosLink_MKStoreManager::isFeaturePurchased(std::string featureId)
 {
@@ -23,6 +28,8 @@ void iosLink_MKStoreManager::buyFeature(std::string featureId)
 void iosLink_MKStoreManager::setDelegate(MKStoreManagerDelegate* delegate)
 {
 	_mkdelegate = delegate;
+    InterfaceMKStoreKitDelegate* interfaceDelegate = [InterfaceMKStoreKitDelegate alloc];
+    [MKStoreManager setDelegate:interfaceDelegate];
 }
 
 
@@ -30,8 +37,8 @@ void iosLink_MKStoreManager::setDelegate(MKStoreManagerDelegate* delegate)
 
 iosUI::iosUI() 
 {
-	UIViewController* uiView = getRootViewController();
-	m_rootView = uiView.view;
+	UIViewController* uiView = [UIApplication sharedApplication].keyWindow.rootViewController;
+	_rootView = uiView.view;
 }
 
 iosUI::~iosUI() 
@@ -39,45 +46,26 @@ iosUI::~iosUI()
 
 }
 
-UIViewController* iosUI::getRootViewController()
-{
-	return [UIApplication sharedApplication].keyWindow.rootViewController;
-}
 
 
 void iosUI::ToggleIndicator(bool lock)
 {
 	
-	if (nil == m_activity)
+	if (nil == _activity)
 	{
-		m_activity
+		_activity
 			= [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(320 / 2, 480 / 2, 40.0, 40.0)];
 
-		[m_rootView addSubview : m_activity];
+		[_rootView addSubview : _activity];
 	}
 
-	if (false == Lock)
-		[m_activity stopAnimating];
+	if (false == lock)
+		[_activity stopAnimating];
 	else
-		[m_activity startAnimating];
+		[_activity startAnimating];
 
 	return;
 	
 }
 
 
-
-- (void)productFetchComplete
-{
-	_mkdelegate->productFetchComplete();
-}
-
-- (void)productPurchased:(NSString *)productId
-{    
-	_mkdelegate->productPurchased(productId);
-}
-
-- (void)transactionCanceled
-{
-	_mkdelegate->transactionCanceled();
-}

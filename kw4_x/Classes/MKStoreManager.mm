@@ -321,7 +321,7 @@ static MKStoreManager* _sharedStoreManager;
 
 - (void) transactionCanceled: (SKPaymentTransaction *)transaction
 {
-    PointManager::Instance()->ToggleIndicator(false);
+    //PointManager::Instance()->ToggleIndicator(false);
     //[[PointManager sharedPoint] ToggleIndicator:false] ;
 
 #ifndef NDEBUG
@@ -432,5 +432,26 @@ static MKStoreManager* _sharedStoreManager;
 	
 	[responseString release];
 	return retVal;
+}
+@end
+
+
+
+
+@implementation InterfaceMKStoreKitDelegate
+- (void)productFetchComplete
+{
+    //_mkdelegate->productFetchComplete();
+}
+
+- (void)productPurchased:(NSString *)productId
+{
+    std::string cppString = [productId UTF8String];
+    //_mkdelegate->productPurchased(cppString);
+}
+
+- (void)transactionCanceled
+{
+    //_mkdelegate->transactionCanceled();
 }
 @end
