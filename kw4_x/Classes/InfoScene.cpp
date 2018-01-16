@@ -78,19 +78,37 @@ void InfoScene::DrawItemBox()
 	PrintStyle(this, strLevel, sizeOfFont, posOfLable_level);
 	PrintStyle(this, strStep, sizeOfFont, posOfLable_hint);
 
-
+	std::string strStep1("1 Step");
+	strStep1 = UTF8(strStep1);
+	std::string strStep2("2 Step");
+	strStep2 = UTF8(strStep2);
+	std::string strStep3("3 Step");
+	strStep3 = UTF8(strStep3);
+	std::string strStep4("4 Step");
+	strStep4 = UTF8(strStep4);
+	std::string strStep5("5 Step");
+	strStep5 = UTF8(strStep5);
 #define LITE_VER 
 #ifdef LITE_VER
-
+	std::string strSaleTotal("Whole steps($2.99)");
+	strStep1 = UTF8(strSaleTotal);	
+	std::string strSaleStep2("2 Step($0.99)");
+	strStep2 = UTF8(strSaleStep2);
+	std::string strSaleStep3("3 Step($0.99)");
+	strStep3 = UTF8(strSaleStep3);
+	std::string strSaleStep4("4 Step($0.99)");
+	strStep4 = UTF8(strSaleStep4);
+	std::string strSaleStep5("5 Step($0.99)");
+	strStep5 = UTF8(strSaleStep5);
 
 	m_btnLevel1 = MenuItemImage::create("btn_level_1_n-hd.png", "btn_level_1_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel1, this));	
-	PrintStyle(m_btnLevel1, std::string("1 Step"), sizeofFont_s, posOfDesc);
+	PrintStyle(m_btnLevel1, strStep1, sizeofFont_s, posOfDesc);
 
 	if (false == PointManager::Instance()->GetCartWithPID(PID_TOTAL))
 	{
 
 		m_btnLevel6 = MenuItemImage::create("btn_level_total_n-hd.png", "btn_level_total_s-hd.png", CC_CALLBACK_1(InfoScene::cfTotal, this));
-		PrintStyle(m_btnLevel6, std::string("Whole steps($2.99)"), sizeofFont_s, posOfDesc);
+		PrintStyle(m_btnLevel6, strSaleTotal, sizeofFont_s, posOfDesc);
 
 		Sprite* lock = Sprite::create("lock_icon-hd.png");
 		lock->setOpacity(64);
@@ -104,7 +122,7 @@ void InfoScene::DrawItemBox()
 		if (false == PointManager::Instance()->GetCartWithPID(PID_STEP2))
 		{
 			m_btnLevel2 = MenuItemImage::create("btn_level_2_n-hd.png", "btn_level_2_n-hd.png", CC_CALLBACK_1(InfoScene::cfStep2, this));
-			PrintStyle(m_btnLevel2, std::string("2 Step($0.99)"), sizeofFont_s, posOfDesc);
+			PrintStyle(m_btnLevel2, strSaleStep2, sizeofFont_s, posOfDesc);
 
 			Sprite* lock = Sprite::create("lock_icon-hd.png");
 			lock->setOpacity(64);
@@ -121,7 +139,7 @@ void InfoScene::DrawItemBox()
 		else
 		{
 			m_btnLevel2 = MenuItemImage::create("btn_level_2_n-hd.png", "btn_level_2_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel2, this));
-			PrintStyle(m_btnLevel2, std::string("2 Step"), sizeofFont_s, posOfDesc);
+			PrintStyle(m_btnLevel2, strStep2, sizeofFont_s, posOfDesc);
 		}
 
 
@@ -130,7 +148,7 @@ void InfoScene::DrawItemBox()
 		if (false == PointManager::Instance()->GetCartWithPID(PID_STEP3))
 		{
 			m_btnLevel3 = MenuItemImage::create("btn_level_3_n-hd.png", "btn_level_3_n-hd.png", CC_CALLBACK_1(InfoScene::cfStep3, this));
-			PrintStyle(m_btnLevel3, std::string("3 Step($0.99)"), sizeofFont_s, posOfDesc);
+			PrintStyle(m_btnLevel3, strSaleStep3, sizeofFont_s, posOfDesc);
 
 			Sprite* lock = Sprite::create("lock_icon-hd.png");
 			lock->setOpacity(64);
@@ -147,7 +165,7 @@ void InfoScene::DrawItemBox()
 		else
 		{
 			m_btnLevel3 = MenuItemImage::create("btn_level_3_n-hd.png", "btn_level_3_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel3, this));
-			PrintStyle(m_btnLevel3, std::string("3 Step"), sizeofFont_s, posOfDesc);
+			PrintStyle(m_btnLevel3, strStep3, sizeofFont_s, posOfDesc);
 		}
 
 
@@ -156,7 +174,7 @@ void InfoScene::DrawItemBox()
 		if (false == PointManager::Instance()->GetCartWithPID(PID_STEP4))
 		{
 			m_btnLevel4 = MenuItemImage::create("btn_level_4_n-hd.png", "btn_level_4_n-hd.png", CC_CALLBACK_1(InfoScene::cfStep4, this));
-			PrintStyle(m_btnLevel4, std::string("4 Step($0.99)"), sizeofFont_s, posOfDesc);
+			PrintStyle(m_btnLevel4, strSaleStep4, sizeofFont_s, posOfDesc);
 
 			Sprite* lock = Sprite::create("lock_icon-hd.png");
 			lock->setOpacity(64);
@@ -173,7 +191,7 @@ void InfoScene::DrawItemBox()
 		else
 		{
 			m_btnLevel4 = MenuItemImage::create("btn_level_4_n-hd.png", "btn_level_4_n-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel4, this));
-			PrintStyle(m_btnLevel4, std::string("4 Step"), sizeofFont_s, posOfDesc);
+			PrintStyle(m_btnLevel4, strStep4, sizeofFont_s, posOfDesc);
 		}
 
 
@@ -181,7 +199,7 @@ void InfoScene::DrawItemBox()
 		if (false == PointManager::Instance()->GetCartWithPID(PID_STEP5))
 		{
 			m_btnLevel5 = MenuItemImage::create("btn_level_5_n-hd.png", "btn_level_5_n-hd.png", CC_CALLBACK_1(InfoScene::cfStep5, this));
-			PrintStyle(m_btnLevel5, std::string("5 Step($0.99)"), sizeofFont_s, posOfDesc);
+			PrintStyle(m_btnLevel5, strSaleStep5, sizeofFont_s, posOfDesc);
 
 			Sprite* lock = Sprite::create("lock_icon-hd.png");
 			lock->setOpacity(64);
@@ -198,7 +216,7 @@ void InfoScene::DrawItemBox()
 		else
 		{
 			m_btnLevel4 = MenuItemImage::create("btn_level_5_n-hd.png", "btn_level_5_n-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel5, this));
-			PrintStyle(m_btnLevel4, std::string("5 Step"), sizeofFont_s, posOfDesc);
+			PrintStyle(m_btnLevel4, strStep5, sizeofFont_s, posOfDesc);
 		}
 	}
 
@@ -210,11 +228,11 @@ void InfoScene::DrawItemBox()
 		m_btnLevel5 = MenuItemImage::create("btn_level_5_n-hd.png", "btn_level_5_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel5, this));
 		m_btnLevel6 = MenuItemImage::create("btn_level_6_n-hd.png", "btn_level_6_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel6, this));
 
-		PrintStyle(m_btnLevel1, std::string("1 Step"), sizeofFont_s, posOfDesc);
-		PrintStyle(m_btnLevel2, std::string("2 Step"), sizeofFont_s, posOfDesc);
-		PrintStyle(m_btnLevel3, std::string("3 Step"), sizeofFont_s, posOfDesc);
-		PrintStyle(m_btnLevel4, std::string("4 Step"), sizeofFont_s, posOfDesc);
-		PrintStyle(m_btnLevel5, std::string("5 Step"), sizeofFont_s, posOfDesc);
+		PrintStyle(m_btnLevel1, strStep1, sizeofFont_s, posOfDesc);
+		PrintStyle(m_btnLevel2, strStep2, sizeofFont_s, posOfDesc);
+		PrintStyle(m_btnLevel3, strStep3, sizeofFont_s, posOfDesc);
+		PrintStyle(m_btnLevel4, strStep4, sizeofFont_s, posOfDesc);
+		PrintStyle(m_btnLevel5, strStep5, sizeofFont_s, posOfDesc);
 	}
 
 #else //LITE_VER
@@ -226,16 +244,6 @@ void InfoScene::DrawItemBox()
 	m_btnLevel5 = MenuItemImage::create("UI4HD/btn_level_5_n-hd.png", "UI4HD/btn_level_5_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel5, this));
 	m_btnLevel6 = MenuItemImage::create("UI4HD/btn_level_x_n-hd.png", "UI4HD/btn_level_x_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel6, this));
 
-	std::string strStep1("1 Step");
-	strStep1 = UTF8(strStep1);
-	std::string strStep2("2 Step");
-	strStep2 = UTF8(strStep2);
-	std::string strStep3("3 Step");
-	strStep3 = UTF8(strStep3);
-	std::string strStep4("4 Step");
-	strStep4 = UTF8(strStep4);
-	std::string strStep5("5 Step");
-	strStep5 = UTF8(strStep5);
 	PrintStyle(m_btnLevel1, strStep1, sizeofFont_s, posOfDesc);
 	PrintStyle(m_btnLevel2, strStep2, sizeofFont_s, posOfDesc);
 	PrintStyle(m_btnLevel3, strStep3, sizeofFont_s, posOfDesc);
