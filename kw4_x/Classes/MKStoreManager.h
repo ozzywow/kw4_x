@@ -81,13 +81,5 @@
 
 
 
-@interface InterfaceMKStoreKitDelegate : NSObject<MKStoreKitDelegate>{
-}
-
-- (void)productFetchComplete;
-- (void)productPurchased:(NSString *)productId;
-- (void)transactionCanceled;
-@end
-
 
 #endif //MK_STORE_MANAGER_H_

@@ -350,7 +350,9 @@ static MKStoreManager* _sharedStoreManager;
 // Read my blog post http://mk.sg/31
 - (BOOL) canCurrentDeviceUseFeature: (NSString*) featureID
 {
-	NSString *uniqueID = [[UIDevice currentDevice] uniqueIdentifier];
+	//NSString *uniqueID = [[UIDevice currentDevice] uniqueIdentifier];
+    NSUUID* uuid = [NSUUID UUID];
+    NSString *uniqueID = uuid.UUIDString;
 	// check udid and featureid with developer's server
 	
 	if(ownServer == nil) return NO; // sanity check
@@ -438,20 +440,3 @@ static MKStoreManager* _sharedStoreManager;
 
 
 
-@implementation InterfaceMKStoreKitDelegate
-- (void)productFetchComplete
-{
-    //_mkdelegate->productFetchComplete();
-}
-
-- (void)productPurchased:(NSString *)productId
-{
-    std::string cppString = [productId UTF8String];
-    //_mkdelegate->productPurchased(cppString);
-}
-
-- (void)transactionCanceled
-{
-    //_mkdelegate->transactionCanceled();
-}
-@end

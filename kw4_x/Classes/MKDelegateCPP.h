@@ -6,13 +6,12 @@
 #if __cplusplus
 #include "MKStoreManagerDelegate.h"
 
-@interface InterfaceMKStoreKitDelegate : NSObject<MKStoreKitDelegate>
-{	
-}
-@end
 
-@interface InterfaceMKStoreKitDelegate()
-@property (nonatomic, string) MKStoreManagerDelegate* _cppDelegate;
+
+@interface InterfaceMKStoreKitDelegate: NSObject<MKStoreKitDelegate>
+{
+    MKStoreManagerDelegate* cppDelegate;
+}
 -(void)setdeletegate:(MKStoreManagerDelegate*) d;
 -(void)productFetchComplete;
 -(void)productPurchased:(NSString *)productId;

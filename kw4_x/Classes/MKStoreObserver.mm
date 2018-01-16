@@ -67,7 +67,7 @@
 	[[MKStoreManager sharedManager] transactionCanceled:transaction];
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];	
 }
-
+  
 - (void) completeTransaction: (SKPaymentTransaction *)transaction
 {		
 	

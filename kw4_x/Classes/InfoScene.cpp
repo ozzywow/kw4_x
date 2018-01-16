@@ -9,7 +9,7 @@
 #include "MKStoreManager_cpp.h"
 
 
-
+#define LITE_VER
 
 InfoScene::InfoScene()
 {
@@ -41,6 +41,10 @@ bool InfoScene::init()
 	this->DrawItemBox();
 
 	this->isProgress = false;
+    
+//#ifdef LIVE_VER
+    CMKStoreManager::Instance()->SetDelegate(this);
+//#endif
 
 	return true;
 }
@@ -91,7 +95,7 @@ void InfoScene::DrawItemBox()
 	strStep4 = UTF8(strStep4);
 	std::string strStep5("5 Step");
 	strStep5 = UTF8(strStep5);
-#define LITE_VER 
+
 #ifdef LITE_VER
 	std::string strSaleTotal("Whole steps($2.99)");
 	strStep1 = UTF8(strSaleTotal);	
@@ -642,13 +646,17 @@ void InfoScene::cfTotal(Ref* sender)
 
 void InfoScene::productFetchComplete()
 {
-
+    cocos2d::log("productFetchComplete");
 }
 void InfoScene::productPurchased(std::string productId)
 {
-
+    CMKStoreManager::Instance()->ToggleIndicator(false);
+    isProgress = false;
+    cocos2d::log("productFetchComplete /%s", productId.c_str());
 }
 void InfoScene::transactionCanceled()
 {
-
+    CMKStoreManager::Instance()->ToggleIndicator(false);
+    isProgress = false;
+    cocos2d::log("transactionCanceled");
 }

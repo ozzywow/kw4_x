@@ -1,22 +1,23 @@
 #import "MKDelegateCPP.h"
 
-@implementation InterfaceMKStoreKitDelegate()
+@implementation InterfaceMKStoreKitDelegate
 -(void)setdeletegate:(MKStoreManagerDelegate*) d
 {
-	self._cppDelegate = d;
+	self->cppDelegate = d;
 }
 -(void)productFetchComplete
 {
-	self._cppDelegate->productFetchComplete();
+	self->cppDelegate->productFetchComplete();
 }
 
 -(void)productPurchased:(NSString *)productId
 {
-	self._cppDelegate->productPurchased(productId);
+    std::string cppString = [productId UTF8String];
+	self->cppDelegate->productPurchased(cppString);
 }
 
 -(void)transactionCanceled
 {
-	self._cppDelegate->transactionCanceled();
+	self->cppDelegate->transactionCanceled();
 }
 @end

@@ -7,7 +7,7 @@
 USING_NS_CC;
 
 static MKStoreManagerDelegate* _mkdelegate;
-static InterfaceMKStoreKitDelegate _interfaceDele;
+static InterfaceMKStoreKitDelegate* _interfaceDele;
 static UIView*        _rootView;
 static UIActivityIndicatorView* _activity;
 
@@ -31,6 +31,7 @@ void iosLink_MKStoreManager::buyFeature(std::string featureId)
 void iosLink_MKStoreManager::setDelegate(MKStoreManagerDelegate* delegate)
 {
 	_interfaceDele = [InterfaceMKStoreKitDelegate alloc];
+    [_interfaceDele setdeletegate:delegate];
 	_mkdelegate = delegate;    
     [MKStoreManager setDelegate:_interfaceDele];
 }
