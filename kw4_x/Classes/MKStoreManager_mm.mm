@@ -2,12 +2,15 @@
 #include "MKStoreManager_mm.h"
 #include "MKStoreManager.h"
 #include "MKStoreManagerDelegate.h"
+#include "MKDelegateCPP.h"
 
 USING_NS_CC;
 
-//static MKStoreManagerDelegate* _mkdelegate;
+static MKStoreManagerDelegate* _mkdelegate;
+static InterfaceMKStoreKitDelegate _interfaceDele;
 static UIView*        _rootView;
 static UIActivityIndicatorView* _activity;
+
 
 UIViewController* getRootViewController();
 
@@ -27,9 +30,9 @@ void iosLink_MKStoreManager::buyFeature(std::string featureId)
 
 void iosLink_MKStoreManager::setDelegate(MKStoreManagerDelegate* delegate)
 {
-	_mkdelegate = delegate;
-    InterfaceMKStoreKitDelegate* interfaceDelegate = [InterfaceMKStoreKitDelegate alloc];
-    [MKStoreManager setDelegate:interfaceDelegate];
+	_interfaceDele = [InterfaceMKStoreKitDelegate alloc];
+	_mkdelegate = delegate;    
+    [MKStoreManager setDelegate:_interfaceDele];
 }
 
 

@@ -6,17 +6,6 @@
 #include "Singleton.h"
 
 
-
-@interface InterfaceMKStoreKitDelegate : NSObject<MKStoreKitDelegate>{
-}
-
-- (void)productFetchComplete;
-- (void)productPurchased:(NSString *)productId;
-- (void)transactionCanceled;
-@end
-
-
-
 class MKStoreManagerDelegate;
 class iosLink_MKStoreManager
 {
