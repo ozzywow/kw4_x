@@ -98,7 +98,9 @@ void InfoScene::DrawItemBox()
 
 #ifdef LITE_VER
 	std::string strSaleTotal("Whole steps($2.99)");
-	strStep1 = UTF8(strSaleTotal);	
+	strSaleTotal = UTF8(strSaleTotal);
+	std::string strSaleStep1("1 Step($Free)");
+	strSaleStep1 = UTF8(strSaleStep1);
 	std::string strSaleStep2("2 Step($0.99)");
 	strStep2 = UTF8(strSaleStep2);
 	std::string strSaleStep3("3 Step($0.99)");
