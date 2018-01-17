@@ -1,9 +1,6 @@
 #include "MKStoreManager_cpp.h"
 #include "MKStoreManager_mm.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-USING_NS_CC;
-#endif 
 
 CMKStoreManager::CMKStoreManager()
 {

@@ -10,9 +10,15 @@ class MKStoreManagerDelegate;
 class iosLink_MKStoreManager
 {
 public:
+#ifdef __cplusplus
+	static bool isFeaturePurchased(std::string featureId) { return false; };
+	static void buyFeature(std::string featureId) {};
+	static void setDelegate(MKStoreManagerDelegate* delegate) {};
+#else
 	static bool isFeaturePurchased(std::string featureId);
 	static void buyFeature(std::string featureId);
 	static void setDelegate(MKStoreManagerDelegate* delegate);
+#endif 
 };
 
 
@@ -22,10 +28,17 @@ public:
 class iosUI : public Singleton<iosUI>
 {
 public:
+#ifdef __cplusplus
+	iosUI() {};
+	~iosUI() {};
+	void	ToggleIndicator(bool lock) {};
+#else 
 	iosUI();
 	~iosUI();
-
 	void	ToggleIndicator(bool lock);
+#endif
+
+	
 
 };
 

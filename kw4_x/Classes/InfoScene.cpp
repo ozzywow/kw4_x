@@ -42,9 +42,9 @@ bool InfoScene::init()
 
 	this->isProgress = false;
     
-//#ifdef LIVE_VER
+#ifdef LITE_VER
     CMKStoreManager::Instance()->SetDelegate(this);
-//#endif
+#endif
 
 	return true;
 }
@@ -646,17 +646,49 @@ void InfoScene::cfTotal(Ref* sender)
 
 void InfoScene::productFetchComplete()
 {
-    cocos2d::log("productFetchComplete");
+	cocos2d::log("productFetchComplete");
+	CMKStoreManager::Instance()->ToggleIndicator(false);
+	isProgress = false;    
+	SoundFactory::Instance()->play(SOUND_FILE_click_effect);
 }
 void InfoScene::productPurchased(std::string productId)
 {
+	cocos2d::log("productFetchComplete /%s", productId.c_str());
     CMKStoreManager::Instance()->ToggleIndicator(false);
-    isProgress = false;
-    cocos2d::log("productFetchComplete /%s", productId.c_str());
+    isProgress = false;    
+
+	if (productId == ckProductIdTotal)
+	{
+		PointManager::Instance()->SetCartWithPID(PID_STEP2, true);
+		PointManager::Instance()->SetCartWithPID(PID_STEP3, true);
+		PointManager::Instance()->SetCartWithPID(PID_STEP4, true);
+		PointManager::Instance()->SetCartWithPID(PID_STEP5, true);
+		PointManager::Instance()->SetCartWithPID(PID_TOTAL, true);
+	}
+	else if (productId == ckProductIdStep2)
+	{
+		PointManager::Instance()->SetCartWithPID(PID_STEP2, true);
+	}
+	else if (productId == ckProductIdStep3)
+	{
+		PointManager::Instance()->SetCartWithPID(PID_STEP3, true);
+	}
+	else if (productId == ckProductIdStep4)
+	{
+		PointManager::Instance()->SetCartWithPID(PID_STEP4, true);
+	}
+	else if (productId == ckProductIdStep5)
+	{
+		PointManager::Instance()->SetCartWithPID(PID_STEP5, true);
+	}
+
+	this->DrawItemBox();
+	SoundFactory::Instance()->play(SOUND_FILE_levelup_effect);
 }
 void InfoScene::transactionCanceled()
 {
+	cocos2d::log("transactionCanceled");
     CMKStoreManager::Instance()->ToggleIndicator(false);
-    isProgress = false;
-    cocos2d::log("transactionCanceled");
+    isProgress = false;    
+	SoundFactory::Instance()->play(SOUND_FILE_click_effect);
 }
