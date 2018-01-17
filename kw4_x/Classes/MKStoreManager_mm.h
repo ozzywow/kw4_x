@@ -10,7 +10,7 @@ class MKStoreManagerDelegate;
 class iosLink_MKStoreManager
 {
 public:
-#ifdef __cplusplus
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
 	static bool isFeaturePurchased(std::string featureId) { return false; };
 	static void buyFeature(std::string featureId) {};
 	static void setDelegate(MKStoreManagerDelegate* delegate) {};
@@ -28,7 +28,7 @@ public:
 class iosUI : public Singleton<iosUI>
 {
 public:
-#ifdef __cplusplus
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
 	iosUI() {};
 	~iosUI() {};
 	void	ToggleIndicator(bool lock) {};
