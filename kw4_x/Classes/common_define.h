@@ -13,6 +13,7 @@ using namespace cocos2d;
 
 
 #ifdef IPAD_VER
+#define BUY_AT_STORE_URL "https://itunes.apple.com/app/id504138737?mt=8"
 #define ckConsumableBaseFeatureId "com.ozzywow.kw4ipadlite"
 #define ckProductIdStep2 "com.ozzywow.kw4ipadlite.step2"
 #define ckProductIdStep3 "com.ozzywow.kw4ipadlite.step3"
@@ -20,6 +21,7 @@ using namespace cocos2d;
 #define ckProductIdStep5 "com.ozzywow.kw4ipadlite.step5"
 #define ckProductIdTotal "com.ozzywow.kw4ipadlite.total"
 #else //IPAD_VER
+#define BUY_AT_STORE_URL "http://itunes.apple.com/app/id509909625?mt=8"
 #define ckConsumableBaseFeatureId "com.ozzywow.kw4iphonelite"
 #define ckProductIdStep2 "com.ozzywow.kw4iphonelite.step2"
 #define ckProductIdStep3 "com.ozzywow.kw4iphonelite.step3"

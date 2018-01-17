@@ -147,10 +147,9 @@ void MainMenuScene::callbackOnPushedBuyGameMenuItem(Ref* pSender)
 
 
 void MainMenuScene::cfFullVersion(Ref* pSender)
-{
-	
+{	
 #if( CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	cocos2d::Application::getInstance()->openURL("http://itunes.apple.com/app/id509909625?mt=8");
+	cocos2d::Application::getInstance()->openURL(BUY_AT_STORE_URL);
 #endif
 }
 
