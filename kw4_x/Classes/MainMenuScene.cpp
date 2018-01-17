@@ -63,7 +63,7 @@ bool MainMenuScene::init()
 		
 	this->addChild(mainMenu, 0, 0);
 
-//#define LITE_VER 
+
 #ifdef LITE_VER
 #if( CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 	MenuItemImage* itemApp = MenuItemImage::create("UI4HD/kw_banner-hd.png", "UI4HD/kw_banner-hd.png", CC_CALLBACK_1(MainMenuScene::cfFullVersion, this));

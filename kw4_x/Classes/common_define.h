@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include "cocos2d.h"
 using namespace cocos2d;
+
+#define LITE_VER // LITE version
+
 #define MAX_SIZE_OF_CHARACTER_POOL  128
 
 #define FRAME_HEIGHT				960.0f

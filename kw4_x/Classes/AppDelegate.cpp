@@ -156,8 +156,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // run
     director->runWithScene(scene);
     
- 
-#define LITE_VER
+
 #ifdef LITE_VER
     if( CMKStoreManager::Instance()->isFeaturePurchased(ckProductIdTotal) )
     {

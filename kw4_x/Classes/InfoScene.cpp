@@ -9,8 +9,6 @@
 #include "MKStoreManager_cpp.h"
 
 
-#define LITE_VER
-
 InfoScene::InfoScene()
 {
 
@@ -28,7 +26,7 @@ bool InfoScene::init()
 		return false;
 	}
 
-	Sprite* background = Sprite::create("UI4HD/info_bg-hd.png") ;
+	Sprite* background = Sprite::create("UI4HD/info_bg-hdx.png") ;
 
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();	
