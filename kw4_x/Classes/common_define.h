@@ -4,6 +4,7 @@
 using namespace cocos2d;
 
 #define LITE_VER // LITE version
+#define IPAD_VER // IPAD version
 
 #define MAX_SIZE_OF_CHARACTER_POOL  128
 
@@ -11,12 +12,21 @@ using namespace cocos2d;
 #define FRAME_WIDTH					640.0f
 
 
+#ifdef IPAD_VER
+#define ckConsumableBaseFeatureId "com.ozzywow.kw4ipadlite"
+#define ckProductIdStep2 "com.ozzywow.kw4ipadlite.step2"
+#define ckProductIdStep3 "com.ozzywow.kw4ipadlite.step3"
+#define ckProductIdStep4 "com.ozzywow.kw4ipadlite.step4"
+#define ckProductIdStep5 "com.ozzywow.kw4ipadlite.step5"
+#define ckProductIdTotal "com.ozzywow.kw4ipadlite.total"
+#else //IPAD_VER
 #define ckConsumableBaseFeatureId "com.ozzywow.kw4iphonelite"
 #define ckProductIdStep2 "com.ozzywow.kw4iphonelite.step2"
 #define ckProductIdStep3 "com.ozzywow.kw4iphonelite.step3"
 #define ckProductIdStep4 "com.ozzywow.kw4iphonelite.step4"
 #define ckProductIdStep5 "com.ozzywow.kw4iphonelite.step5"
 #define ckProductIdTotal "com.ozzywow.kw4iphonelite.total"
+#endif //IPAD_VER
 
 
 enum 
