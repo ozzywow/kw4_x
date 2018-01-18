@@ -158,6 +158,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     
 
 #ifdef LITE_VER
+    CMKStoreManager::Instance()->restorePreviousTransactions();
     if( CMKStoreManager::Instance()->isFeaturePurchased(ckProductIdTotal) )
     {
         PointManager::Instance()->SetCartWithPID(PID_STEP2, true);

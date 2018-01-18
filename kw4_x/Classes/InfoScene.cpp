@@ -39,6 +39,7 @@ bool InfoScene::init()
 	this->DrawItemBox();
 
 	this->isProgress = false;
+    this->isRestored = false;
     
 #ifdef LITE_VER
     CMKStoreManager::Instance()->SetDelegate(this);
@@ -510,6 +511,10 @@ void InfoScene::callbackOnPushedResetMenuItem(Ref* sender)
 
 void InfoScene::callbackOnPushedRestoreMenuItem(Ref* sender)
 {
+    if( isProgress == true ) return;
+    isProgress = true;
+    isRestored = false;
+  
 	CMKStoreManager::Instance()->ToggleIndicator(true);
 	CMKStoreManager::Instance()->restorePreviousTransactions();
 }
@@ -524,9 +529,12 @@ void InfoScene::popCallback_ResetOk(Ref* pSender)
 	if (nTag == 1)
 	{		
 		PointManager::Instance()->ResetMast();
-		CharacterFactory::Instance()->resetData();				
-		
+		CharacterFactory::Instance()->resetData();
 	}
+    if(nTag == 2)
+    {
+        this->DrawItemBox();
+    }
 	pPopup->closePopup(); //팝업을 닫습니다. !! 팝업을 닫을시 필히 호출해주세요 이거 안해주면 팝업창 안사라집니다.  
 }
 
@@ -709,11 +717,15 @@ void InfoScene::transactionCanceled()
 	SoundFactory::Instance()->play(SOUND_FILE_click_effect);
 }
 
-void InfoScene::restorePreviousTransactions()
+void InfoScene::restorePreviousTransactions(int count)
 {
-	cocos2d::log("restorePreviousTransactions");
+    if(true == isRestored){ return; }
+    
+    cocos2d::log("restorePreviousTransactions");
+    
 	CMKStoreManager::Instance()->ToggleIndicator(false);
-	isProgress = false;
+	isRestored = true;
+    isProgress = false;
 	SoundFactory::Instance()->play(SOUND_FILE_click_effect);
 
 	//Purchase items restored.
@@ -726,9 +738,18 @@ void InfoScene::restorePreviousTransactions()
 	UIPopupWindow *pPopupOK = UIPopupWindow::create(Sprite::create("UI4HD/black_bg.png"), Sprite::create("UI4HD/pop_common.png"));
 	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InfoScene::popCallback_ResetOk, this)); //콕백을 받을 함수를 설정해주시면 됩니다
 																					
-	pPopupOK->addButton("UI4HD/btn_ok_s_01.png", "UI4HD/btn_ok_s_01.png", "", ui::Widget::TextureResType::LOCAL, Point(100, -70), "", 0);
+	pPopupOK->addButton("UI4HD/btn_ok_s_01.png", "UI4HD/btn_ok_s_01.png", "", ui::Widget::TextureResType::LOCAL, Point(0, -70), "", 2);
 
-	std::string strWarning("Purchase items restored.");
+    std::string strWarning;
+    if(count > 0)
+    {
+        strWarning = "Purchase items\n Restored.";
+    }
+    else
+    {
+        strWarning = "No items purchased.";
+    }
+	
 	strWarning = UTF8(strWarning);
 	pPopupOK->setFontSize_Msg(sizeOfFont);
 	pPopupOK->setColor_Msg(Color3B::BLACK);

@@ -62,12 +62,27 @@
 	}
 }
 
+- (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue
+{
+    NSLog(@"paymentQueueRestoreCompletedTransactionsFinished:%i", queue.transactions.count);
+
+    
+    for (SKPaymentTransaction *transaction in queue.transactions)
+    {
+        [[MKStoreManager sharedManager] provideContent: transaction.originalTransaction.payment.productIdentifier
+                                            forReceipt:transaction.transactionReceipt];
+        [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
+    }
+    
+    [[MKStoreManager sharedManager] cbRetored:queue.transactions.count];
+}
+
 - (void) failedTransaction: (SKPaymentTransaction *)transaction
 {	
 	[[MKStoreManager sharedManager] transactionCanceled:transaction];
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];	
 }
-  
+ 
 - (void) completeTransaction: (SKPaymentTransaction *)transaction
 {		
 	
@@ -81,7 +96,6 @@
 {	
     [[MKStoreManager sharedManager] provideContent: transaction.originalTransaction.payment.productIdentifier
 									   forReceipt:transaction.transactionReceipt];
-	[[MKStoreManager sharedManager] cbRetored];
 	
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];	
 }

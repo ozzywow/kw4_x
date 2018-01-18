@@ -29,6 +29,7 @@ public:
 
 
 	bool isProgress;
+    bool isRestored;
 
 
 
@@ -61,5 +62,5 @@ public:
 	virtual void productFetchComplete();
 	virtual void productPurchased(std::string productId);
 	virtual void transactionCanceled();
-	virtual void restorePreviousTransactions();
+	virtual void restorePreviousTransactions(int count);
 };

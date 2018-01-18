@@ -346,10 +346,10 @@ static MKStoreManager* _sharedStoreManager;
 
 
 
-- (void) cbRetored;
+- (void) cbRetored:(int)count
 {
 	if([_delegate respondsToSelector:@selector(restorePreviousTransactions:)])
-		[_delegate restorePreviousTransactions];	
+        [_delegate restorePreviousTransactions:count];
 }
 
 

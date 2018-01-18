@@ -16,7 +16,7 @@
 -(void)productFetchComplete;
 -(void)productPurchased:(NSString *)productId;
 -(void)transactionCanceled;
--(void)restorePreviousTransactions;
+-(void)restorePreviousTransactions:(int)count;
 @end
 
 #endif //__cplusplus
