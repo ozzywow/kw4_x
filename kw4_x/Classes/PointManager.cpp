@@ -11,6 +11,7 @@
 #include "StudyScene.h"
 #include "MainMenuScene.h"
 #include "smartAssert.h"
+#include "InfoScene.h"
 
 //using namespace pugi;
 
@@ -373,9 +374,11 @@ void	PointManager::GetNextScene(bool isEnter, bool isNextStage)
 		{
 			if( false == GetCartWithPID(pid) )
 			{
-				//BuyScene* buyScene = [[BuyScene node] init];
-				//[[CCDirector sharedDirector] replaceScene:[CCTransitionSlideInR transitionWithDuration : 0.2 scene : buyScene]];
-				//return;
+				InfoScene* infoScene = (InfoScene*)InfoScene::createScene();
+				TransitionSlideInL* sceneSlide = TransitionSlideInL::create(0.2f, infoScene);
+				auto director = Director::getInstance();
+				director->replaceScene(sceneSlide);
+				return;
 			}
 		}
 	}
