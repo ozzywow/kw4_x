@@ -25,7 +25,7 @@
 #import <StoreKit/StoreKit.h>
 #import "MKStoreObserver.h"
 
-//#define IPAD_VER
+#define IPAD_VER
 // CONFIGURATION STARTS -- Change this in your app
 #ifdef IPAD_VER
 #define BUY_AT_STORE_URL "https://itunes.apple.com/app/id504138737?mt=8"

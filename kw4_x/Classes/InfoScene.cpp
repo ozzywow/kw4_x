@@ -52,6 +52,13 @@ bool InfoScene::init()
 
 void InfoScene::DrawItemBox()
 {
+    CCLOG("DrawItemBox");
+    this->removeChildByTag(2);
+    this->removeChildByTag(2);
+    this->removeChildByTag(2);
+    this->removeChildByTag(2);
+    this->removeChildByTag(2);
+    
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();
 	auto frameSize = glview->getDesignResolutionSize();
@@ -227,14 +234,13 @@ void InfoScene::DrawItemBox()
 			PrintStyle(m_btnLevel4, strStep5, sizeofFont_s, posOfDesc);
 		}
 	}
-
 	else
 	{
 		m_btnLevel2 = MenuItemImage::create("UI4HD/btn_level_2_n-hd.png", "UI4HD/btn_level_2_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel2, this));
 		m_btnLevel3 = MenuItemImage::create("UI4HD/btn_level_3_n-hd.png", "UI4HD/btn_level_3_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel3, this));
 		m_btnLevel4 = MenuItemImage::create("UI4HD/btn_level_4_n-hd.png", "UI4HD/btn_level_4_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel4, this));
 		m_btnLevel5 = MenuItemImage::create("UI4HD/btn_level_5_n-hd.png", "UI4HD/btn_level_5_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel5, this));
-		m_btnLevel6 = MenuItemImage::create("UI4HD/btn_level_6_n-hd.png", "UI4HD/btn_level_6_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel6, this));
+		m_btnLevel6 = MenuItemImage::create("UI4HD/btn_level_x_n-hd.png", "UI4HD/btn_level_x_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel6, this));
 
 		PrintStyle(m_btnLevel1, strStep1, sizeofFont_s, posOfDesc);
 		PrintStyle(m_btnLevel2, strStep2, sizeofFont_s, posOfDesc);
@@ -261,10 +267,6 @@ void InfoScene::DrawItemBox()
 
 #endif //LITE_VER
 
-
-	
-
-	this->removeChildByTag(2, true);
 
 	Menu* levelSelectMenu = Menu::create(m_btnLevel1, m_btnLevel2, m_btnLevel3, NULL);
 	levelSelectMenu->alignItemsHorizontallyWithPadding(0);
@@ -678,7 +680,7 @@ void InfoScene::productFetchComplete()
 }
 void InfoScene::productPurchased(std::string productId)
 {
-	cocos2d::log("productFetchComplete /%s", productId.c_str());
+	cocos2d::log("productPurchased /%s", productId.c_str());
     CMKStoreManager::Instance()->ToggleIndicator(false);
     isProgress = false;    
 
