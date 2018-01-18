@@ -80,6 +80,7 @@
 {	
     [[MKStoreManager sharedManager] provideContent: transaction.originalTransaction.payment.productIdentifier
 									   forReceipt:transaction.transactionReceipt];
+	[[MKStoreManager sharedManager] cbRetored];
 	
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];	
 }

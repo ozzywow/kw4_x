@@ -68,6 +68,7 @@
 - (void) buyFeature:(NSString*) featureId;
 - (NSMutableArray*) purchasableObjectsDescription;
 - (void) restorePreviousTransactions;
+- (void) cbRetored;
 
 - (BOOL) canConsumeProduct:(NSString*) productIdentifier quantity:(int) quantity;
 - (BOOL) consumeProduct:(NSString*) productIdentifier quantity:(int) quantity;

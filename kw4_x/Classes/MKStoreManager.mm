@@ -136,6 +136,7 @@ static MKStoreManager* _sharedStoreManager;
 	[[SKPaymentQueue defaultQueue] restoreCompletedTransactions];
 }
 
+
 -(void) requestProductData
 {
 	SKProductsRequest *request= [[SKProductsRequest alloc] initWithProductIdentifiers:[NSSet setWithObjects: 
@@ -343,6 +344,13 @@ static MKStoreManager* _sharedStoreManager;
 	[alert release];
 }
 
+
+
+- (void) cbRetored;
+{
+	if([_delegate respondsToSelector:@selector(restorePreviousTransactions:)])
+		[_delegate restorePreviousTransactions];	
+}
 
 
 #pragma mark In-App purchases promo codes support
