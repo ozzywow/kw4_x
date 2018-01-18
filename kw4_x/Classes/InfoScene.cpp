@@ -262,9 +262,9 @@ void InfoScene::DrawItemBox()
 #endif //LITE_VER
 
 
-	ReflushSelectedMenuItem(level);
+	
 
-
+	this->removeChildByTag(2, true);
 
 	Menu* levelSelectMenu = Menu::create(m_btnLevel1, m_btnLevel2, m_btnLevel3, NULL);
 	levelSelectMenu->alignItemsHorizontallyWithPadding(0);
@@ -328,6 +328,8 @@ void InfoScene::DrawItemBox()
 	optionMenu->setAnchorPoint(Point(0, 0));
 	optionMenu->setPosition(posOfOptonMenu);
 	this->addChild(optionMenu, 2, 2);
+
+	ReflushSelectedMenuItem(level);
 }
 
 
@@ -505,7 +507,6 @@ void InfoScene::callbackOnPushedResetMenuItem(Ref* sender)
 	pPopupOK->setColor_Msg(Color3B::BLACK);
 	pPopupOK->setMessageString(strWarning); // 메시지 출력부분이죠 그외 타이틀도 출력가능하구요, 위치또한 바꿀수있는 멤버함수가 존재합니다.
 	pPopupOK->showPopup(NULL);  //마지막으로 화면에 띄우주면 끝~  showPopup()함수의 인자는 자신이 부모다~ 라는걸 넣어주는겁니다 현재 실행되는 클래스겠죠(Layer가 아닌경우는 필히 NULL을 입력하세요)
-
 }
 
 
