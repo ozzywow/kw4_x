@@ -34,3 +34,9 @@ void CMKStoreManager::ToggleIndicator(bool lock)
 {
 	iosUI::Instance()->ToggleIndicator(lock);
 }
+
+
+void CMKStoreManager::restorePreviousTransactions()
+{
+	iosLink_MKStoreManager::restorePreviousTransactions();
+}

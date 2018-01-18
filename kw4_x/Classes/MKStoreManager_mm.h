@@ -14,10 +14,12 @@ public:
 	static bool isFeaturePurchased(std::string featureId) { return false; };
 	static void buyFeature(std::string featureId) {};
 	static void setDelegate(MKStoreManagerDelegate* delegate) {};
+	static void restorePreviousTransactions(){};
 #else
 	static bool isFeaturePurchased(std::string featureId);
 	static void buyFeature(std::string featureId);
 	static void setDelegate(MKStoreManagerDelegate* delegate);
+	static void restorePreviousTransactions();
 #endif 
 };
 

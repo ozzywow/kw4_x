@@ -28,6 +28,11 @@ void iosLink_MKStoreManager::buyFeature(std::string featureId)
 	[[MKStoreManager sharedManager] buyFeature:obejctiveString];
 }
 
+void iosLink_MKStoreManager::restorePreviousTransactions()
+{
+	[[MKStoreManager sharedManager] restorePreviousTransactions];
+}
+
 void iosLink_MKStoreManager::setDelegate(MKStoreManagerDelegate* delegate)
 {
 	_interfaceDele = [InterfaceMKStoreKitDelegate alloc];
@@ -35,6 +40,8 @@ void iosLink_MKStoreManager::setDelegate(MKStoreManagerDelegate* delegate)
 	_mkdelegate = delegate;    
     [MKStoreManager setDelegate:_interfaceDele];
 }
+
+
 
 
 

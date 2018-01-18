@@ -14,5 +14,6 @@ public:
 	virtual void productFetchComplete() = 0;
 	virtual void productPurchased(std::string productId) = 0;
 	virtual void transactionCanceled() = 0;
+	virtual void restorePreviousTransactions() = 0;
 };
 

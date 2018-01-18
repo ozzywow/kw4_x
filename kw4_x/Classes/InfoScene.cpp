@@ -299,6 +299,11 @@ void InfoScene::DrawItemBox()
 	MenuItemImage* resetBtnItem = MenuItemImage::create("UI4HD/btn_eraser_n-hd.png", "UI4HD/btn_eraser_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedResetMenuItem, this));		
 	PrintStyle(resetBtnItem, strReset, sizeofFont_s, posOfDesc);
 
+	std::string strRestore("Restore Purchases");
+	strRestore = UTF8(strRestore);
+	MenuItemImage* restoreBtnItem = MenuItemImage::create("UI4HD/btn_level_restore_s-hd.png", "UI4HD/btn_level_restore_n-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedRestoreMenuItem, this));
+	PrintStyle(restoreBtnItem, strRestore, sizeofFont_s, posOfDesc);
+
 	Sprite* hintOptImage = NULL;
 	bool hintOption = PointManager::Instance()->GetHintOption();
 	if (hintOption == true)
@@ -312,8 +317,13 @@ void InfoScene::DrawItemBox()
 
 	m_btnHintOpt->setNormalImage(hintOptImage);
 
+#ifdef LITE_VER
+	Menu* optionMenu = Menu::create(m_btnHintOpt, resetBtnItem, restoreBtnItem, NULL);
+	optionMenu->alignItemsHorizontallyWithPadding(0);	
+#else //LITE_VER
 	Menu* optionMenu = Menu::create(m_btnHintOpt, resetBtnItem, NULL);
 	optionMenu->alignItemsHorizontallyWithPadding(50);
+#endif //LITE_VER
 	optionMenu->setAnchorPoint(Point(0, 0));
 	optionMenu->setPosition(posOfOptonMenu);
 	this->addChild(optionMenu, 2, 2);
@@ -497,6 +507,12 @@ void InfoScene::callbackOnPushedResetMenuItem(Ref* sender)
 
 }
 
+
+void InfoScene::callbackOnPushedRestoreMenuItem(Ref* sender)
+{
+	CMKStoreManager::Instance()->ToggleIndicator(true);
+	CMKStoreManager::Instance()->restorePreviousTransactions();
+}
 
 void InfoScene::popCallback_ResetOk(Ref* pSender)
 {
@@ -691,4 +707,32 @@ void InfoScene::transactionCanceled()
     CMKStoreManager::Instance()->ToggleIndicator(false);
     isProgress = false;    
 	SoundFactory::Instance()->play(SOUND_FILE_click_effect);
+}
+
+void InfoScene::restorePreviousTransactions()
+{
+	cocos2d::log("restorePreviousTransactions");
+	CMKStoreManager::Instance()->ToggleIndicator(false);
+	isProgress = false;
+	SoundFactory::Instance()->play(SOUND_FILE_click_effect);
+
+	//Purchase items restored.
+	auto director = Director::getInstance();
+	auto glview = director->getOpenGLView();
+	auto frameSize = glview->getDesignResolutionSize();
+	const int		sizeOfFont = FRAME_WIDTH*0.05f;
+
+
+	UIPopupWindow *pPopupOK = UIPopupWindow::create(Sprite::create("UI4HD/black_bg.png"), Sprite::create("UI4HD/pop_common.png"));
+	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InfoScene::popCallback_ResetOk, this)); //콕백을 받을 함수를 설정해주시면 됩니다
+																					
+	pPopupOK->addButton("UI4HD/btn_ok_s_01.png", "UI4HD/btn_ok_s_01.png", "", ui::Widget::TextureResType::LOCAL, Point(100, -70), "", 0);
+
+	std::string strWarning("Purchase items restored.");
+	strWarning = UTF8(strWarning);
+	pPopupOK->setFontSize_Msg(sizeOfFont);
+	pPopupOK->setColor_Msg(Color3B::BLACK);
+	pPopupOK->setMessageString(strWarning); // 메시지 출력부분이죠 그외 타이틀도 출력가능하구요, 위치또한 바꿀수있는 멤버함수가 존재합니다.
+	pPopupOK->showPopup(NULL);  //마지막으로 화면에 띄우주면 끝~  showPopup()함수의 인자는 자신이 부모다~ 라는걸 넣어주는겁니다 현재 실행되는 클래스겠죠(Layer가 아닌경우는 필히 NULL을 입력하세요)
+
 }

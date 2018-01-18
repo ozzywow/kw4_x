@@ -20,4 +20,8 @@
 {
 	self->cppDelegate->transactionCanceled();
 }
+-(void)restorePreviousTransactions
+{
+	self->cppDelegate->restorePreviousTransactions();
+}
 @end

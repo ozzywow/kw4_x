@@ -41,6 +41,7 @@ public:
 	// callback func
 	void callbackOnPushedHomeMenuItem(Ref* sender);
 	void callbackOnPushedResetMenuItem(Ref* sender);
+	void callbackOnPushedRestoreMenuItem(Ref* sender);
 	void popCallback_ResetOk(Ref* sender);
 	void callbackOnPushedHintMenuItem(Ref* sender);
 
@@ -60,4 +61,5 @@ public:
 	virtual void productFetchComplete();
 	virtual void productPurchased(std::string productId);
 	virtual void transactionCanceled();
+	virtual void restorePreviousTransactions();
 };
