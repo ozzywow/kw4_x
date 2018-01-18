@@ -96,18 +96,18 @@ void InfoScene::DrawItemBox()
 	strStep5 = UTF8(strStep5);
 
 #ifdef LITE_VER
-	std::string strSaleTotal("Whole steps($2.99)");
+	std::string strSaleTotal("Whole steps");
 	strSaleTotal = UTF8(strSaleTotal);
-	std::string strSaleStep1("1 Step($Free)");
+	std::string strSaleStep1("1 Step)");
 	strSaleStep1 = UTF8(strSaleStep1);
-	std::string strSaleStep2("2 Step($0.99)");
-	strStep2 = UTF8(strSaleStep2);
-	std::string strSaleStep3("3 Step($0.99)");
-	strStep3 = UTF8(strSaleStep3);
-	std::string strSaleStep4("4 Step($0.99)");
-	strStep4 = UTF8(strSaleStep4);
-	std::string strSaleStep5("5 Step($0.99)");
-	strStep5 = UTF8(strSaleStep5);
+	std::string strSaleStep2("2 Step");
+	strSaleStep2 = UTF8(strSaleStep2);
+	std::string strSaleStep3("3 Step");
+	strSaleStep3 = UTF8(strSaleStep3);
+	std::string strSaleStep4("4 Step");
+	strSaleStep4 = UTF8(strSaleStep4);
+	std::string strSaleStep5("5 Step");
+	strSaleStep5 = UTF8(strSaleStep5);
 
 	m_btnLevel1 = MenuItemImage::create("UI4HD/btn_level_1_n-hd.png", "UI4HD/btn_level_1_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel1, this));	
 	PrintStyle(m_btnLevel1, strStep1, sizeofFont_s, posOfDesc);
