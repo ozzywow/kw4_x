@@ -343,46 +343,6 @@ void	PointManager::GetNextScene(bool isEnter, bool isNextStage)
 {
 	this->SaveData();
 	
-//#define LITE_VER
-#ifdef LITE_VER
-	if (_level > 1)
-	{
-
-		PRODUCT_ID pid = PID_NONE;
-		if (_level == 2)
-		{
-			pid = PID_STEP2;
-		}
-		else if (_level == 3)
-		{
-			pid = PID_STEP3;
-		}
-		else if (_level == 4)
-		{
-			pid = PID_STEP4;
-		}
-		else if (_level == 5)
-		{
-			pid = PID_STEP5;
-		}
-		else
-		{
-			pid = PID_NONE;
-		}
-
-		if (pid > PID_NONE)
-		{
-			if( false == GetCartWithPID(pid) )
-			{
-				InfoScene* infoScene = (InfoScene*)InfoScene::createScene();
-				TransitionSlideInL* sceneSlide = TransitionSlideInL::create(0.2f, infoScene);
-				auto director = Director::getInstance();
-				director->replaceScene(sceneSlide);
-				return;
-			}
-		}
-	}
-#endif //LITE_VER
 
 	if (isNextStage)
 	{
@@ -400,7 +360,7 @@ void	PointManager::GetNextScene(bool isEnter, bool isNextStage)
 	int level = 0;
 	bool isGotNextScene = false;
 
-	for (int l = _level; l <= 5; ++l)
+	for (int l = 1; l <= 5; ++l)
 	{
 		vtWordCards& cardListByLevel = m_mCardsByLevel[l];
 		for (int i = m_currStage ; i< cardListByLevel.size(); ++i)
@@ -438,6 +398,53 @@ void	PointManager::GetNextScene(bool isEnter, bool isNextStage)
 		director->replaceScene(sceneSlide);
 
 		return;
+	}
+
+
+	//#define LITE_VER
+#ifdef LITE_VER
+	if (level > 1)
+	{
+
+		PRODUCT_ID pid = PID_NONE;
+		if (level == 2)
+		{
+			pid = PID_STEP2;
+		}
+		else if (level == 3)
+		{
+			pid = PID_STEP3;
+		}
+		else if (level == 4)
+		{
+			pid = PID_STEP4;
+		}
+		else if (level == 5)
+		{
+			pid = PID_STEP5;
+		}
+		else
+		{
+			pid = PID_NONE;
+		}
+
+		if (pid > PID_NONE)
+		{
+			if (false == GetCartWithPID(pid))
+			{
+				InfoScene* infoScene = (InfoScene*)InfoScene::createScene();
+				TransitionSlideInL* sceneSlide = TransitionSlideInL::create(0.2f, infoScene);
+				auto director = Director::getInstance();
+				director->replaceScene(sceneSlide);
+				return;
+			}
+		}
+	}
+#endif //LITE_VER
+
+	if (level > _level)
+	{
+		SetLevel(level);
 	}
 
 
