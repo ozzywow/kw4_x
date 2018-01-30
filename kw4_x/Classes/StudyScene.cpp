@@ -345,27 +345,6 @@ void		StudyScene::OnSkip()
 void		StudyScene::TurnPage()
 {
 	PointManager* pointManager = PointManager::Instance();
-#ifdef LITE_VER		
-	int level = pointManager->GetLevel();
-	if (level > 1)
-	{
-		UIPopupWindow *pPopupOK = UIPopupWindow::create(NULL, Sprite::create("uis/pop_common.png"));
-		pPopupOK->setBackgroundBorard(Sprite::create("uis/black_bg.png"));
-
-		pPopupOK->setCallBackFunc(CC_CALLBACK_1(StudyScene::popCallback_Ok, this)); //콕백을 받을 함수를 설정해주시면 됩니다
-
-		//버튼을 추가해야겠죠 닫기 버튼!!,
-		pPopupOK->addButton("btn_ok_s_00.png", "btn_ok_s_01.png", "", ui::Widget::TextureResType::PLIST, Point(0, -112), "", 1);		
-		
-
-		pPopupOK->setMessageString("현재 버젼은 1단계 까지만 지원합니다. 정식버젼을 확인 바랍니다. 또는 [놀이정보]에서 초기화후 사용바랍니다."); // 메시지 출력부분이죠 그외 타이틀도 출력가능하구요, 위치또한 바꿀수있는 멤버함수가 존재합니다.
-		pPopupOK->showPopup(NULL);  //마지막으로 화면에 띄우주면 끝~  showPopup()함수의 인자는 자신이 부모다~ 라는걸 넣어주는겁니다 현재 실행되는 클래스겠죠(Layer가 아닌경우는 필히 NULL을 입력하세요)
-
-		return;
-	}	
-	
-#endif LITE_VER
-
 	SoundFactory* sound = SoundFactory::Instance();
 	sound->play(SOUND_FILE_turnpage_effect);
 		
