@@ -66,38 +66,41 @@ bool MainMenuScene::init()
 
 #ifdef LITE_VER
 #if( CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	MenuItemImage* itemApp = MenuItemImage::create("UI4HD/kw_banner-hd.png", "UI4HD/kw_banner-hd.png", CC_CALLBACK_1(MainMenuScene::cfFullVersion, this));
+	if (false == PointManager::Instance()->GetCartWithPID(PID_TOTAL))
+	{
+		MenuItemImage* itemApp = MenuItemImage::create("UI4HD/kw_banner-hd.png", "UI4HD/kw_banner-hd.png", CC_CALLBACK_1(MainMenuScene::cfFullVersion, this));
 
-	Menu* appMenu = Menu::create(itemApp, NULL);
-	appMenu->alignItemsHorizontallyWithPadding(5);
-	appMenu->setAnchorPoint(Point::ANCHOR_MIDDLE);
-	appMenu->setPosition(Point(frameSize.width*0.5f, frameSize.height*0.9f));
-	this->addChild(appMenu, 2, 2);	
+		Menu* appMenu = Menu::create(itemApp, NULL);
+		appMenu->alignItemsHorizontallyWithPadding(5);
+		appMenu->setAnchorPoint(Point::ANCHOR_MIDDLE);
+		appMenu->setPosition(Point(frameSize.width*0.5f, frameSize.height*0.9f));
+		this->addChild(appMenu, 2, 2);
 
-	const Point posOfBeggin = Point(frameSize.width*0.5f, frameSize.height);
-	const Point posOfEnd = Point(frameSize.width*0.5f, frameSize.height*0.9f);
+		const Point posOfBeggin = Point(frameSize.width*0.5f, frameSize.height);
+		const Point posOfEnd = Point(frameSize.width*0.5f, frameSize.height*0.9f);
 
-	appMenu->setPosition(posOfBeggin);
-	Point destPos = posOfEnd;
+		appMenu->setPosition(posOfBeggin);
+		Point destPos = posOfEnd;
 
-	MoveTo* moveToAction = MoveTo::create(2.0, destPos);
-	appMenu->runAction(moveToAction);
+		MoveTo* moveToAction = MoveTo::create(2.0, destPos);
+		appMenu->runAction(moveToAction);
 
-	Sprite* pCharacterSprite = Sprite::create("UI4HD/change_fly_6-hd.png");
-	pCharacterSprite->setFlippedX(true);
+		Sprite* pCharacterSprite = Sprite::create("UI4HD/change_fly_6-hd.png");
+		pCharacterSprite->setFlippedX(true);
 
-	Animation* animationLavar = Animation::create();
-	animationLavar->addSpriteFrameWithFile("UI4HD/change_fly_6-hd.png");
-	animationLavar->addSpriteFrameWithFile("UI4HD/change_fly_7-hd.png");
-	animationLavar->setDelayPerUnit(0.3f);
+		Animation* animationLavar = Animation::create();
+		animationLavar->addSpriteFrameWithFile("UI4HD/change_fly_6-hd.png");
+		animationLavar->addSpriteFrameWithFile("UI4HD/change_fly_7-hd.png");
+		animationLavar->setDelayPerUnit(0.3f);
 
 
-	Animate* animationLavarPlay = Animate::create(animationLavar);
-	RepeatForever* repeatForever = RepeatForever::create(animationLavarPlay);
-	pCharacterSprite->runAction(repeatForever);
-		
-	this->addChild(pCharacterSprite, 3, 3);
-	pCharacterSprite->setPosition(Point(frameSize.width*0.8f, frameSize.height*0.6f));
+		Animate* animationLavarPlay = Animate::create(animationLavar);
+		RepeatForever* repeatForever = RepeatForever::create(animationLavarPlay);
+		pCharacterSprite->runAction(repeatForever);
+
+		this->addChild(pCharacterSprite, 3, 3);
+		pCharacterSprite->setPosition(Point(frameSize.width*0.8f, frameSize.height*0.6f));
+	}	
 #endif
 #endif
 	return true;
