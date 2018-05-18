@@ -691,22 +691,27 @@ void InfoScene::productPurchased(std::string productId)
 		PointManager::Instance()->SetCartWithPID(PID_STEP4, true);
 		PointManager::Instance()->SetCartWithPID(PID_STEP5, true);
 		PointManager::Instance()->SetCartWithPID(PID_TOTAL, true);
+		PointManager::Instance()->SaveData();
 	}
 	else if (productId == ckProductIdStep2)
 	{
 		PointManager::Instance()->SetCartWithPID(PID_STEP2, true);
+		PointManager::Instance()->SaveData();
 	}
 	else if (productId == ckProductIdStep3)
 	{
 		PointManager::Instance()->SetCartWithPID(PID_STEP3, true);
+		PointManager::Instance()->SaveData();
 	}
 	else if (productId == ckProductIdStep4)
 	{
 		PointManager::Instance()->SetCartWithPID(PID_STEP4, true);
+		PointManager::Instance()->SaveData();
 	}
 	else if (productId == ckProductIdStep5)
 	{
 		PointManager::Instance()->SetCartWithPID(PID_STEP5, true);
+		PointManager::Instance()->SaveData();
 	}
 
 	this->DrawItemBox();

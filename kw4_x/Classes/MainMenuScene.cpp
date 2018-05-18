@@ -5,6 +5,7 @@
 #include "PointManager.h"
 #include "AppleTreeScene.h"
 #include "InfoScene.h"
+#include "MKStoreManager_cpp.h"
 
 
 MainMenuScene::MainMenuScene()
@@ -100,8 +101,14 @@ bool MainMenuScene::init()
 
 		this->addChild(pCharacterSprite, 3, 3);
 		pCharacterSprite->setPosition(Point(frameSize.width*0.8f, frameSize.height*0.6f));
-	}	
+	}
+
+
 #endif
+
+	CMKStoreManager::Instance()->SetDelegate(this);
+
+
 #endif
 	return true;
 
@@ -156,3 +163,52 @@ void MainMenuScene::cfFullVersion(Ref* pSender)
 #endif
 }
 
+
+void MainMenuScene::productFetchComplete()
+{
+	cocos2d::log("productFetchComplete");	
+}
+void MainMenuScene::productPurchased(std::string productId)
+{
+	cocos2d::log("productPurchased /%s", productId.c_str());
+	
+	if (productId == ckProductIdTotal)
+	{
+		PointManager::Instance()->SetCartWithPID(PID_STEP2, true);
+		PointManager::Instance()->SetCartWithPID(PID_STEP3, true);
+		PointManager::Instance()->SetCartWithPID(PID_STEP4, true);
+		PointManager::Instance()->SetCartWithPID(PID_STEP5, true);
+		PointManager::Instance()->SetCartWithPID(PID_TOTAL, true);
+		PointManager::Instance()->SaveData();
+	}
+	else if (productId == ckProductIdStep2)
+	{
+		PointManager::Instance()->SetCartWithPID(PID_STEP2, true);
+		PointManager::Instance()->SaveData();
+	}
+	else if (productId == ckProductIdStep3)
+	{
+		PointManager::Instance()->SetCartWithPID(PID_STEP3, true);
+		PointManager::Instance()->SaveData();
+	}
+	else if (productId == ckProductIdStep4)
+	{
+		PointManager::Instance()->SetCartWithPID(PID_STEP4, true);
+		PointManager::Instance()->SaveData();
+	}
+	else if (productId == ckProductIdStep5)
+	{
+		PointManager::Instance()->SetCartWithPID(PID_STEP5, true);
+		PointManager::Instance()->SaveData();
+	}
+}
+void MainMenuScene::transactionCanceled()
+{
+	cocos2d::log("transactionCanceled");	
+}
+
+void MainMenuScene::restorePreviousTransactions(int count)
+{
+	cocos2d::log("restorePreviousTransactions");
+
+}

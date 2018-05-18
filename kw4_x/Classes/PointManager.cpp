@@ -143,7 +143,18 @@ void	PointManager::SaveData()
 		path.append("characters.xml");
 		_xmlDocForMastWords.save_file(path.c_str());
 	}
-	
+
+#ifdef LITE_VER
+	// cart
+	{
+		int cartId = 0;
+		for (auto cart : m_vCart)
+		{
+			std::string cartName = StringUtils::format("cart_%d", cartId);
+			UserDefault::getInstance()->setBoolForKey(cartName.c_str(), cart);
+		}
+	}
+#endif //LITE_VER
 }
 
 void	PointManager::LoadData() 
@@ -222,7 +233,18 @@ void	PointManager::LoadData()
 		}
 	}
 	
-
+#ifdef LITE_VER
+	// cart
+	{
+		int cartId = 0;
+		for (int cartId = 0 ; cartId < PRODUCT_ID::PID_MAX; ++cartId )
+		{
+			std::string cartName = StringUtils::format("cart_%d", cartId);
+			bool bValue = UserDefault::getInstance()->getBoolForKey(cartName.c_str());
+			m_vCart[cartId] = bValue;
+		}
+	}
+#endif //LITE_VER
 	
 }
 
