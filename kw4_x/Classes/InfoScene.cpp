@@ -43,6 +43,8 @@ bool InfoScene::init()
 	this->isProgress = false;
     this->isRestored = false;   
 
+	CMKStoreManager::Instance()->SetDelegate(this);
+
 
 	return true;
 }
@@ -51,7 +53,6 @@ void InfoScene::onExitTransitionDidStart()
 {
 #ifdef LITE_VER
 	CCLOG("InfoScene::onExitTransitionDidStart()");
-	CMKStoreManager::Instance()->SetDelegate(NULL);
 	CMKStoreManager::Instance()->ToggleIndicator(false);
 #endif
 }
