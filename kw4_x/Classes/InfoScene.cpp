@@ -48,7 +48,13 @@ bool InfoScene::init()
 	return true;
 }
 
-
+void InfoScene::onExit()
+{
+#ifdef LITE_VER
+	CMKStoreManager::Instance()->SetDelegate(NULL);
+	CMKStoreManager::Instance()->ToggleIndicator(false);
+#endif
+}
 
 void InfoScene::DrawItemBox()
 {

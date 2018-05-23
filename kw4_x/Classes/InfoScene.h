@@ -34,6 +34,8 @@ public:
 
 
 	virtual bool init();
+	virtual void onExit();
+
 	void DrawItemBox();
 	void ReflushSelectedMenuItem(int selectedLevel);
 	void PlayBuySound();

@@ -19,9 +19,9 @@ public:
 	~MainMenuScene();
 
 	virtual bool init();
+	virtual void onExit();
 
-	void callbackOnPushedNewGameMenuItem(Ref* pSender);
-	void callbackOnPushedContinueMenuItem(Ref* pSender);
+	void callbackOnPushedNewGameMenuItem(Ref* pSender);	
 	void callbackOnPushedControlGameMenuItem(Ref* pSender);
 	void callbackOnPushedAppleTreeGameMenuItem(Ref* pSender);
 	void callbackOnPushedBuyGameMenuItem(Ref* pSender);

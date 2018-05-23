@@ -66,7 +66,6 @@ bool MainMenuScene::init()
 
 
 #ifdef LITE_VER
-#if( CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 	if (false == PointManager::Instance()->GetCartWithPID(PID_TOTAL))
 	{
 		MenuItemImage* itemApp = MenuItemImage::create("UI4HD/kw_banner-hd.png", "UI4HD/kw_banner-hd.png", CC_CALLBACK_1(MainMenuScene::cfFullVersion, this));
@@ -103,9 +102,6 @@ bool MainMenuScene::init()
 		pCharacterSprite->setPosition(Point(frameSize.width*0.8f, frameSize.height*0.6f));
 	}
 
-
-#endif
-
 	CMKStoreManager::Instance()->SetDelegate(this);
 
 
@@ -115,6 +111,14 @@ bool MainMenuScene::init()
 }
 
 
+void MainMenuScene::onExit()
+{
+#ifdef LITE_VER
+	CMKStoreManager::Instance()->SetDelegate(NULL);
+	CMKStoreManager::Instance()->ToggleIndicator(false);
+#endif
+}
+
 void MainMenuScene::callbackOnPushedNewGameMenuItem(Ref* pSender)
 {	
 	SoundFactory* sound = SoundFactory::Instance();
@@ -122,13 +126,11 @@ void MainMenuScene::callbackOnPushedNewGameMenuItem(Ref* pSender)
 	PointManager::Instance()->GetNextScene(true, false);
 }
 
-void MainMenuScene::callbackOnPushedContinueMenuItem(Ref* pSender)
-{
-	PointManager::Instance()->GetNextScene(true, false);
-}
+
 
 void MainMenuScene::callbackOnPushedControlGameMenuItem(Ref* pSender)
 {
+	
 	auto infoScene = InfoScene::createScene();
 	TransitionSlideInL* sceneSlide = TransitionSlideInL::create(0.2, infoScene);
 
@@ -139,6 +141,7 @@ void MainMenuScene::callbackOnPushedControlGameMenuItem(Ref* pSender)
 
 void MainMenuScene::callbackOnPushedAppleTreeGameMenuItem(Ref* pSender)
 {
+
 	AppleTreeScene* appleScene = (AppleTreeScene*)AppleTreeScene::createScene(false);
 	appleScene->initWithVal(false);
 
