@@ -32,8 +32,6 @@ bool MainMenuScene::init()
 	layer->initWithColor(Color4B(255, 255, 255, 255));
 	this->addChild(layer, 0);
 
-	PointManager::Instance()->SaveData();
-	
 
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();	

@@ -152,6 +152,7 @@ void	PointManager::SaveData()
 		{
 			std::string cartName = StringUtils::format("cart_%d", cartId);
 			UserDefault::getInstance()->setBoolForKey(cartName.c_str(), cart);
+			++cartId;
 		}
 	}
 #endif //LITE_VER
@@ -235,8 +236,7 @@ void	PointManager::LoadData()
 	
 #ifdef LITE_VER
 	// cart
-	{
-		int cartId = 0;
+	{		
 		for (int cartId = 0 ; cartId < PRODUCT_ID::PID_MAX; ++cartId )
 		{
 			std::string cartName = StringUtils::format("cart_%d", cartId);

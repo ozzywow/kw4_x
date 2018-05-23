@@ -42,8 +42,9 @@ bool InfoScene::init()
 
 	this->isProgress = false;
     this->isRestored = false;   
-
+#ifdef LITE_VER
 	CMKStoreManager::Instance()->SetDelegate(this);
+#endif
 
 
 	return true;
