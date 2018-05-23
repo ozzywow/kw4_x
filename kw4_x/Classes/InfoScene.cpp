@@ -26,6 +26,8 @@ bool InfoScene::init()
 		return false;
 	}
 
+	CCLOG("InfoScene::init()");
+
 	Sprite* background = Sprite::create("UI4HD/info_bg-hdx.png") ;
 
 	auto director = Director::getInstance();
@@ -39,18 +41,16 @@ bool InfoScene::init()
 	this->DrawItemBox();
 
 	this->isProgress = false;
-    this->isRestored = false;
-    
-#ifdef LITE_VER
-    CMKStoreManager::Instance()->SetDelegate(this);
-#endif
+    this->isRestored = false;   
+
 
 	return true;
 }
 
-void InfoScene::onExit()
+void InfoScene::onExitTransitionDidStart()
 {
 #ifdef LITE_VER
+	CCLOG("InfoScene::onExitTransitionDidStart()");
 	CMKStoreManager::Instance()->SetDelegate(NULL);
 	CMKStoreManager::Instance()->ToggleIndicator(false);
 #endif

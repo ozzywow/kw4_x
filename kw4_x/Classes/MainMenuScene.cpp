@@ -5,7 +5,6 @@
 #include "PointManager.h"
 #include "AppleTreeScene.h"
 #include "InfoScene.h"
-#include "MKStoreManager_cpp.h"
 
 
 MainMenuScene::MainMenuScene()
@@ -26,6 +25,8 @@ bool MainMenuScene::init()
 	{
 		return false;
 	}
+
+	CCLOG("MainMenuScene::init()");
 
 	LayerColor* layer = LayerColor::create();	
 	layer->initWithColor(Color4B(255, 255, 255, 255));
@@ -65,9 +66,10 @@ bool MainMenuScene::init()
 	this->addChild(mainMenu, 0, 0);
 
 
-#ifdef LITE_VER
+#ifdef LITE_VER	
 	if (false == PointManager::Instance()->GetCartWithPID(PID_TOTAL))
 	{
+
 		MenuItemImage* itemApp = MenuItemImage::create("UI4HD/kw_banner-hd.png", "UI4HD/kw_banner-hd.png", CC_CALLBACK_1(MainMenuScene::cfFullVersion, this));
 
 		Menu* appMenu = Menu::create(itemApp, NULL);
@@ -101,22 +103,17 @@ bool MainMenuScene::init()
 		this->addChild(pCharacterSprite, 3, 3);
 		pCharacterSprite->setPosition(Point(frameSize.width*0.8f, frameSize.height*0.6f));
 	}
-
-	CMKStoreManager::Instance()->SetDelegate(this);
-
-
 #endif
+
+
 	return true;
 
 }
 
 
-void MainMenuScene::onExit()
+void MainMenuScene::onExitTransitionDidStart()
 {
-#ifdef LITE_VER
-	CMKStoreManager::Instance()->SetDelegate(NULL);
-	CMKStoreManager::Instance()->ToggleIndicator(false);
-#endif
+	CCLOG("MainMenuScene::onExitTransitionDidStart()");
 }
 
 void MainMenuScene::callbackOnPushedNewGameMenuItem(Ref* pSender)

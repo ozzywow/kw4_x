@@ -33,8 +33,8 @@ public:
 
 
 
-	virtual bool init();
-	virtual void onExit();
+	virtual bool init();	
+	virtual void onExitTransitionDidStart();
 
 	void DrawItemBox();
 	void ReflushSelectedMenuItem(int selectedLevel);

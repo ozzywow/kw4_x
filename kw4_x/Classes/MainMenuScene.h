@@ -18,8 +18,8 @@ public:
 	MainMenuScene();
 	~MainMenuScene();
 
-	virtual bool init();
-	virtual void onExit();
+	virtual bool init();	
+	virtual void onExitTransitionDidStart();
 
 	void callbackOnPushedNewGameMenuItem(Ref* pSender);	
 	void callbackOnPushedControlGameMenuItem(Ref* pSender);
