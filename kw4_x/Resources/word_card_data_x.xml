@@ -1228,7 +1228,7 @@
 	<wordCard>
 		<word>쏴르르</word>
 		<level>5</level>
-		<text>샤워기에서 물이/n ??? P아져요.</text>
+		<text>샤워기에서 물이/n ??? 쏟아져요.</text>
 	</wordCard>
 	<wordCard>
 		<word>쓱싹쓱싹</word>
@@ -1676,7 +1676,7 @@
 		<text>물에 빠져서 /n???? 거려요.</text>
 	</wordCard>
 	<wordCard>
-		<word>후우적</word>
+		<word>허우적</word>
 		<level>5</level>
 		<text>물에 빠진 아이가/n ??? 거려요.</text>
 	</wordCard>
