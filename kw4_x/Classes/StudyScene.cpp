@@ -11,11 +11,6 @@
 #include "TouchedHandleLayer.h"
 
 
-
-
-
-
-
 StudyScene::StudyScene()
 {
 	m_timeFuncAction = NULL;
@@ -30,11 +25,11 @@ StudyScene::~StudyScene()
 	//	m_timeFuncAction = NULL;
 	//}
 
-	if (m_lavar)
-	{
-		m_lavar->release();
-		m_lavar = NULL;
-	}
+// 	if (m_lavar)
+// 	{
+// 		m_lavar->release();
+// 		m_lavar = NULL;
+// 	}
 }
 
 bool StudyScene::init()
@@ -57,6 +52,7 @@ bool StudyScene::init()
 
 void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 {
+	CCLOG("worldName:%s, level:%d, text:%s", worldName.c_str(), level, text.c_str());
 	
 	/////////////////////////////////////////////	
 	InitRandNum();
@@ -82,7 +78,7 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 		}
 		
 
-		// TODO : ÀÇ¼º¾î,ÀÇÅÂ¾î ¹öÁ¯ÀÏ °æ¿ì ¿¹¹® Ãâ·Â
+		// TODO : ì˜ì„±ì–´,ì˜íƒœì–´ ë²„ì ¼ì¼ ê²½ìš° ì˜ˆë¬¸ ì¶œë ¥
 		Point posOfTextLabel(FRAME_WIDTH*0.5f, H_OFFSET+(FRAME_HEIGHT*0.6f)); //position of create
 		int sizeOfTextFont = FRAME_WIDTH*0.08f;
 
@@ -94,10 +90,11 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 		//text = [text stringByReplacingOccurrencesOfString : @"/n" withString:@"\n"];
 		//[[NSString stringWithUTF8String:(char *)sqlite3_column_text(statement, 0)] stringByReplacingCharactersInRange:@"/n" withString:@"\n"];
 		text = replace_all(text, "/n", "\n");				
-		auto answerShadow = Label::createWithSystemFont(text, "Arial", sizeOfTextFont, sizeOfTextBox, TextHAlignment::CENTER);
-		answerShadow->setPosition(posOfTextLabel);
-		answerShadow->setColor(Color3B(0, 0, 0));
-		this->addChild(answerShadow, kGameSceneTagAnswerShadow);
+		PrintStyle(this, text, sizeOfTextFont, posOfTextLabel);
+// 		auto answerShadow = Label::createWithSystemFont(text, "Arial", sizeOfTextFont, sizeOfTextBox, TextHAlignment::CENTER);
+// 		answerShadow->setPosition(posOfTextLabel);
+// 		answerShadow->setColor(Color3B(0, 0, 0));
+// 		this->addChild(answerShadow, kGameSceneTagAnswerShadow);
 	}
 	else
 	{
@@ -143,10 +140,11 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 	this->addChild(mainMenu, kGameSceneTagFuncBtn, kGameSceneTagFuncBtn);
 
 	
-	// XML Data ¿¡¼­ ÀĞÀº ÆÄÀÏÀÌ¸§À¸·Î ±×¸²À» ¶ç¿î´Ù.	
+	// XML Data ì—ì„œ ì½ì€ íŒŒì¼ì´ë¦„ìœ¼ë¡œ ê·¸ë¦¼ì„ ë„ìš´ë‹¤.	
 	Sprite* image = Sprite::create(m_fileName);
 	if (image == NULL)
 	{
+		CCLOG("can not found image file (%s)", m_fileName.c_str());
 		PointManager::Instance()->CheckMast(m_wordName);
 		return ;
 	}
@@ -172,7 +170,7 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 
 	
 
-	// ÅØ½ºÆ® ¹øÆ°À» ¸¸µé¾î¼­ ³Ö´Â´Ù.
+	// í…ìŠ¤íŠ¸ ë²ˆíŠ¼ì„ ë§Œë“¤ì–´ì„œ ë„£ëŠ”ë‹¤.
 	auto btn = Sprite::create("UI4HD/wordBG-hd.png");
 	auto btnSize = btn->getContentSize();
 	int buttonSize = btnSize.width;
@@ -190,7 +188,7 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 		}
 	}
 
-	// Á¤´ä¹®ÀÚ¸¦ ·£´ıÇÑ À§Ä¡¿¡ ¹Ú¾Æ³Ö´Â´Ù.
+	// ì •ë‹µë¬¸ìë¥¼ ëœë¤í•œ ìœ„ì¹˜ì— ë°•ì•„ë„£ëŠ”ë‹¤.
 	for (int i = 0; i<lenth; ++i)
 	{
 		int randID = GetRandNum();
@@ -203,14 +201,14 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 	}
 
 
-	// Á¤´ä¹®ÀÚ¸¦ À§Ä¡½ÃÅ³ ºó»óÀÚÀÇ ¹è¿­
+	// ì •ë‹µë¬¸ìë¥¼ ìœ„ì¹˜ì‹œí‚¬ ë¹ˆìƒìì˜ ë°°ì—´
 	int offsetAnswerX = FRAME_WIDTH * 0.145f;
 	int offsetAnswerY = H_OFFSET + (FRAME_HEIGHT* 0.28f);
 	for (int i = 0; i< 4; ++i)
 	{
 		arrayPoint[i] = Point((buttonSize*i)+((buttonSize*i)*0.28f) + offsetAnswerX, (buttonSize + offsetAnswerY));
 
-		// Á¤´äÄ­¿¡ Å×µÎ¸® Ä£´Ù.
+		// ì •ë‹µì¹¸ì— í…Œë‘ë¦¬ ì¹œë‹¤.
 		if (i < lenth)
 		{
 			auto wordFrame = Sprite::create("UI4HD/wordBG_Frame-hd.png");
@@ -221,7 +219,7 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 
 
 
-	// ÅÍÄ¡ ÀÌº¥Æ®¸¦ ´ã´çÇÒ Layer¸¦ ¸¸µç ÈÄ GameScene¿¡ ³Ö½À´Ï´Ù.
+	// í„°ì¹˜ ì´ë²¤íŠ¸ë¥¼ ë‹´ë‹¹í•  Layerë¥¼ ë§Œë“  í›„ GameSceneì— ë„£ìŠµë‹ˆë‹¤.
 	TouchedHandleLayer* touchHandlerLayer = TouchedHandleLayer::create(this);
 	this->addChild(touchHandlerLayer, kGameSceneTagTouchHandlingLayer, kGameSceneTagTouchHandlingLayer);
 	touchHandlerLayer->OnEnter();
@@ -232,17 +230,25 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 	}
 
 
-	if (0 == (rand() % 25))	
+	if (0 == (rand() % 10))	
 	{
 		this->TimeRun(10);
 	}
 	
 
-	//»ç¿îµå¸¦ Ãâ·ÂÇÑ´Ù.	
-	auto delay = DelayTime::create(0.8f);
-	auto callFunc = CallFunc::create(CC_CALLBACK_0(StudyScene::PlayWordSound, this));
-	auto actions = Sequence::create(delay, callFunc, NULL);
-	this->runAction(actions);
+	if (this->m_level < 5)
+	{
+		//ì‚¬ìš´ë“œë¥¼ ì¶œë ¥í•œë‹¤.	
+		auto delay = DelayTime::create(0.5);
+		auto callFunc = CallFunc::create(CC_CALLBACK_0(StudyScene::PlayWordSound, this));
+		auto actions = Sequence::create(delay, callFunc, NULL);
+		this->runAction(actions);
+	}
+
+#ifdef TEST_MODE
+	//testcode
+	OnPassed();
+#endif //TEST_MODE
 
 }
 
@@ -272,18 +278,22 @@ void		StudyScene::OnPassed()
 		invervalTime = 4.0;
 	}
 
+#ifdef TEST_MODE
+	invervalTime = 0.5;
+#endif //TEST_MODE
+
 	//////////////////////////////////////////////
-	// ¾À ¾×¼ÇÇÔ¼ö
+	// ì”¬ ì•¡ì…˜í•¨ìˆ˜
 	auto action = [&](const std::function<void()> func)
 	{
-		// ¾Æ·¡ ¾×¼Ç¿¡ ´ëÇÑ ¼³¸í..
-		// 1. ½Ã°£ µô·¹ÀÌÇÏ°í
+		// ì•„ë˜ ì•¡ì…˜ì— ëŒ€í•œ ì„¤ëª…..
+		// 1. ì‹œê°„ ë”œë ˆì´í•˜ê³ 
 		DelayTime* delay = DelayTime::create(invervalTime);
-		// 2. ÇÔ¼ö¸¦ È£Ãâ
+		// 2. í•¨ìˆ˜ë¥¼ í˜¸ì¶œ
 		CallFunc* callFunc = CallFunc::create(func);
-		// 3. 1, 2 ¾×¼ÇÀ» ÇÏ³ªÀÇ ½ÃÄö½º·Î ¹­¾î¼­
+		// 3. 1, 2 ì•¡ì…˜ì„ í•˜ë‚˜ì˜ ì‹œí€€ìŠ¤ë¡œ ë¬¶ì–´ì„œ
 		Sequence* squence = Sequence::create(delay, callFunc, NULL);
-		// 4. ¾×¼Ç È£Ãâ!!
+		// 4. ì•¡ì…˜ í˜¸ì¶œ!!
 		this->runAction(squence);
 	};
 	//////////////////////////////////////////////
@@ -304,12 +314,22 @@ void		StudyScene::OnPassed()
 		m_lavar->stopAllActions();
 
 
+#ifdef TEST_MODE
+		action(CC_CALLBACK_0(StudyScene::TurnPage, this));
+#else //TEST_MODE
 		action(CC_CALLBACK_0(StudyScene::GoAppleTreeScene, this));
+#endif //TEST_MODE
+		
+		
 
 	}
 	else if (point == 0)
 	{
+#ifdef TEST_MODE
+		action(CC_CALLBACK_0(StudyScene::TurnPage, this));
+#else //TEST_MODE
 		action(CC_CALLBACK_0(StudyScene::GoAppleTreeScene, this));
+#endif //TEST_MODE
 	}
 	else
 	{
@@ -325,19 +345,19 @@ void		StudyScene::OnSkip()
 	this->ShowHint();
 
 
-	//Æ÷ÀÎÆ®¸¦ ÃÊ±âÈ­½ÃÅ´
+	//í¬ì¸íŠ¸ë¥¼ ì´ˆê¸°í™”ì‹œí‚´
 	PointManager* pointManager = PointManager::Instance();
 	pointManager->SetPoint(0);
 
 
-	// ¾Æ·¡ ¾×¼Ç¿¡ ´ëÇÑ ¼³¸í..
-	// 1. ½Ã°£ µô·¹ÀÌÇÏ°í
+	// ì•„ë˜ ì•¡ì…˜ì— ëŒ€í•œ ì„¤ëª…..
+	// 1. ì‹œê°„ ë”œë ˆì´í•˜ê³ 
 	DelayTime* delay = DelayTime::create(2.0);
-	// 2. ÇÔ¼ö¸¦ È£Ãâ
+	// 2. í•¨ìˆ˜ë¥¼ í˜¸ì¶œ
 	CallFunc* callFunc = CallFunc::create(CC_CALLBACK_0(StudyScene::TurnPage, this));
-	// 3. 1, 2 ¾×¼ÇÀ» ÇÏ³ªÀÇ ½ÃÄö½º·Î ¹­¾î¼­
+	// 3. 1, 2 ì•¡ì…˜ì„ í•˜ë‚˜ì˜ ì‹œí€€ìŠ¤ë¡œ ë¬¶ì–´ì„œ
 	Sequence* squence = Sequence::create(delay, callFunc, NULL);
-	// 4. ¾×¼Ç È£Ãâ!!
+	// 4. ì•¡ì…˜ í˜¸ì¶œ!!
 	this->runAction(squence);
 	
 }
@@ -411,7 +431,7 @@ void		StudyScene::DrowApple(bool showEffect, bool isRedrow)
 	const int sizeOfCountFont = FRAME_WIDTH*0.065f;
 	
 
-	//BIG»ç°ú¸¦ ±×·ÁÁØ´Ù.
+	//BIGì‚¬ê³¼ë¥¼ ê·¸ë ¤ì¤€ë‹¤.
 	Sprite* bigapple = Sprite::create("UI4HD/appleScore-hd.png");
 	bigapple->setPosition(posOfBigApple);
 	const Point posOfCountFont(bigapple->getContentSize().width*0.5f, bigapple->getContentSize().height*0.22f);
@@ -426,7 +446,7 @@ void		StudyScene::DrowApple(bool showEffect, bool isRedrow)
 	bigapple->addChild(specialPoint);
 	this->addChild(bigapple, kGameSceneTagAppleSpecial, kGameSceneTagAppleSpecial);
 
-	//»ç°ú¸¦ ±×·ÁÁØ´Ù.
+	//ì‚¬ê³¼ë¥¼ ê·¸ë ¤ì¤€ë‹¤.
 	float appleOffset = FRAME_WIDTH*0.1f;
 	int point = PointManager::Instance()->GetPoint();
 	if (point > 0)
@@ -613,9 +633,9 @@ void StudyScene::callbackOnPushedHintBtnItem(Ref* sender)
 		soundFactory->play(SOUND_FILE_dingling_effect);
 	}
 
-	// Æ÷ÀÎÆ® ±î±â
+	// í¬ì¸íŠ¸ ê¹Œê¸°
 	int currPoint = PointManager::Instance()->DelPoint(m_level);
-	// »ç°ú Áö¿ì±â
+	// ì‚¬ê³¼ ì§€ìš°ê¸°
 	this->removeChildByTag(kGameSceneTagApplePoint + currPoint, true);
 }
 
@@ -630,14 +650,14 @@ void StudyScene::callbackOnPushedBuyMenuItem(Ref* sender)
 
 void		StudyScene::popCallback_Ok(Ref* pSender)
 {
-	UIPopupWindow *pPopup = (UIPopupWindow *)pSender; //ÇöÀç ÆË¾÷¿¡ ´ëÇÑ Å¬·¡½º·Î Ä³½ºÆÃ 
+	UIPopupWindow *pPopup = (UIPopupWindow *)pSender; //í˜„ì¬ íŒì—…ì— ëŒ€í•œ í´ë˜ìŠ¤ë¡œ ìºìŠ¤íŒ… 
 
-	// ¿©±â¿¡¼­ Äİ¹é ¹ŞÀ»¶§ ¾î¶² ¹öÆ°ÀÌ Å¬¸¯µÆ´ÂÁö ¾Ë¼öÀÖÀ¸¸é ÁÁ°ÚÁÒ?												  
+	// ì—¬ê¸°ì—ì„œ ì½œë°± ë°›ì„ë•Œ ì–´ë–¤ ë²„íŠ¼ì´ í´ë¦­ëëŠ”ì§€ ì•Œìˆ˜ìˆìœ¼ë©´ ì¢‹ê² ì£ ?												  
 	int nTag = pPopup->getResult();
-	//È¤Àº Äİ¹éÀ» ´Ù¸£°Ô ¼±¾÷ÇÏ¼Åµµ µË´Ï´Ù. ±×°Ç ¿©·¯ºĞ ¸òÀ¸·Î Äİ¹é2 ÀÖÀ¸´Ï Âü°íÇØ¼­ ¸¸µå½É ‰Ï´Ï´Ù
+	//í˜¹ì€ ì½œë°±ì„ ë‹¤ë¥´ê²Œ ì„ ì—…í•˜ì…”ë„ ë©ë‹ˆë‹¤. ê·¸ê±´ ì—¬ëŸ¬ë¶„ ëª«ìœ¼ë¡œ ì½œë°±2 ìˆìœ¼ë‹ˆ ì°¸ê³ í•´ì„œ ë§Œë“œì‹¬ ëë‹ˆë‹¤
 	if (nTag == 1)
 	{
-		//´İ±â ¹öÆ° ÀÌ´Ù~~
+		//ë‹«ê¸° ë²„íŠ¼ ì´ë‹¤~~
 	}
-	pPopup->closePopup(); //ÆË¾÷À» ´İ½À´Ï´Ù. !! ÆË¾÷À» ´İÀ»½Ã ÇÊÈ÷ È£ÃâÇØÁÖ¼¼¿ä ÀÌ°Å ¾ÈÇØÁÖ¸é ÆË¾÷Ã¢ ¾È»ç¶óÁı´Ï´Ù.  
+	pPopup->closePopup(); //íŒì—…ì„ ë‹«ìŠµë‹ˆë‹¤. !! íŒì—…ì„ ë‹«ì„ì‹œ í•„íˆ í˜¸ì¶œí•´ì£¼ì„¸ìš” ì´ê±° ì•ˆí•´ì£¼ë©´ íŒì—…ì°½ ì•ˆì‚¬ë¼ì§‘ë‹ˆë‹¤.  
 }
