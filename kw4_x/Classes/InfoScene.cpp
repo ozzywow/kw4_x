@@ -532,6 +532,7 @@ void InfoScene::callbackOnPushedRestoreMenuItem(Ref* sender)
 
 void InfoScene::popCallback_ResetOk(Ref* pSender)
 {
+
 	UIPopupWindow *pPopup = (UIPopupWindow *)pSender; //현재 팝업에 대한 클래스로 캐스팅 
 
 													  // 여기에서 콜백 받을때 어떤 버튼이 클릭됐는지 알수있으면 좋겠죠?												  
@@ -539,6 +540,7 @@ void InfoScene::popCallback_ResetOk(Ref* pSender)
 	//혹은 콜백을 다르게 선업하셔도 됩니다. 그건 여러분 몫으로 콜백2 있으니 참고해서 만드심 됍니다
 	if (nTag == 1)
 	{		
+		ReflushSelectedMenuItem(1);
 		PointManager::Instance()->ResetMast();
 		CharacterFactory::Instance()->resetData();
 	}

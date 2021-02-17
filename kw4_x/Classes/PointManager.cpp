@@ -292,7 +292,22 @@ int		PointManager::GetTotalCount()
 
 void	PointManager::SetLevel(int level)
 {
+	if (_level == level) 
+	{
+		return;
+	}
 	_level = level;
+	m_currStage = 0;
+
+	for (int i = level; i <= 5; ++i)
+	{
+		auto cardsByLevel = m_mCardsByLevel[i];
+		for (auto itr = cardsByLevel.begin(); itr != cardsByLevel.end(); ++itr)
+		{
+			m_mMastWords[itr->word] = false;
+		}
+	}
+	
 }
 
 int		PointManager::GetLevel()
@@ -379,13 +394,17 @@ void	PointManager::GetNextScene(bool isEnter, bool isNextStage)
 	
 	std::string wordName;
 	std::string text;
-	int level = 0;
+	int level = _level;
 	bool isGotNextScene = false;
-
-	for (int l = 1; l <= 5; ++l)
+	if (level < 1 || level>5)
+	{
+		level = 1;
+	}
+	
+	for (int l = level; l <= 5; ++l)
 	{
 		vtWordCards& cardListByLevel = m_mCardsByLevel[l];
-		for (int i = m_currStage ; i< cardListByLevel.size(); ++i)
+		for (int i = m_currStage; i < cardListByLevel.size(); ++i)
 		{
 			WordCard& wordCard = cardListByLevel[i];
 			wordName = wordCard.word;
@@ -396,19 +415,19 @@ void	PointManager::GetNextScene(bool isEnter, bool isNextStage)
 
 			text = wordCard.text;
 			level = wordCard.level;
-			if (level != l)
-			{
-				continue;
-			}
-			
-			isGotNextScene = true;			
+
+
+			isGotNextScene = true;
 			m_currStage = i;
 			break;
 		}
 
-		if (isGotNextScene) { break; }
+		if (isGotNextScene)
+		{
+			break;
+		}
+		m_currStage = 0;
 	}
-
 	
 
 	if (false == isGotNextScene)
@@ -418,6 +437,10 @@ void	PointManager::GetNextScene(bool isEnter, bool isNextStage)
 		TransitionSlideInL* sceneSlide = TransitionSlideInL::create(0.2f, appleScene);
 		auto director = Director::getInstance();
 		director->replaceScene(sceneSlide);
+
+		_level = 1;
+		m_currStage = 0;
+		m_mMastWords.clear();
 
 		return;
 	}
@@ -487,7 +510,7 @@ void	PointManager::GetNextScene(bool isEnter, bool isNextStage)
 
 void	PointManager::GetPrevSecene()
 {
-	// ì²« í˜ì´ì§€ì—ì„œ ì´ì „ë²„íŠ¼ì´ ëˆŒë ¤ì§€ë©´ í™ˆìœ¼ë¡œ ê°„ë‹¤.
+	// Ã¹ ÆäÀÌÁö¿¡¼­ ÀÌÀü¹öÆ°ÀÌ ´­·ÁÁö¸é È¨À¸·Î °£´Ù.
 	if (m_currStage == 0)
 	{
 		auto mainScene = MainMenuScene::createScene();		
@@ -553,4 +576,3 @@ bool	PointManager::GetCartWithPID(int pid)
 	return m_vCart[pid];
 }
 
- 
