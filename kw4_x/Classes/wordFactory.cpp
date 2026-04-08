@@ -11,9 +11,8 @@ WordFactory::WordFactory()
 	fclose(fp);
 
 	m_hanWordFactory = buffer;
-	m_hanWordFactory = UTF8(m_hanWordFactory);
-	std::string initStr("");	
-	initStr = UTF8(initStr);
+	// word_factory.txt is UTF-8; no conversion needed
+	std::string initStr("");
 	m_emptyLayer = TextLayer::createWithWordText(NULL, Point(0, 0), initStr);
 }
 

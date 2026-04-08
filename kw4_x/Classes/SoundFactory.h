@@ -1,4 +1,4 @@
-#include <SimpleAudioEngine.h>
+ï»¿#include <SimpleAudioEngine.h>
 #include "Singleton.h"
 
 #pragma once
@@ -22,10 +22,10 @@
 
 
 //voice
-#define SOUND_FILE_intro_voice			"Sound/intro.mp3"		//¿ì¸®¾ÆÀÌ ÇÑ±Û¶¼±â
+#define SOUND_FILE_intro_voice			"Sound/intro.mp3"		//ìš°ë¦¬ì•„ì´ í•œê¸€ë–¼ê¸°
 #define SOUND_FILE_goodjob_voice		"Sound/goodjob.m4a"
 #define SOUND_FILE_excellent_voice		"Sound/excellent.m4a"
-#define SOUND_FILE_fighting_voice		"Sound/fighting.mp3"	// ½ÃÀÛ
+#define SOUND_FILE_fighting_voice		"Sound/fighting.mp3"	// ì‹œìž‘
 
 #define PRELOAD_SOUND_FILE(fileName)		CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect(fileName)
 #define UNLOAD_SOUND_FILE(fileName)			CocosDenshion::SimpleAudioEngine::getInstance()->unloadEffect(fileName)

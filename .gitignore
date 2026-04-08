@@ -1,0 +1,15 @@
+# Build output
+kw4_x/build_win32/
+
+# cocos2d-x engine (large, download separately)
+cocos2d-x/
+
+# Claude Code internal
+.claude/
+
+# Microsoft proprietary font (copy from C:/Windows/Fonts/malgun.ttf)
+kw4_x/Resources/fonts/malgun.ttf
+
+# OS
+.DS_Store
+Thumbs.db

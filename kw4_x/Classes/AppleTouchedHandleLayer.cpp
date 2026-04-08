@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "AppleTouchedHandleLayer.h"
 #include "AppleTreeScene.h"
 #include "Character.h"
@@ -24,14 +24,14 @@ Sprite* AppleTouchedHandleLayer::GetTouchedLayer(Point location)
 		Sprite* touchedLayer = *itr;
 		if (NULL == touchedLayer) break;
 
-		// ³×¸ð spriteÀÇ »çÀÌÁîÀÇ ¹ÝÀ» °è»êÇÕ´Ï´Ù.
+		// ë„¤ëª¨ spriteì˜ ì‚¬ì´ì¦ˆì˜ ë°˜ì„ ê³„ì‚°í•©ë‹ˆë‹¤.
 
 		float halfWidth = touchedLayer->getContentSize().width / 2.0;
 		float halfHeight = touchedLayer->getContentSize().height / 2.0;
 
 
 		Point pos = touchedLayer->getPosition();
-		// ÅÍÄ¡µÈ À§Ä¡°¡ ³×¸ð ¾È¿¡ µé¾î¿À´Â Áö °è»êÇÕ´Ï´Ù.
+		// í„°ì¹˜ëœ ìœ„ì¹˜ê°€ ë„¤ëª¨ ì•ˆì— ë“¤ì–´ì˜¤ëŠ” ì§€ ê³„ì‚°í•©ë‹ˆë‹¤.
 		if (location.x < (pos.x + halfWidth) &&
 			location.x >(pos.x - halfWidth) &&
 			location.y > (pos.y - halfHeight) &&
@@ -57,7 +57,7 @@ bool AppleTouchedHandleLayer::onTouchBegan(Touch* touch, Event* unused_event)
 	Point location = touch->getLocation();	
 
 
-	// ÅØ½ºÆ®¹öÆ°ÀÌ ÅÍÄ¡µÇ¾ú´ÂÁö °Ë»çÇÑ´Ù.
+	// í…ìŠ¤íŠ¸ë²„íŠ¼ì´ í„°ì¹˜ë˜ì—ˆëŠ”ì§€ ê²€ì‚¬í•œë‹¤.
 	Sprite* touchedLayer = GetTouchedLayer(location);
 	if (NULL == touchedLayer)
 	{
@@ -99,14 +99,14 @@ void AppleTouchedHandleLayer::onTouchEnded(Touch* touch, Event *unused_event)
 		Character* pCharacter = (Character*)_touchedHandlerLayer->getUserData();
 		if (pCharacter == NULL) return;
 
-		// »ç°úÀÌ¸é..
+		// ì‚¬ê³¼ì´ë©´..
 		if (pCharacter->type == CT_APPLE || pCharacter->type == CT_FLY)
 		{
 
 			pCharacter->posX = (int)location.x;
 			pCharacter->posY = (int)location.y;
 		}
-		// ¾Ö¹ú·¹¸é..
+		// ì• ë²Œë ˆë©´..
 		else if (pCharacter->type == CT_LAVER)
 		{
 
@@ -127,7 +127,7 @@ void AppleTouchedHandleLayer::onTouchEnded(Touch* touch, Event *unused_event)
 					_appleTreeScene->ChangeBiteCount(_touchedLayerID);
 				}
 
-				// »ç°ú¸¦ Áö¿î´Ù.
+				// ì‚¬ê³¼ë¥¼ ì§€ìš´ë‹¤.
 				Character* pApple = pCharacterFactory->GetCharacterWithID(biteAppleID);
 				if (pApple)
 				{
