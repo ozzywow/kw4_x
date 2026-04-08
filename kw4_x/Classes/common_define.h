@@ -128,9 +128,16 @@ static std::string replace_all(
 
 
 
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+static inline unsigned long timeGetTimeEx()
+{
+	return (unsigned long)GetTickCount();
+}
+#else
 static inline unsigned long timeGetTimeEx()
 {
 	struct timeval tv;
 	gettimeofday(&tv, 0);
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
+#endif

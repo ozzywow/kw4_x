@@ -1,4 +1,4 @@
-#pragma execution_character_set("utf-8")
+ï»¿#pragma execution_character_set("utf-8")
 
 #include<iostream>
 #include "stdafx.h"
@@ -510,7 +510,7 @@ void	PointManager::GetNextScene(bool isEnter, bool isNextStage)
 
 void	PointManager::GetPrevSecene()
 {
-	// Ã¹ ÆäÀÌÁö¿¡¼­ ÀÌÀü¹öÆ°ÀÌ ´­·ÁÁö¸é È¨À¸·Î °£´Ù.
+	// ì²« í˜ì´ì§€ì—ì„œ ì´ì „ë²„íŠ¼ì´ ëˆŒë ¤ì§€ë©´ í™ˆìœ¼ë¡œ ê°„ë‹¤.
 	if (m_currStage == 0)
 	{
 		auto mainScene = MainMenuScene::createScene();		

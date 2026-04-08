@@ -1,4 +1,4 @@
-#include "stdafx.h"
+Ôªø#include "stdafx.h"
 
 #include "MainMenuScene.h"
 #include "SoundFactory.h"
@@ -149,7 +149,7 @@ void MainMenuScene::callbackOnPushedAppleTreeGameMenuItem(Ref* pSender)
 void MainMenuScene::callbackOnPushedBuyGameMenuItem(Ref* pSender)
 {
 	//BuyScene* buyScene = [[BuyScene node] init];
-	//[[CCDirector sharedDirector] replaceScene:[CCTransitionSlideInL transitionWithDuration : 0.2 scene : buyScene]];	//ΩΩ∂Û¿ÃµÂ
+	//[[CCDirector sharedDirector] replaceScene:[CCTransitionSlideInL transitionWithDuration : 0.2 scene : buyScene]];	//Ïä¨ÎùºÏù¥Îìú
 }
 
 
