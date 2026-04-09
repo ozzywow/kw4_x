@@ -41,7 +41,8 @@ bool AppleTreeScene::initWithVal(bool isPlay)
 	auto glview = director->getOpenGLView();
 	//frameSize = glview->getFrameSize();
 	frameSize = glview->getDesignResolutionSize();
-	float H_OFFSET = (frameSize.height - FRAME_HEIGHT)*0.5;
+	const float ACTIVE_HEIGHT = CalcActiveHeight(frameSize.height);
+	const float H_OFFSET = CalcHOffset(frameSize.height);
 
 	Sprite* background = Sprite::create("UI4HD/tree_bg-hdx.png");
 	background->setAnchorPoint(Point::ANCHOR_MIDDLE);
@@ -59,7 +60,7 @@ bool AppleTreeScene::initWithVal(bool isPlay)
 	}
 
 
-	const Point posOfMenu(FRAME_WIDTH*0.2f, H_OFFSET+(FRAME_HEIGHT*0.9f));
+	const Point posOfMenu(FRAME_WIDTH*0.2f, H_OFFSET+(ACTIVE_HEIGHT*0.9f));
 
 	Menu* mainMenu = Menu::create(homeBtnItem, NULL);
 	mainMenu->alignItemsHorizontallyWithPadding(0);

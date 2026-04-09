@@ -19,17 +19,6 @@ StudyScene::StudyScene()
 }
 StudyScene::~StudyScene()
 {
-	//if (m_timeFuncAction)
-	//{
-	//	m_timeFuncAction->release();
-	//	m_timeFuncAction = NULL;
-	//}
-
-// 	if (m_lavar)
-// 	{
-// 		m_lavar->release();
-// 		m_lavar = NULL;
-// 	}
 }
 
 bool StudyScene::init()
@@ -44,7 +33,7 @@ bool StudyScene::init()
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();	
 	frameSize = glview->getDesignResolutionSize();
-	H_OFFSET = (frameSize.height - FRAME_HEIGHT)*0.5;
+	H_OFFSET = CalcHOffset(frameSize.height);
 	
 
 	return true;
@@ -53,65 +42,37 @@ bool StudyScene::init()
 void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 {
 	CCLOG("worldName:%s, level:%d, text:%s", worldName.c_str(), level, text.c_str());
-	
-	/////////////////////////////////////////////	
+
 	InitRandNum();
-	//arrayTextLayer = [[NSMutableArray alloc] init];
-	// arrayAnswerLayer = [[NSMutableArray alloc] init];
 
 	TextLayer* pEmptyLayer = WordFactory::Instance()->GetEmptyLayer();
 	m_wordQueue.assign(4, pEmptyLayer);
 	
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();
+	const float ACTIVE_HEIGHT = CalcActiveHeight(frameSize.height);
+	// 짧은 디바이스(iPad/데스크탑)는 -hd.png(960px), 긴 디바이스는 -hdx.png(1136px) 사용.
+	// 이후 design space(frameSize)에 맞게 스케일하여 상하 잘림 방지.
+	bool useHdx = (frameSize.height >= FRAME_HEIGHT);
 	Sprite* backGround = NULL;
 	if (level == 5)
 	{
-		Sprite* background = NULL;
-		if (ResolutionPolicy::FIXED_WIDTH == glview->getResolutionPolicy())
-		{
-			backGround = Sprite::create("UI4HD/playScene_5-hdx.png");
-		}
-		else
-		{
-			backGround = Sprite::create("UI4HD/playScene_5-hd.png");
-		}
-		
+		backGround = Sprite::create(useHdx ? "UI4HD/playScene_5-hdx.png" : "UI4HD/playScene_5-hd.png");
 
-		// TODO : �Ǽ���,���¾� ������ ��� ���� ���
-		Point posOfTextLabel(FRAME_WIDTH*0.5f, H_OFFSET+(FRAME_HEIGHT*0.6f)); //position of create
+		Point posOfTextLabel(FRAME_WIDTH*0.5f, H_OFFSET+(ACTIVE_HEIGHT*0.6f));
 		int sizeOfTextFont = FRAME_WIDTH*0.08f;
-
-		// lable of shadow
-		Size sizeOfTextBox;
-		sizeOfTextBox.width = FRAME_WIDTH;
-		sizeOfTextBox.height = H_OFFSET + (FRAME_HEIGHT*0.3f);
-
-		//text = [text stringByReplacingOccurrencesOfString : @"/n" withString:@"\n"];
-		//[[NSString stringWithUTF8String:(char *)sqlite3_column_text(statement, 0)] stringByReplacingCharactersInRange:@"/n" withString:@"\n"];
-		text = replace_all(text, "/n", "\n");				
+		text = replace_all(text, "/n", "\n");
 		PrintStyle(this, text, sizeOfTextFont, posOfTextLabel);
-// 		auto answerShadow = Label::createWithSystemFont(text, "Arial", sizeOfTextFont, sizeOfTextBox, TextHAlignment::CENTER);
-// 		answerShadow->setPosition(posOfTextLabel);
-// 		answerShadow->setColor(Color3B(0, 0, 0));
-// 		this->addChild(answerShadow, kGameSceneTagAnswerShadow);
 	}
 	else
 	{
-		if (ResolutionPolicy::FIXED_WIDTH == glview->getResolutionPolicy())
-		{
-			backGround = Sprite::create("UI4HD/playScene-hdx.png");
-		}
-		else
-		{
-			backGround = Sprite::create("UI4HD/playScene-hd.png");
-		}
-		
+		backGround = Sprite::create(useHdx ? "UI4HD/playScene-hdx.png" : "UI4HD/playScene-hd.png");
 	}
-
 
 	backGround->setAnchorPoint(Point::ANCHOR_MIDDLE);
 	backGround->setPosition(frameSize.width*0.5f, frameSize.height*0.5f);
+	backGround->setScaleX(frameSize.width  / backGround->getContentSize().width);
+	backGround->setScaleY(frameSize.height / backGround->getContentSize().height);
 	this->addChild(backGround, kGameSceneTagBackground, kGameSceneTagBackground);
 
 	m_fileName = StringUtils::format("word_card_pic_h/%s.jpg", worldName.c_str());
@@ -133,14 +94,12 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 	const int sizeOfPadding = 5;
 	Menu* mainMenu = Menu::create(prevBtnItem, nextBtnItem, homeBtnItem, hintBtnItem, NULL);
 	mainMenu->alignItemsHorizontallyWithPadding(sizeOfPadding);
-	const Point posOfTopMenu(FRAME_WIDTH*0.5f, H_OFFSET + (FRAME_HEIGHT*0.95f));
+	const Point posOfTopMenu(FRAME_WIDTH*0.5f, H_OFFSET + (ACTIVE_HEIGHT*0.95f));
 	mainMenu->setAnchorPoint(Point::ANCHOR_MIDDLE_TOP);
 	mainMenu->setPosition(posOfTopMenu);
 
 	this->addChild(mainMenu, kGameSceneTagFuncBtn, kGameSceneTagFuncBtn);
 
-	
-	// XML Data ���� ���� �����̸����� �׸��� ����.	
 	Sprite* image = Sprite::create(m_fileName);
 	if (image == NULL)
 	{
@@ -149,9 +108,22 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 		return ;
 	}
 	image->setAnchorPoint(Point::ANCHOR_MIDDLE_TOP);
-	Point posOfImage(FRAME_WIDTH*0.5f, H_OFFSET + (FRAME_HEIGHT*0.90f));
+	Point posOfImage(FRAME_WIDTH*0.5f, H_OFFSET + (ACTIVE_HEIGHT*0.90f));
 	image->setPosition(posOfImage);
-	
+
+	// 이미지가 정답칸 위 영역(ACTIVE_HEIGHT의 약 60%)을 벗어나지 않도록 스케일 조정
+	{
+		float maxH = ACTIVE_HEIGHT * 0.60f;
+		float maxW = FRAME_WIDTH  * 0.90f;
+		float imgW = image->getContentSize().width;
+		float imgH = image->getContentSize().height;
+		if (imgH > 0 && imgW > 0)
+		{
+			float scale = std::min({ maxH / imgH, maxW / imgW, 1.0f });
+			if (scale < 1.0f)
+				image->setScale(scale);
+		}
+	}
 
 	this->addChild(image, kGameSceneTagImg, kGameSceneTagImg);
 
@@ -161,7 +133,7 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 	this->addChild(faceBtn, kGameSceneTagAvatar, kGameSceneTagAvatar);
 
 
-	const Point posOfLevel(FRAME_WIDTH*0.82f, H_OFFSET + (FRAME_HEIGHT*0.82f));
+	const Point posOfLevel(FRAME_WIDTH*0.82f, H_OFFSET + (ACTIVE_HEIGHT*0.82f));
 	std::string levelLable = StringUtils::format("%d Level", level);
 	levelLable = UTF8(levelLable);
 	PrintStyle(this, levelLable, FRAME_WIDTH*0.07f, posOfLevel);
@@ -170,45 +142,49 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 
 	
 
-	// �ؽ�Ʈ ��ư�� ���� �ִ´�.
+	// 텍스트 버튼을 화면에 뿌린다.
 	auto btn = Sprite::create("UI4HD/wordBG-hd.png");
 	auto btnSize = btn->getContentSize();
-	int buttonSize = btnSize.width;
+	int buttonSize = btnSize.width;  // X 간격은 고정 (가로 640 기준)
+	// Y 간격은 ACTIVE_HEIGHT에 비례 스케일하여 해상도별 균일한 레이아웃 유지
+	float heightRatio = ACTIVE_HEIGHT / FRAME_HEIGHT;
+	float btnSizeY = buttonSize * heightRatio;
 	int offsetWith = FRAME_WIDTH*0.14f;
-	int offsetHeight = H_OFFSET + (FRAME_HEIGHT*0.09f);
+	int offsetHeight = H_OFFSET + (int)(ACTIVE_HEIGHT*0.09f);
 	for (int line = 0; line < 2; ++line)
 	{
 		for (int i = 0; i < 4; i++)
 		{
 			std::string word = WordFactory::Instance()->RandomWord();
-			Point posOfButton((buttonSize*i) + ((buttonSize*i)*0.28f) + offsetWith, (buttonSize*line) + ((buttonSize*line)*0.28f) + offsetHeight);
+			Point posOfButton((buttonSize*i) + ((buttonSize*i)*0.28f) + offsetWith,
+							  (btnSizeY*line) + ((btnSizeY*line)*0.28f) + offsetHeight);
 			TextLayer* tmpLayer = TextLayer::createWithWordText(this, posOfButton, word);
 			m_arrayTextLayer.push_back(tmpLayer);
 			this->addChild(tmpLayer, kGameSceneTagTextBtn, kGameSceneTagTextBtn);
 		}
 	}
 
-	// ���乮�ڸ� ������ ��ġ�� �ھƳִ´�.
+	// 정답문자를 선택한 위치에 꺼내 놓는다.
 	for (int i = 0; i<lenth; ++i)
 	{
 		int randID = GetRandNum();
-		TextLayer *tmpLayer = m_arrayTextLayer[randID];		
+		TextLayer *tmpLayer = m_arrayTextLayer[randID];
 		std::string singleWord = m_wordName.substr(i*3, 3);
 		tmpLayer->setWorldText(singleWord);
 		m_arrayTextLayer.push_back(tmpLayer);
-		
+
 		m_arrayAnswerLayer.push_back(tmpLayer);
 	}
 
 
-	// ���乮�ڸ� ��ġ��ų ������� �迭
+	// 정답문자를 위치시킬 빈자리 배열
 	int offsetAnswerX = FRAME_WIDTH * 0.145f;
-	int offsetAnswerY = H_OFFSET + (FRAME_HEIGHT* 0.28f);
+	int offsetAnswerY = H_OFFSET + (int)(ACTIVE_HEIGHT * 0.28f);
 	for (int i = 0; i< 4; ++i)
 	{
-		arrayPoint[i] = Point((buttonSize*i)+((buttonSize*i)*0.28f) + offsetAnswerX, (buttonSize + offsetAnswerY));
+		arrayPoint[i] = Point((buttonSize*i)+((buttonSize*i)*0.28f) + offsetAnswerX, (int)(btnSizeY + offsetAnswerY));
 
-		// ����ĭ�� �׵θ� ģ��.
+		// 빈칸에 테두리를 친다.
 		if (i < lenth)
 		{
 			auto wordFrame = Sprite::create("UI4HD/wordBG_Frame-hd.png");
@@ -219,7 +195,7 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 
 
 
-	// ��ġ �̺�Ʈ�� ����� Layer�� ���� �� GameScene�� �ֽ��ϴ�.
+	// 터치 이벤트를 처리할 Layer를 만든 후 GameScene에 붙인다.
 	TouchedHandleLayer* touchHandlerLayer = TouchedHandleLayer::create(this);
 	this->addChild(touchHandlerLayer, kGameSceneTagTouchHandlingLayer, kGameSceneTagTouchHandlingLayer);
 	touchHandlerLayer->OnEnter();
@@ -238,7 +214,7 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 
 	if (this->m_level < 5)
 	{
-		//���带 ����Ѵ�.	
+		//소리를 재생한다.
 		auto delay = DelayTime::create(0.5);
 		auto callFunc = CallFunc::create(CC_CALLBACK_0(StudyScene::PlayWordSound, this));
 		auto actions = Sequence::create(delay, callFunc, NULL);
@@ -267,36 +243,18 @@ void		StudyScene::OnPassed()
 	pointManager->AddPoint(1);	
 	this->DrowApple(true, true);
 
-	float invervalTime = 1.0;
 	int point = pointManager->GetPoint();
-	if (point > 0)
-	{
-		invervalTime = 1.0;
-	}
-	else
-	{
-		invervalTime = 4.0;
-	}
+	float invervalTime = (point > 0) ? 1.0f : 4.0f;
 
 #ifdef TEST_MODE
 	invervalTime = 0.5;
 #endif //TEST_MODE
 
-	//////////////////////////////////////////////
-	// �� �׼��Լ�
 	auto action = [&](const std::function<void()> func)
 	{
-		// �Ʒ� �׼ǿ� ���� ����..
-		// 1. �ð� �������ϰ�
-		DelayTime* delay = DelayTime::create(invervalTime);
-		// 2. �Լ��� ȣ��
-		CallFunc* callFunc = CallFunc::create(func);
-		// 3. 1, 2 �׼��� �ϳ��� �������� ���
-		Sequence* squence = Sequence::create(delay, callFunc, NULL);
-		// 4. �׼� ȣ��!!
-		this->runAction(squence);
+		auto seq = Sequence::create(DelayTime::create(invervalTime), CallFunc::create(func), NULL);
+		this->runAction(seq);
 	};
-	//////////////////////////////////////////////
 
 	if (m_isLavar == true && m_timeFuncAction && m_lavar)
 	{
@@ -307,29 +265,21 @@ void		StudyScene::OnPassed()
 			pCharacter->type = CT_LAVER;
 		}
 
-		//this->stopAction(m_timeFuncAction);
-		//m_timeFuncAction->release();
-		//m_timeFuncAction = NULL;
-
 		m_lavar->stopAllActions();
-
 
 #ifdef TEST_MODE
 		action(CC_CALLBACK_0(StudyScene::TurnPage, this));
-#else //TEST_MODE
+#else
 		action(CC_CALLBACK_0(StudyScene::GoAppleTreeScene, this));
-#endif //TEST_MODE
-		
-		
-
+#endif
 	}
 	else if (point == 0)
 	{
 #ifdef TEST_MODE
 		action(CC_CALLBACK_0(StudyScene::TurnPage, this));
-#else //TEST_MODE
+#else
 		action(CC_CALLBACK_0(StudyScene::GoAppleTreeScene, this));
-#endif //TEST_MODE
+#endif
 	}
 	else
 	{
@@ -338,28 +288,13 @@ void		StudyScene::OnPassed()
 }
 void		StudyScene::OnSkip()
 {
-	SoundFactory* sound = SoundFactory::Instance();
-	sound->play(SOUND_FILE_skip_effect);
-
-
+	SoundFactory::Instance()->play(SOUND_FILE_skip_effect);
 	this->ShowHint();
 
+	PointManager::Instance()->SetPoint(0);
 
-	//����Ʈ�� �ʱ�ȭ��Ŵ
-	PointManager* pointManager = PointManager::Instance();
-	pointManager->SetPoint(0);
-
-
-	// �Ʒ� �׼ǿ� ���� ����..
-	// 1. �ð� �������ϰ�
-	DelayTime* delay = DelayTime::create(2.0);
-	// 2. �Լ��� ȣ��
-	CallFunc* callFunc = CallFunc::create(CC_CALLBACK_0(StudyScene::TurnPage, this));
-	// 3. 1, 2 �׼��� �ϳ��� �������� ���
-	Sequence* squence = Sequence::create(delay, callFunc, NULL);
-	// 4. �׼� ȣ��!!
-	this->runAction(squence);
-	
+	auto seq = Sequence::create(DelayTime::create(2.0f), CallFunc::create(CC_CALLBACK_0(StudyScene::TurnPage, this)), NULL);
+	this->runAction(seq);
 }
 
 void		StudyScene::TurnPage()
@@ -417,9 +352,10 @@ void		StudyScene::ChangeEmotion(int emotionID)
 	}
 
 	
-	const Point posOfBox(FRAME_WIDTH*0.88f, H_OFFSET + (FRAME_HEIGHT*0.55f));
+	const float ACTIVE_HEIGHT = CalcActiveHeight(frameSize.height);
+	const Point posOfBox(FRAME_WIDTH*0.88f, H_OFFSET + (ACTIVE_HEIGHT*0.55f));
 	faceBtn->setPosition(posOfBox);
-	auto actionTo = JumpTo::create(jumpCount / 2, posOfBox, FRAME_HEIGHT*0.03f, jumpCount);
+	auto actionTo = JumpTo::create(jumpCount / 2, posOfBox, ACTIVE_HEIGHT*0.03f, jumpCount);
 	faceBtn->runAction(actionTo);
 	this->addChild(faceBtn, kGameSceneTagAvatar, kGameSceneTagAvatar);
 }
@@ -427,11 +363,12 @@ void		StudyScene::ChangeEmotion(int emotionID)
 void		StudyScene::DrowApple(bool showEffect, bool isRedrow)
 {
 	
-	const Point posOfBigApple(FRAME_WIDTH*0.15f, H_OFFSET + (FRAME_HEIGHT*0.85f));
+	const float ACTIVE_HEIGHT = CalcActiveHeight(frameSize.height);
+	const Point posOfBigApple(FRAME_WIDTH*0.15f, H_OFFSET + (ACTIVE_HEIGHT*0.85f));
 	const int sizeOfCountFont = FRAME_WIDTH*0.065f;
 	
 
-	//BIG����� �׷��ش�.
+	//BIG애플을 그려준다.
 	Sprite* bigapple = Sprite::create("UI4HD/appleScore-hd.png");
 	bigapple->setPosition(posOfBigApple);
 	const Point posOfCountFont(bigapple->getContentSize().width*0.5f, bigapple->getContentSize().height*0.22f);
@@ -446,12 +383,12 @@ void		StudyScene::DrowApple(bool showEffect, bool isRedrow)
 	bigapple->addChild(specialPoint);
 	this->addChild(bigapple, kGameSceneTagAppleSpecial, kGameSceneTagAppleSpecial);
 
-	//����� �׷��ش�.
+	//애플을 그려준다.
 	float appleOffset = FRAME_WIDTH*0.1f;
 	int point = PointManager::Instance()->GetPoint();
 	if (point > 0)
 	{
-		const int yPos = H_OFFSET + (FRAME_HEIGHT*0.5f);
+		const int yPos = H_OFFSET + (ACTIVE_HEIGHT*0.5f);
 		for (int i = 0; i < point; ++i)
 		{
 			Sprite* apple = Sprite::create("UI4HD/applePart-hd.png");
@@ -469,13 +406,9 @@ void		StudyScene::DrowApple(bool showEffect, bool isRedrow)
 			}
 		}
 	}
-	else
-	{
-	}
 }
-void		StudyScene::DrowStar() 
+void		StudyScene::DrowStar()
 {
-
 }
 void		StudyScene::ShowHint()
 {
@@ -512,8 +445,9 @@ void		StudyScene::TimeRun(int sec)
 	RepeatForever *repeat = RepeatForever::create(animate);
 	m_lavar->runAction(repeat);
 
-	const Point posOfBeggin(Point(FRAME_WIDTH*0.0f, H_OFFSET+(FRAME_HEIGHT*0.5f)));
-	const Point posOfEnd(Point(FRAME_WIDTH*1.0f, H_OFFSET+(FRAME_HEIGHT*0.5f)));
+	const float ACTIVE_HEIGHT = CalcActiveHeight(frameSize.height);
+	const Point posOfBeggin(Point(FRAME_WIDTH*0.0f, H_OFFSET+(ACTIVE_HEIGHT*0.5f)));
+	const Point posOfEnd(Point(FRAME_WIDTH*1.0f, H_OFFSET+(ACTIVE_HEIGHT*0.5f)));
 
 	m_lavar->setPosition(posOfBeggin);
 	Point destPos = posOfEnd;
@@ -595,7 +529,7 @@ void StudyScene::callbackOnPushedNextBtnItem(Ref* sender)
 	for (int i = 0; i<sizeOfArray; ++i)
 	{
 		TextLayer* pAnswerLayer = m_arrayAnswerLayer[i];
-		auto actionTo = JumpTo::create(2.0f, Point(0, 0), FRAME_HEIGHT*0.03f, 4);
+		auto actionTo = JumpTo::create(2.0f, Point(0, 0), CalcActiveHeight(frameSize.height)*0.03f, 4);
 		pAnswerLayer->runAction(actionTo);
 	}
 
@@ -626,38 +560,22 @@ void StudyScene::callbackOnPushedHintBtnItem(Ref* sender)
 	{
 		TextLayer* pAnswerLayer = m_arrayAnswerLayer[i];
 
-		auto actionTo = JumpTo::create(1.0f, Point::ZERO, FRAME_HEIGHT*0.03f, 2);
+		auto actionTo = JumpTo::create(1.0f, Point::ZERO, CalcActiveHeight(frameSize.height)*0.03f, 2);
 		pAnswerLayer->runAction(actionTo);
 
 		SoundFactory* soundFactory = SoundFactory::Instance();
 		soundFactory->play(SOUND_FILE_dingling_effect);
 	}
 
-	// ����Ʈ ���
+	// 포인트 감소
 	int currPoint = PointManager::Instance()->DelPoint(m_level);
-	// ��� �����
+	// 화면에서 삭제
 	this->removeChildByTag(kGameSceneTagApplePoint + currPoint, true);
 }
 
 
-void StudyScene::callbackOnPushedBuyMenuItem(Ref* sender)
-{
-	//NSURL *appStoreUrl = [NSURL URLWithString : @"http://itunes.apple.com/kr/app/id363678361?mt=8"];
-//		[[UIApplication sharedApplication] openURL:appStoreUrl];
-}
-
-
-
 void		StudyScene::popCallback_Ok(Ref* pSender)
 {
-	UIPopupWindow *pPopup = (UIPopupWindow *)pSender; //���� �˾��� ���� Ŭ������ ĳ���� 
-
-	// ���⿡�� �ݹ� ������ � ��ư�� Ŭ���ƴ��� �˼������� ������?												  
-	int nTag = pPopup->getResult();
-	//Ȥ�� �ݹ��� �ٸ��� �����ϼŵ� �˴ϴ�. �װ� ������ ������ �ݹ�2 ������ �����ؼ� ����� �ϴϴ�
-	if (nTag == 1)
-	{
-		//�ݱ� ��ư �̴�~~
-	}
-	pPopup->closePopup(); //�˾��� �ݽ��ϴ�. !! �˾��� ������ ���� ȣ�����ּ��� �̰� �����ָ� �˾�â �Ȼ�����ϴ�.  
+	UIPopupWindow *pPopup = (UIPopupWindow *)pSender;
+	pPopup->closePopup();
 }
