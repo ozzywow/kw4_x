@@ -14,6 +14,10 @@ public:
     AppDelegate();
     virtual ~AppDelegate();
 
+    // 실행 시 커맨드라인으로 해상도 지정 (0이면 기본값 사용)
+    static int s_windowWidth;
+    static int s_windowHeight;
+
     virtual void initGLContextAttrs();
 
     /**

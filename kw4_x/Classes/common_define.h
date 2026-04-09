@@ -12,6 +12,20 @@ using namespace cocos2d;
 #define FRAME_HEIGHT				960.0f
 #define FRAME_WIDTH					640.0f
 
+// ACTIVE_HEIGHT: actual usable vertical space for this device.
+// On tall phones (iPhone 5~17): equals FRAME_HEIGHT (960) — H_OFFSET pads top/bottom.
+// On wide-ratio iPads (iPad Pro 13"): design height < 960 — UI compresses to fit.
+// Use ACTIVE_HEIGHT instead of FRAME_HEIGHT for all Y-position ratios.
+// Use H_OFFSET as the Y baseline (always >= 0).
+static inline float CalcActiveHeight(float designHeight)
+{
+    return designHeight < FRAME_HEIGHT ? designHeight : FRAME_HEIGHT;
+}
+static inline float CalcHOffset(float designHeight)
+{
+    return (designHeight - CalcActiveHeight(designHeight)) * 0.5f;
+}
+
 
 #ifdef IPAD_VER
 #define BUY_AT_STORE_URL "https://itunes.apple.com/app/id504138737?mt=8"
@@ -55,7 +69,6 @@ enum
 };
 
 
-//static int MAX_WORD_NUM = 8;
 static bool arrRandFlag[8];
 
 static void InitRandNum()
@@ -101,7 +114,7 @@ static void PrintStyle(Node* parent, std::string& str, int fontSize, Point pos)
 	parent->addChild(label3, kGameSceneTagAnswerText);
 
 	auto label = Label::createWithSystemFont(str, "Arial", fontSize);
-	label->setPosition(pos.x, pos.y + 1);
+	label->setPosition(pos.x, pos.y);
 	label->setColor(Color3B::WHITE);
 	parent->addChild(label, kGameSceneTagAnswerText);
 }

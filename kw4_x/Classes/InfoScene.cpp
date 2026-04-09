@@ -16,7 +16,6 @@ InfoScene::InfoScene()
 
 InfoScene::~InfoScene()
 {
-	//this->removeAllChildrenWithCleanup(true);
 }
 
 bool InfoScene::init()
@@ -61,30 +60,26 @@ void InfoScene::onExitTransitionDidStart()
 void InfoScene::DrawItemBox()
 {
     CCLOG("DrawItemBox");
-    this->removeChildByTag(2);
-    this->removeChildByTag(2);
-    this->removeChildByTag(2);
-    this->removeChildByTag(2);
-    this->removeChildByTag(2);
     
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();
 	auto frameSize = glview->getDesignResolutionSize();
-	float H_OFFSET = (frameSize.height - FRAME_HEIGHT)*0.5;
+	const float ACTIVE_HEIGHT = CalcActiveHeight(frameSize.height);
+	const float H_OFFSET = CalcHOffset(frameSize.height);
 
 	int level = PointManager::Instance()->GetLevel();
 
 	const int		sizeOfFont = FRAME_WIDTH*0.07f;
 	const int       sizeofFont_s = FRAME_WIDTH*0.04f;
-	const Point	posOfMainMenu = Point(FRAME_WIDTH*0.2f, H_OFFSET+(FRAME_HEIGHT*0.9f));
+	const Point	posOfMainMenu = Point(FRAME_WIDTH*0.2f, H_OFFSET+(ACTIVE_HEIGHT*0.9f));
 
-	const Point	posOfLable_level = Point(FRAME_WIDTH*0.5f, H_OFFSET+(FRAME_HEIGHT*0.85f));
-	const Point	posOfSelectMenu1 = Point(FRAME_WIDTH*0.5f, H_OFFSET+(FRAME_HEIGHT*0.72f));
-	const Point	posOfSelectMenu2 = Point(FRAME_WIDTH*0.5f, H_OFFSET+(FRAME_HEIGHT*0.49f));
+	const Point	posOfLable_level = Point(FRAME_WIDTH*0.5f, H_OFFSET+(ACTIVE_HEIGHT*0.85f));
+	const Point	posOfSelectMenu1 = Point(FRAME_WIDTH*0.5f, H_OFFSET+(ACTIVE_HEIGHT*0.72f));
+	const Point	posOfSelectMenu2 = Point(FRAME_WIDTH*0.5f, H_OFFSET+(ACTIVE_HEIGHT*0.49f));
 
-	const Point	posOfLable_hint = Point(FRAME_WIDTH*0.5f, H_OFFSET+(FRAME_HEIGHT*0.32f));
+	const Point	posOfLable_hint = Point(FRAME_WIDTH*0.5f, H_OFFSET+(ACTIVE_HEIGHT*0.32f));
 
-	const Point	posOfOptonMenu = Point(FRAME_WIDTH*0.5f, H_OFFSET+(FRAME_HEIGHT*0.2f));
+	const Point	posOfOptonMenu = Point(FRAME_WIDTH*0.5f, H_OFFSET+(ACTIVE_HEIGHT*0.2f));
 	const int       blinkTime = 80000;
 
 	Sprite* btn = Sprite::create("UI4HD/btn_level_1_n-hd.png");
@@ -505,9 +500,7 @@ void InfoScene::callbackOnPushedResetMenuItem(Ref* sender)
 
 
 	UIPopupWindow *pPopupOK = UIPopupWindow::create(Sprite::create("UI4HD/black_bg.png"), Sprite::create("UI4HD/pop_common.png"));
-	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InfoScene::popCallback_ResetOk, this)); //콕백을 받을 함수를 설정해주시면 됩니다
-
-																				//버튼을 추가해야겠죠 닫기 버튼!!,
+	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InfoScene::popCallback_ResetOk, this));
 	pPopupOK->addButton("UI4HD/btn_ok_s_00.png", "UI4HD/btn_ok_s_00.png", "", ui::Widget::TextureResType::LOCAL, Point(-100, -70), "", 0);
 	pPopupOK->addButton("UI4HD/btn_ok_s_01.png", "UI4HD/btn_ok_s_01.png", "", ui::Widget::TextureResType::LOCAL, Point(100, -70), "", 1);
 
@@ -515,8 +508,8 @@ void InfoScene::callbackOnPushedResetMenuItem(Ref* sender)
 	strWarning = UTF8(strWarning);
 	pPopupOK->setFontSize_Msg(sizeOfFont);
 	pPopupOK->setColor_Msg(Color3B::BLACK);
-	pPopupOK->setMessageString(strWarning); // 메시지 출력부분이죠 그외 타이틀도 출력가능하구요, 위치또한 바꿀수있는 멤버함수가 존재합니다.
-	pPopupOK->showPopup(NULL);  //마지막으로 화면에 띄우주면 끝~  showPopup()함수의 인자는 자신이 부모다~ 라는걸 넣어주는겁니다 현재 실행되는 클래스겠죠(Layer가 아닌경우는 필히 NULL을 입력하세요)
+	pPopupOK->setMessageString(strWarning);
+	pPopupOK->showPopup(NULL);
 }
 
 
@@ -532,23 +525,19 @@ void InfoScene::callbackOnPushedRestoreMenuItem(Ref* sender)
 
 void InfoScene::popCallback_ResetOk(Ref* pSender)
 {
-
-	UIPopupWindow *pPopup = (UIPopupWindow *)pSender; //현재 팝업에 대한 클래스로 캐스팅 
-
-													  // 여기에서 콜백 받을때 어떤 버튼이 클릭됐는지 알수있으면 좋겠죠?												  
+	UIPopupWindow *pPopup = (UIPopupWindow *)pSender;
 	int nTag = pPopup->getResult();
-	//혹은 콜백을 다르게 선업하셔도 됩니다. 그건 여러분 몫으로 콜백2 있으니 참고해서 만드심 됍니다
 	if (nTag == 1)
-	{		
+	{
 		ReflushSelectedMenuItem(1);
 		PointManager::Instance()->ResetMast();
 		CharacterFactory::Instance()->resetData();
 	}
-    if(nTag == 2)
-    {
-        this->DrawItemBox();
-    }
-	pPopup->closePopup(); //팝업을 닫습니다. !! 팝업을 닫을시 필히 호출해주세요 이거 안해주면 팝업창 안사라집니다.  
+	else if (nTag == 2)
+	{
+		this->DrawItemBox();
+	}
+	pPopup->closePopup();
 }
 
 
@@ -580,21 +569,12 @@ void InfoScene::callbackOnPushedLevel1(Ref* sender)
 
 void InfoScene::callbackOnPushedLevel2(Ref* sender)
 {
-	int level = PointManager::Instance()->GetLevel();
-	std::string revertLevelImgName = StringUtils::format("UI4HD/btn_level_%d_n-hd.png", level);
-	Sprite* revertLevelImage = Sprite::create(revertLevelImgName);
-	m_btnLevel2->setNormalImage(revertLevelImage);
-
 	ReflushSelectedMenuItem(2);
 	SoundFactory::Instance()->play(SOUND_FILE_tick_effect);
 }
 
 void InfoScene::callbackOnPushedLevel3(Ref* sender)
 {
-	int level = PointManager::Instance()->GetLevel();
-	std::string revertLevelImgName = StringUtils::format("btn_level_%d_n-hd.png", level);
-	Sprite* revertLevelImage = Sprite::create(revertLevelImgName);
-	m_btnLevel3->setNormalImage(revertLevelImage);
 
 	ReflushSelectedMenuItem(3);
 	SoundFactory::Instance()->play(SOUND_FILE_tick_effect);
@@ -602,22 +582,12 @@ void InfoScene::callbackOnPushedLevel3(Ref* sender)
 
 void InfoScene::callbackOnPushedLevel4(Ref* sender)
 {
-	int level = PointManager::Instance()->GetLevel();
-	std::string revertLevelImgName = StringUtils::format("UI4HD/btn_level_%d_n-hd.png", level);
-	Sprite* revertLevelImage = Sprite::create(revertLevelImgName);
-	m_btnLevel4->setNormalImage(revertLevelImage);
-
 	ReflushSelectedMenuItem(4);
 	SoundFactory::Instance()->play(SOUND_FILE_tick_effect);
 }
 
 void InfoScene::callbackOnPushedLevel5(Ref* sender)
 {
-	int level = PointManager::Instance()->GetLevel();
-	std::string revertLevelImgName = StringUtils::format("UI4HD/btn_level_%d_n-hd.png", level);
-	Sprite* revertLevelImage = Sprite::create(revertLevelImgName);
-	m_btnLevel5->setNormalImage(revertLevelImage);
-
 	ReflushSelectedMenuItem(5);
 	SoundFactory::Instance()->play(SOUND_FILE_tick_effect);
 }

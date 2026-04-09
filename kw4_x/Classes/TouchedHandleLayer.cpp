@@ -44,7 +44,7 @@ TextLayer* TouchedHandleLayer::GetTouchedLayer(Point location)
 		float halfHeight = touchedSprite->getContentSize().height * 0.5f;
 
 
-		// ��ġ�� ��ġ�� �׸� �ȿ� ������ �� ����մϴ�.
+		// 터치된 위치가 그림 안에 있는지 확인합니다.
 		Point touchedSpritePos = touchedSprite->getPosition();
 		if (location.x < (touchedSpritePos.x + halfWidth) &&
 			location.x >(touchedSpritePos.x - halfWidth) &&
@@ -60,7 +60,7 @@ TextLayer* TouchedHandleLayer::GetTouchedLayer(Point location)
 
 void TouchedHandleLayer::ReplaceLayerToAnswerBox(TextLayer* pLayer, Point location)
 {
-	// �׸���� ��ó�� ���������� ��ŷ���ش�.
+	// 어느 정답칸에 가져다 놓았는지 체크해준다.
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();	
 	auto frameSize = glview->getDesignResolutionSize();
@@ -75,10 +75,10 @@ void TouchedHandleLayer::ReplaceLayerToAnswerBox(TextLayer* pLayer, Point locati
 			pLayer->m_backGround->setPosition(boxPoint);
 
 			TextLayer* pCurrPlacedLayer = m_studyScene->m_wordQueue[i];
-			// ���Ŭ������ �˻��Ѵ�.
+			// 같은 레이어인지 검사한다.
 			if (pCurrPlacedLayer == pLayer)
 			{
-				// ������ �־��� �迭�� ���ڿ��� ä���.
+				// 이전에 넣어놨던 배열의 빈자리를 채운다.
 				if (pCurrPlacedLayer->m_lastPlacedAnswerBoxID >= 0)
 				{
 					TextLayer* emptyLayer = WordFactory::Instance()->GetEmptyLayer();
@@ -87,20 +87,20 @@ void TouchedHandleLayer::ReplaceLayerToAnswerBox(TextLayer* pLayer, Point locati
 
 				pCurrPlacedLayer->replaceToGenPlace();
 			}
-			// �о������ �˻��Ѵ�.
+			// 다른 레이어인지 검사한다.
 			else if (WordFactory::Instance()->GetEmptyLayer() != pCurrPlacedLayer)
 			{
 				pCurrPlacedLayer->replaceToGenPlace();
 
-				// ������ �־��� �迭�� ���ڿ��� ä���.
+				// 이전에 넣어놨던 배열의 빈자리를 채운다.
 				if (pLayer->m_lastPlacedAnswerBoxID >= 0)
 				{
 					TextLayer* emptyLayer = WordFactory::Instance()->GetEmptyLayer();
 					m_studyScene->m_wordQueue[pLayer->m_lastPlacedAnswerBoxID] = emptyLayer;						
 				}
-				// �� ��ġ�� �̵���Ų��.
+				// 새 위치로 이동시킨다.
 				pLayer->replaceToPoint(boxPoint);				
-				// �� �迭 ��ġ�� �־��ش�.
+				// 새 배열 위치에 넣어준다.
 				m_studyScene->m_wordQueue[i] = pLayer;
 				pLayer->m_lastPlacedAnswerBoxID = i;
 				
@@ -108,10 +108,10 @@ void TouchedHandleLayer::ReplaceLayerToAnswerBox(TextLayer* pLayer, Point locati
 			else
 			{
 
-				// �� ��ġ�� �̵���Ų��
+				// 새 위치로 이동시킨다.
 				pLayer->replaceToPoint(boxPoint);
 
-				// ������ �־��� �迭�� ���ڿ��� ä���.
+				// 이전에 넣어놨던 배열의 빈자리를 채운다.
 				if (pLayer->m_lastPlacedAnswerBoxID >= 0)
 				{
 					TextLayer* emptyLayer = WordFactory::Instance()->GetEmptyLayer();
@@ -119,7 +119,7 @@ void TouchedHandleLayer::ReplaceLayerToAnswerBox(TextLayer* pLayer, Point locati
 					m_studyScene->m_wordQueue[pLayer->m_lastPlacedAnswerBoxID] = emptyLayer;
 				}
 
-				// �� �迭 ��ġ�� �־��ش�.
+				// 새 배열 위치에 넣어준다.
 				m_studyScene->m_wordQueue[i] = pLayer;
 				pLayer->m_lastPlacedAnswerBoxID = i;
 			}
@@ -131,7 +131,7 @@ void TouchedHandleLayer::ReplaceLayerToAnswerBox(TextLayer* pLayer, Point locati
 
 	if (pLayer->m_lastPlacedAnswerBoxID == -1)
 	{
-		//�Ϲ� Ŭ������ �˻��Ѵ�.		
+		//일반 클릭인지 검사한다.
 		float halfWidth = pLayer->m_backGround->getContentSize().width / 2.0;
 		float halfHeight = pLayer->m_backGround->getContentSize().height / 2.0;
 		if (location.x < (pLayer->m_genPos.x + halfWidth) &&
@@ -140,7 +140,7 @@ void TouchedHandleLayer::ReplaceLayerToAnswerBox(TextLayer* pLayer, Point locati
 			location.y < (pLayer->m_genPos.y + halfHeight))
 		{
 
-			// ������� Ŭ���ߴ��� �˻��Ѵ�.
+			// 빠르게 클릭됐는지 검사한다.
 			long intervalTime = timeGetTimeEx() - pLayer->m_touchBeganTime;
 			if (intervalTime < 1000)
 			{
@@ -164,8 +164,8 @@ void TouchedHandleLayer::ReplaceLayerToAnswerBox(TextLayer* pLayer, Point locati
 	}
 
 
-	// �ǵ�������
-	// ������ �־��� �迭�� ���ڿ��� ä���.
+	// 되돌리기
+	// 이전에 넣어놨던 배열의 빈자리를 채운다.
 	if (pLayer->m_lastPlacedAnswerBoxID >= 0)
 	{
 		m_studyScene->m_wordQueue[pLayer->m_lastPlacedAnswerBoxID] = WordFactory::Instance()->GetEmptyLayer();
@@ -199,7 +199,7 @@ bool TouchedHandleLayer::onTouchBegan(Touch* touch, Event* unused_event)
 	Point location = touch->getLocation();
 
 
-	// �ؽ�Ʈ��ư�� ��ġ�Ǿ����� �˻��Ѵ�.
+	// 텍스트 버튼이 터치됐는지 검사한다.
 	TextLayer* touchedLayer = GetTouchedLayer(location);
 	if (touchedLayer)
 	{
@@ -274,12 +274,12 @@ void TouchedHandleLayer::onTouchEnded(Touch* touch, Event *unused_event)
 	soundFactory->play(SOUND_FILE_click_effect);
 
 
-	// �ܾ ��Ȯ�� ������ �����Ŵ
+	// 단어가 정확히 맞았는지 체크
 	if (m_studyScene->checkWord())
 	{
 		m_studyScene->m_isSuccessed = true;
 		m_studyScene->ChangeEmotion(EMOTION_ID_HAPPY);
-		// �� �ѱ��	
+		// 정답!
 		m_studyScene->OnPassed();
 	}
 
