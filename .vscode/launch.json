@@ -1,0 +1,128 @@
+{
+    // IntelliSense를 사용하여 가능한 특성에 대해 알아보세요.
+    // 기존 특성에 대한 설명을 보려면 가리킵니다.
+    // 자세한 내용을 보려면 https://go.microsoft.com/fwlink/?linkid=830387을(를) 방문하세요.
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "kw4_x - iphonese (375x667)",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug/kw4_x.exe",
+            "args": ["iphonese"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug",
+            "environment": [],
+            "preLaunchTask": "cmake build Debug",
+            "console": "externalTerminal"
+        },
+        {
+            "name": "kw4_x - iphone16 (393x852)",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug/kw4_x.exe",
+            "args": ["iphone16"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug",
+            "environment": [],
+            "preLaunchTask": "cmake build Debug",
+            "console": "externalTerminal"
+        },
+        {
+            "name": "kw4_x - iphone17 (393x852)",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug/kw4_x.exe",
+            "args": ["iphone17"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug",
+            "environment": [],
+            "preLaunchTask": "cmake build Debug",
+            "console": "externalTerminal"
+        },
+        {
+            "name": "kw4_x - iphone16plus (430x932)",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug/kw4_x.exe",
+            "args": ["iphone16plus"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug",
+            "environment": [],
+            "preLaunchTask": "cmake build Debug",
+            "console": "externalTerminal"
+        },
+        {
+            "name": "kw4_x - iphone17plus (430x932)",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug/kw4_x.exe",
+            "args": ["iphone17plus"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug",
+            "environment": [],
+            "preLaunchTask": "cmake build Debug",
+            "console": "externalTerminal"
+        },
+        {
+            "name": "kw4_x - ipadmini (744x1133)",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug/kw4_x.exe",
+            "args": ["ipadmini"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug",
+            "environment": [],
+            "preLaunchTask": "cmake build Debug",
+            "console": "externalTerminal"
+        },
+        {
+            "name": "kw4_x - ipadair (820x1180)",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug/kw4_x.exe",
+            "args": ["ipadair"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug",
+            "environment": [],
+            "preLaunchTask": "cmake build Debug",
+            "console": "externalTerminal"
+        },
+        {
+            "name": "kw4_x - ipad10 (820x1180)",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug/kw4_x.exe",
+            "args": ["ipad10"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug",
+            "environment": [],
+            "preLaunchTask": "cmake build Debug",
+            "console": "externalTerminal"
+        },
+        {
+            "name": "kw4_x - ipadpro11 (834x1194)",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug/kw4_x.exe",
+            "args": ["ipadpro11"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug",
+            "environment": [],
+            "preLaunchTask": "cmake build Debug",
+            "console": "externalTerminal"
+        },
+        {
+            "name": "kw4_x - ipadpro13 (1024x1366)",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug/kw4_x.exe",
+            "args": ["ipadpro13"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug",
+            "environment": [],
+            "preLaunchTask": "cmake build Debug",
+            "console": "externalTerminal"
+        }
+    ]
+}
