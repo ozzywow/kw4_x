@@ -11,18 +11,88 @@ USING_NS_CC;
 // 예시:   kw4_x.exe iphone17
 //         kw4_x.exe ipadpro13
 static const std::map<std::string, std::pair<int,int>> kDevicePresets = {
-    // iPhone
-    { "iphonese",     { 281, 500 } },  // iPhone SE 3rd  375x667
-    { "iphone16",     { 295, 639 } },  // iPhone 16      393x852
-    { "iphone17",     { 295, 639 } },  // iPhone 17      393x852
-    { "iphone16plus", { 323, 699 } },  // iPhone 16 Plus 430x932
-    { "iphone17plus", { 323, 699 } },  // iPhone 17 Plus 430x932
-    // iPad
-    { "ipadmini",     { 558, 850 } },  // iPad mini 6    744x1133
-    { "ipadair",      { 615, 885 } },  // iPad Air       820x1180
-    { "ipad10",       { 615, 885 } },  // iPad 10th gen  820x1180
-    { "ipadpro11",    { 626, 896 } },  // iPad Pro 11"   834x1194
-    { "ipadpro13",    { 516, 688 } },  // iPad Pro 13"  1024x1366 (default)
+
+    // ===== iPhone (출시 순) =====
+    { "iphone4",        { 240, 360 } },  // 320x480
+    { "iphone5",        { 240, 426 } },  // 320x568
+    { "iphone5s",       { 240, 426 } },
+    { "iphone6",        { 281, 500 } },  // 375x667
+    { "iphone6plus",    { 311, 552 } },  // 414x736
+    { "iphone6s",       { 281, 500 } },
+    { "iphone6splus",   { 311, 552 } },
+    { "iphone7",        { 281, 500 } },
+    { "iphone7plus",    { 311, 552 } },
+    { "iphone8",        { 281, 500 } },
+    { "iphone8plus",    { 311, 552 } },
+
+    { "iphonex",        { 281, 609 } },  // 375x812
+    { "iphonexr",       { 311, 672 } },  // 414x896
+    { "iphonexs",       { 281, 609 } },
+    { "iphonexsmax",    { 311, 672 } },
+
+    { "iphone11",       { 311, 672 } },
+    { "iphone11pro",    { 281, 609 } },
+    { "iphone11promax", { 311, 672 } },
+
+    { "iphone12mini",   { 270, 585 } },  // 360x780
+    { "iphone12",       { 293, 633 } },  // 390x844
+    { "iphone12pro",    { 293, 633 } },
+    { "iphone12promax", { 321, 695 } },  // 428x926
+
+    { "iphone13mini",   { 270, 585 } },
+    { "iphone13",       { 293, 633 } },
+    { "iphone13pro",    { 293, 633 } },
+    { "iphone13promax", { 321, 695 } },
+
+    { "iphone14",       { 293, 633 } },
+    { "iphone14plus",   { 321, 695 } },
+    { "iphone14pro",    { 295, 639 } },  // 393x852
+    { "iphone14promax", { 323, 699 } },  // 430x932
+
+    { "iphone15",       { 295, 639 } },
+    { "iphone15plus",   { 323, 699 } },
+    { "iphone15pro",    { 295, 639 } },
+    { "iphone15promax", { 323, 699 } },
+
+    { "iphone16",       { 295, 639 } },
+    { "iphone16plus",   { 323, 699 } },
+    { "iphone17",       { 295, 639 } },
+    { "iphone17plus",   { 323, 699 } },
+
+    // ===== iPad (출시 순) =====
+    { "ipad2",          { 288, 384 } },  // 1024x768
+    { "ipad3",          { 288, 384 } },
+    { "ipad4",          { 288, 384 } },
+
+    { "ipadair",        { 288, 384 } },
+    { "ipadair2",       { 288, 384 } },
+
+    { "ipadmini",       { 288, 384 } },
+    { "ipadmini2",      { 288, 384 } },
+    { "ipadmini3",      { 288, 384 } },
+    { "ipadmini4",      { 288, 384 } },
+
+    { "ipadpro97",      { 288, 384 } },
+    { "ipadpro105",     { 313, 417 } },  // 834x1112
+    { "ipadpro129",     { 384, 512 } },  // 1024x1366 → 75% 적용
+
+    { "ipad6",          { 288, 384 } },
+    { "ipad7",          { 304, 405 } },  // 810x1080
+    { "ipad8",          { 304, 405 } },
+    { "ipad9",          { 304, 405 } },
+
+    { "ipad10",         { 615, 885 } },  // (기존값 유지 요청 반영)
+
+    { "ipadmini6",      { 558, 850 } },  // (기존값 유지)
+
+    { "ipadair4",       { 615, 885 } },
+    { "ipadair5",       { 615, 885 } },
+
+    { "ipadpro11",      { 626, 896 } },  // (기존값 유지)
+    { "ipadpro129_2",   { 384, 512  } },
+    { "ipadpro129_3",   { 384, 512  } },
+
+    { "ipadpro13",      { 516, 688 } }   // 기존값 유지
 };
 
 int AppDelegate::s_windowWidth  = 516;  // 기본값: iPad Pro 13" 시뮬
