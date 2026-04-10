@@ -180,9 +180,14 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 
 
 	// 정답문자를 위치시킬 빈자리 배열
-	// offsetWith 와 동일하게 설정하여 answer frame 열이 text button 열 중심에 정렬되도록 함
-	int offsetAnswerX = offsetWith;
-	int offsetAnswerY = H_OFFSET + (int)(ACTIVE_HEIGHT * 0.28f);
+	// wordBG_Frame이 wordBG보다 크므로 왼쪽 가장자리가 text button과 맞도록 center offset을 보정
+	auto wordFrameForSize = Sprite::create("UI4HD/wordBG_Frame-hd.png");
+	float frameSpriteW = wordFrameForSize->getContentSize().width;
+	float frameSpriteH = wordFrameForSize->getContentSize().height;
+	// X: wordBG_Frame 왼쪽 가장자리가 text button 왼쪽 가장자리와 맞도록 center offset 보정
+	int offsetAnswerX = offsetWith + (int)((frameSpriteW - buttonSize) * 0.5f);
+	// Y: wordBG_Frame 하단 가장자리가 text button 하단 가장자리와 맞도록 center offset 보정
+	int offsetAnswerY = H_OFFSET + (int)(ACTIVE_HEIGHT * 0.28f) + (int)((frameSpriteH - buttonSize) * 0.5f);
 	for (int i = 0; i< 4; ++i)
 	{
 		arrayPoint[i] = Point((buttonSize*i)+((buttonSize*i)*0.28f) + offsetAnswerX, (int)(btnSizeY + offsetAnswerY));
