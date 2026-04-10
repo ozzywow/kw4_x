@@ -132,6 +132,18 @@ elseif(WINDOWS)
 endif()
 
 if(WINDOWS)
-    set(APP_RES_DIR "$<TARGET_FILE_DIR:${APP_NAME}>/Resources")
-    cocos_copy_target_res(${APP_NAME} COPY_TO ${APP_RES_DIR} FOLDERS ${GAME_RES_FOLDER})
+    # 리소스 파일 변경 시에만 복사 (스탬프 파일로 증분 추적)
+    # $<TARGET_FILE_DIR:...> 대신 경로를 직접 계산하여 순환 의존성 방지
+    set(RES_STAMP "${CMAKE_CURRENT_BINARY_DIR}/res_copy.stamp")
+    set(APP_RES_DIR "${CMAKE_BINARY_DIR}/bin/${APP_NAME}/$<CONFIG>/Resources")
+    add_custom_command(
+        OUTPUT "${RES_STAMP}"
+        COMMAND ${CMAKE_COMMAND} -E copy_directory "${GAME_RES_FOLDER}" "${APP_RES_DIR}"
+        COMMAND ${CMAKE_COMMAND} -E touch "${RES_STAMP}"
+        DEPENDS ${common_res_files}
+        COMMENT "Copying resources..."
+        VERBATIM
+    )
+    add_custom_target(copy_resources DEPENDS "${RES_STAMP}")
+    add_dependencies(${APP_NAME} copy_resources)
 endif()

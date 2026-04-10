@@ -53,7 +53,9 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 	const float ACTIVE_HEIGHT = CalcActiveHeight(frameSize.height);
 	// 짧은 디바이스(iPad/데스크탑)는 -hd.png(960px), 긴 디바이스는 -hdx.png(1136px) 사용.
 	// 이후 design space(frameSize)에 맞게 스케일하여 상하 잘림 방지.
-	bool useHdx = (frameSize.height >= FRAME_HEIGHT);
+	// 화면 비율(height/width)로 판단: 1.6 초과 시 긴 디바이스 (iPhone 5 이상 ~1.775)
+	// iPad mini 6 등 비율 ~1.52 기기는 false로 처리됨.
+	bool useHdx = (frameSize.height / frameSize.width > 1.6f);
 	Sprite* backGround = NULL;
 	if (level == 5)
 	{
@@ -178,7 +180,8 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 
 
 	// 정답문자를 위치시킬 빈자리 배열
-	int offsetAnswerX = FRAME_WIDTH * 0.145f;
+	// offsetWith 와 동일하게 설정하여 answer frame 열이 text button 열 중심에 정렬되도록 함
+	int offsetAnswerX = offsetWith;
 	int offsetAnswerY = H_OFFSET + (int)(ACTIVE_HEIGHT * 0.28f);
 	for (int i = 0; i< 4; ++i)
 	{
