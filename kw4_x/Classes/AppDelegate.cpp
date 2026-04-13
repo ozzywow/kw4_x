@@ -65,7 +65,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 #endif
         director->setOpenGLView(glview);
     }
-
+  
     director->setDisplayStats(false);
     director->setAnimationInterval(1.0f / 60);
 

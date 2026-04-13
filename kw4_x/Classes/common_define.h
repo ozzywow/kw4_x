@@ -5,7 +5,7 @@ using namespace cocos2d;
 
 //#define LITE_VER // LITE version
 //#define TEST_MODE
-#define IPAD_VER // IPAD version
+//#define IPAD_VER // IPAD version
 
 #define MAX_SIZE_OF_CHARACTER_POOL  128
 
