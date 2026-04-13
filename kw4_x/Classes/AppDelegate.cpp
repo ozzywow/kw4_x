@@ -73,6 +73,27 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     register_all_packages();
 
+    // 크로스플랫폼 리소스 경로 설정
+    auto fileUtils = FileUtils::getInstance();
+    std::vector<std::string> searchPaths;
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+    // Windows: 실행파일 디렉토리와 빌드 구조 기반 경로 검색
+    searchPaths.push_back("Resources/");
+    searchPaths.push_back("../Resources/");
+
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    // iOS: 앱 번들 내 Resources (자동으로 처리되지만 명시적으로 설정)
+    searchPaths.push_back("Resources/");
+
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+    // Mac: Contents/Resources 경로 (앱 번들 구조)
+    searchPaths.push_back("Resources/");
+    searchPaths.push_back("../Resources/");
+#endif
+
+    fileUtils->setSearchPaths(searchPaths);
+
     PointManager::Instance()->LoadXML();
 
     auto scene = MainMenuScene::createScene();
