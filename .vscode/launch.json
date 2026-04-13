@@ -5,8 +5,51 @@
     "version": "0.2.0",
     "configurations": [
 
+    // ===== macOS VSCode (cmake 빌드) =====
+    {
+        "name": "kw4_x macOS Debug",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/kw4_x/build_mac/bin/kw4_x/Debug/kw4_x.app/Contents/MacOS/kw4_x",
+        "args": ["${input:devicePreset}"],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}/kw4_x/build_mac/bin/kw4_x/Debug/kw4_x.app/Contents/MacOS",
+        "environment": [],
+        "externalConsole": false,
+        "MIMode": "lldb",
+        "preLaunchTask": "cmake-build-mac-debug"
+    },
+    {
+        "name": "kw4_x macOS Debug (빌드 없이 실행)",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/kw4_x/build_mac/bin/kw4_x/Debug/kw4_x.app/Contents/MacOS/kw4_x",
+        "args": ["${input:devicePreset}"],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}/kw4_x/build_mac/bin/kw4_x/Debug/kw4_x.app/Contents/MacOS",
+        "environment": [],
+        "externalConsole": false,
+        "MIMode": "lldb"
+    },
+
+    // ===== macOS Xcode (xcodebuild 빌드) =====
+    {
+        "name": "kw4_x Xcode Build + Run",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/kw4_x/build_mac/bin/kw4_x/Debug/kw4_x.app/Contents/MacOS/kw4_x",
+        "args": ["${input:devicePreset}"],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}/kw4_x/build_mac/bin/kw4_x/Debug/kw4_x.app/Contents/MacOS",
+        "environment": [],
+        "externalConsole": false,
+        "MIMode": "lldb",
+        "preLaunchTask": "xcode build Debug"
+    },
+
+    // ===== Windows (기존 환경 유지) =====
     // ===== iPhone =====
-    { "name": "kw4_x - iphone4 (320x480)", "type": "cppvsdbg", "request": "launch", "program": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug/kw4_x.exe", "args": ["iphone4"], "stopAtEntry": false, "cwd": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug", "environment": [], "preLaunchTask": "cmake build Debug", "console": "externalTerminal" },
+     { "name": "kw4_x - iphone4 (320x480)", "type": "cppvsdbg", "request": "launch", "program": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug/kw4_x.exe", "args": ["iphone4"], "stopAtEntry": false, "cwd": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug", "environment": [], "preLaunchTask": "cmake build Debug", "console": "externalTerminal" },
     { "name": "kw4_x - iphone5 (320x568)", "type": "cppvsdbg", "request": "launch", "program": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug/kw4_x.exe", "args": ["iphone5"], "stopAtEntry": false, "cwd": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug", "environment": [], "preLaunchTask": "cmake build Debug", "console": "externalTerminal" },
     { "name": "kw4_x - iphone6 (375x667)", "type": "cppvsdbg", "request": "launch", "program": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug/kw4_x.exe", "args": ["iphone6"], "stopAtEntry": false, "cwd": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug", "environment": [], "preLaunchTask": "cmake build Debug", "console": "externalTerminal" },
     { "name": "kw4_x - iphone6plus (414x736)", "type": "cppvsdbg", "request": "launch", "program": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug/kw4_x.exe", "args": ["iphone6plus"], "stopAtEntry": false, "cwd": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug", "environment": [], "preLaunchTask": "cmake build Debug", "console": "externalTerminal" },
@@ -43,5 +86,22 @@
 
     { "name": "kw4_x - ipadpro13 (1024x1366)", "type": "cppvsdbg", "request": "launch", "program": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug/kw4_x.exe", "args": ["ipadpro13"], "stopAtEntry": false, "cwd": "${workspaceFolder}/kw4_x/build_win32/bin/kw4_x/Debug", "environment": [], "preLaunchTask": "cmake build Debug", "console": "externalTerminal" }
 
+],
+"inputs": [
+    {
+        "id": "devicePreset",
+        "type": "pickString",
+        "description": "시뮬할 기기를 선택하세요",
+        "options": [
+            { "label": "iPhone SE 3rd  (281×500)", "value": "iphonese" },
+            { "label": "iPhone 16/17   (295×639)", "value": "iphone16" },
+            { "label": "iPhone 16/17 Plus (323×699)", "value": "iphone16plus" },
+            { "label": "iPad mini 6    (558×850)", "value": "ipadmini" },
+            { "label": "iPad Air / iPad 10th (615×885)", "value": "ipadair" },
+            { "label": "iPad Pro 11\"   (626×896)", "value": "ipadpro11" },
+            { "label": "iPad Pro 13\" [기본값] (516×688)", "value": "ipadpro13" }
+        ],
+        "default": "ipadpro13"
+    }
 ]
 }

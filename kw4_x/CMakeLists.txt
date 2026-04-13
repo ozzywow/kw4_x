@@ -100,6 +100,10 @@ elseif(APPLE)
             Classes/MKStoreObserver.mm
             ${APP_UI_RES}
         )
+    elseif(MACOSX)
+        list(APPEND GAME_SOURCE
+            proj.ios_mac/mac/main.cpp
+        )
     endif()
     list(APPEND GAME_SOURCE ${common_res_files})
 endif()
@@ -120,12 +124,23 @@ target_include_directories(${APP_NAME}
 setup_cocos_app_config(${APP_NAME})
 
 if(APPLE)
-    set_target_properties(${APP_NAME} PROPERTIES RESOURCE "${APP_UI_RES}")
     if(IOS)
+        set_target_properties(${APP_NAME} PROPERTIES RESOURCE "${APP_UI_RES}")
         cocos_pak_xcode(${APP_NAME} INFO_PLIST "iOSBundleInfo.plist.in")
         set_xcode_property(${APP_NAME} ASSETCATALOG_COMPILER_APPICON_NAME "AppIcon")
         set_xcode_property(${APP_NAME} DEVELOPMENT_TEAM "")
         set_xcode_property(${APP_NAME} CODE_SIGN_IDENTITY "iPhone Developer")
+    elseif(MACOSX)
+        set_target_properties(${APP_NAME} PROPERTIES
+            XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY ""
+            XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED "NO"
+            XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED "NO"
+        )
+        set(APP_RES_DIR "$<TARGET_FILE_DIR:${APP_NAME}>/../Resources")
+        add_custom_command(TARGET ${APP_NAME} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E make_directory "${APP_RES_DIR}"
+            COMMAND rsync -a --update "${GAME_RES_FOLDER}/" "${APP_RES_DIR}/"
+        )
     endif()
 elseif(WINDOWS)
     cocos_copy_target_dll(${APP_NAME})

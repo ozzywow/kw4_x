@@ -26,6 +26,11 @@ using namespace CocosDenshion;
 
 static cocos2d::Size designResolutionSize = cocos2d::Size(FRAME_WIDTH, FRAME_HEIGHT);
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+int AppDelegate::s_windowWidth  = (int)FRAME_WIDTH;
+int AppDelegate::s_windowHeight = (int)FRAME_HEIGHT;
+#endif
+
 
 USING_NS_CC;
 

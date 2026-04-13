@@ -42,6 +42,10 @@ bool TextLayer::initWithVal(StudyScene* scene, Point destPos, std::string& wordT
 
 	auto size = m_backGround->getContentSize();
 	m_hanWord = Label::createWithTTF(m_textStr, KR_FONT_TTF, frameSize.width*0.12f);
+	if (!m_hanWord)
+	{
+		m_hanWord = Label::createWithSystemFont(m_textStr, "Arial", frameSize.width*0.12f);
+	}
 	m_hanWord->setAnchorPoint(Point::ANCHOR_MIDDLE);
 	m_hanWord->setPosition(size.width*0.5f, size.height*0.5f);
 	m_backGround->addChild(m_hanWord);

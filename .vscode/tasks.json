@@ -4,16 +4,57 @@
         {
             "label": "cmake build Debug",
             "type": "shell",
-            "command": "cmake --build \"${workspaceFolder}/kw4_x/build_win32\" --config Debug",
-            "group": {
-                "kind": "build",
-                "isDefault": true
+            "windows": {
+                "command": "cmake --build \"${workspaceFolder}/kw4_x/build_win32\" --config Debug"
             },
+            "osx": {
+                "command": "echo '[cmake build Debug] Windows 전용 구성입니다. macOS에서는 실행되지 않습니다.'"
+            },
+            "command": "echo '[cmake build Debug] Windows 전용 구성입니다.'",
+            "group": "build",
             "presentation": {
                 "reveal": "always",
                 "panel": "shared"
             },
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "cmake-build-mac-debug",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "${workspaceFolder}/kw4_x/build_mac",
+                "--config", "Debug",
+                "--target", "kw4_x",
+                "-j4"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "xcode build Debug",
+            "type": "shell",
+            "command": "xcodebuild",
+            "args": [
+                "-project", "${workspaceFolder}/kw4_x/build_mac/kw4_x.xcodeproj",
+                "-scheme", "kw4_x",
+                "-configuration", "Debug",
+                "build"
+            ],
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
         }
     ]
 }
