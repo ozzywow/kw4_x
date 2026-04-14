@@ -58,6 +58,8 @@ static const std::map<std::string, std::pair<int,int>> kDevicePresets = {
     { "iphone16plus",   { 323, 699 } },
     { "iphone17",       { 295, 639 } },
     { "iphone17plus",   { 323, 699 } },
+    { "iphone17pro",    { 302, 656 } },  // 402x874
+    { "iphone17promax", { 330, 717 } },  // 440x956
 
     // ===== iPad (출시 순) =====
     { "ipad2",          { 288, 384 } },  // 1024x768

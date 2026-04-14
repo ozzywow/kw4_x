@@ -73,7 +73,7 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 
 	backGround->setAnchorPoint(Point::ANCHOR_MIDDLE);
 	backGround->setPosition(frameSize.width*0.5f, frameSize.height*0.5f);
-	backGround->setScaleX(frameSize.width  / backGround->getContentSize().width);
+	backGround->setScaleX(frameSize.width  / backGround->getContentSize().width);	
 	backGround->setScaleY(frameSize.height / backGround->getContentSize().height);
 	this->addChild(backGround, kGameSceneTagBackground, kGameSceneTagBackground);
 

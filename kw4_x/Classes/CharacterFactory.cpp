@@ -10,28 +10,14 @@ CharacterFactory::~CharacterFactory()
 
 }
 
-
 void			CharacterFactory::init()
 {	
-	auto director = Director::getInstance();
-	auto glview = director->getOpenGLView();
-	auto frameSize = glview->getDesignResolutionSize();
-	float H_OFFSET = frameSize.height - FRAME_HEIGHT;
-
-	const float begginXOffset = 50;
-	const float Xoffset = 7;
-	const float yOffset = 50;
-
 	for (int i = 0; i < MAX_SIZE_OF_CHARACTER_POOL; ++i)
 	{
-		const float  offsetVal = begginXOffset + (i*Xoffset);
-
 		Character* pCharacter = new Character(i);
-		pCharacter->posX = offsetVal;
-		pCharacter->posY = H_OFFSET + yOffset;
-
-		m_characterPool.push_back(pCharacter);
+		m_characterPool.push_back(pCharacter);		
 	}
+	resetData();
 }
 
 void			CharacterFactory::resetData()
@@ -39,20 +25,19 @@ void			CharacterFactory::resetData()
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();
 	auto frameSize = glview->getDesignResolutionSize();
-	float H_OFFSET = frameSize.height - FRAME_HEIGHT;
 
-	const float begginXOffset = 50;
-	const float Xoffset = 7;
-	const float yOffset = 50;
+	const float halfW = frameSize.width  * 0.8f * 0.5f;
+	const float halfH = frameSize.height * 0.7f * 0.5f;
+	const float centerX = frameSize.width  * 0.5f;
+	const float centerY = frameSize.height * 0.5f;
 
 	for (int i = 0; i < MAX_SIZE_OF_CHARACTER_POOL; ++i)
 	{
 		Character* pCharacter = m_characterPool[i];
 		pCharacter->init(i);
 
-		const float  offsetVal = begginXOffset + (i*Xoffset);
-		pCharacter->posX = offsetVal;
-		pCharacter->posY = H_OFFSET + yOffset;
+		pCharacter->posX = centerX + (CCRANDOM_0_1() * 2.0f - 1.0f) * halfW;
+		pCharacter->posY = centerY + (CCRANDOM_0_1() * 2.0f - 1.0f) * halfH;
 	}
 }
 
