@@ -62,6 +62,7 @@ Character*		CharacterFactory::GetCharacterWithID(int id)
 	return NULL;
 }
 
+const int FIND_RANGE = 100;
 int				CharacterFactory::FindAppleIDByPos(Point pos)
 {
 	float xx = pos.x;
@@ -75,8 +76,8 @@ int				CharacterFactory::FindAppleIDByPos(Point pos)
 		int x = pCharacter->posX;
 		int y = pCharacter->posY;
 
-		if (xx  < (x + 50) && xx  >(x - 50) &&
-			yy  < (y + 50) && yy  >(y - 50))
+		if (xx  < (x + FIND_RANGE) && xx  >(x - FIND_RANGE) &&
+			yy  < (y + FIND_RANGE) && yy  >(y - FIND_RANGE))
 		{
 			return i;
 		}

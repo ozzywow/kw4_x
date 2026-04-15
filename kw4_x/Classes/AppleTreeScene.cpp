@@ -210,20 +210,18 @@ Sprite* AppleTreeScene::ChangeToFly(int laverID)
 		animationChange->addSpriteFrameWithFile("UI4HD/change_fly_3-hd.png");
 		animationChange->addSpriteFrameWithFile("UI4HD/change_fly_4-hd.png");
 		animationChange->addSpriteFrameWithFile("UI4HD/change_fly_5-hd.png");
-		
-
-		Animate* animationFlyChange = Animate::create(animationChange);
-		Repeat* repeatChange = Repeat::create(animationFlyChange, 1);
-		
-
+		animationChange->setDelayPerUnit(0.1f);
 
 		Animation* animationFly = Animation::create();
 		animationFly->addSpriteFrameWithFile("UI4HD/change_fly_6-hd.png");
 		animationFly->addSpriteFrameWithFile("UI4HD/change_fly_7-hd.png");
-		Animate* animationFlyPlay = Animate::create(animationFly);
-		RepeatForever* repeatFly = RepeatForever::create(animationFlyPlay);
+		animationFly->setDelayPerUnit(0.3f);
 
-		Sequence* pSeq = Sequence::create(repeatChange, repeatFly, NULL);
+		Animate* animationFlyChange = Animate::create(animationChange);
+		Animate* animationFlyPlay = Animate::create(animationFly);
+		Repeat* repeatFly = Repeat::create(animationFlyPlay, 9999);
+
+		Sequence* pSeq = Sequence::create(animationFlyChange, repeatFly, NULL);
 		pChangeSprite->runAction(pSeq);
 
 
@@ -241,23 +239,17 @@ Sprite* AppleTreeScene::ChangeToFly(int laverID)
 
 void	AppleTreeScene::RemoveApple(int appleID)
 {
-	
-	Sprite* apple = NULL;
 	for (auto itr = m_arrSprites.begin(); itr != m_arrSprites.end(); ++itr)
 	{
-		apple = *itr;
+		Sprite* apple = *itr;
 		Character* pCharacter = (Character*)apple->getUserData();
-		if (pCharacter->index == appleID)
+		if (pCharacter != NULL && pCharacter->index == appleID)
 		{
-			pCharacter->type = CT_NONE;
-			m_arrSprites.erase(itr);			
+			pCharacter->init(appleID);
+			itr = m_arrSprites.erase(itr);
+			apple->removeFromParentAndCleanup(true);
 			break;
-		}		
-	}
-
-	if (apple)
-	{
-		this->removeChild(apple, true);
+		}
 	}
 }
 
@@ -333,6 +325,56 @@ void	AppleTreeScene::callbackOnPushedBuyMenuItem(Ref* pSender)
 {
 }
 
+void AppleTreeScene::RefreshScene()
+{
+	CharacterFactory* pCharacterFactory = CharacterFactory::Instance();
+
+	// 1. CT_NONE인 캐릭터의 sprite 제거
+	for (auto itr = m_arrSprites.begin(); itr != m_arrSprites.end(); )
+	{
+		Sprite* sprite = *itr;
+		Character* pCharacter = (Character*)sprite->getUserData();
+		if (pCharacter == NULL || pCharacter->type == CT_NONE)
+		{
+			sprite->removeFromParentAndCleanup(true);
+			itr = m_arrSprites.erase(itr);
+		}
+		else
+		{
+			++itr;
+		}
+	}
+
+	// 2. CT_APPLE인데 sprite 없는 캐릭터에 sprite 생성
+	for (int i = 0; i < MAX_SIZE_OF_CHARACTER_POOL; ++i)
+	{
+		Character* pCharacter = pCharacterFactory->GetCharacterWithID(i);
+		if (pCharacter == NULL || pCharacter->type != CT_APPLE) continue;
+
+		bool hasSprite = false;
+		for (auto* sprite : m_arrSprites)
+		{
+			if (sprite->getUserData() == (void*)pCharacter)
+			{
+				hasSprite = true;
+				break;
+			}
+		}
+
+		if (!hasSprite)
+		{
+			Sprite* pNewSprite = Sprite::create("UI4HD/apple-hd.png");
+			if (pNewSprite)
+			{
+				pNewSprite->setUserData((void*)pCharacter);
+				pNewSprite->setPosition((float)pCharacter->posX, (float)pCharacter->posY);
+				this->addChild(pNewSprite, 1, 1);
+				m_arrSprites.push_back(pNewSprite);
+			}
+		}
+	}
+}
+
 
 Sprite* AppleTreeScene::GetTouchedLayer(Point location)
 {
@@ -382,7 +424,7 @@ bool AppleTreeScene::onTouchBegan(Touch* touch, Event* unused_event)
 	}
 
 
-	this->reorderChild(touchedLayer, 0);
+	this->reorderChild(touchedLayer, this->getChildrenCount());
 
 
 	SoundFactory* soundFactory = SoundFactory::Instance();
@@ -415,7 +457,7 @@ void AppleTreeScene::onTouchEnded(Touch* touch, Event *unused_event)
 	{
 		Character* pCharacter = (Character*)_touchedHandlerLayer->getUserData();
 		if (pCharacter == NULL) return;
-
+		
 		// 사과이면..
 		if (pCharacter->type == CT_APPLE || pCharacter->type == CT_FLY)
 		{
@@ -426,7 +468,6 @@ void AppleTreeScene::onTouchEnded(Touch* touch, Event *unused_event)
 		// 애벌레면..
 		else if (pCharacter->type == CT_LAVER)
 		{
-
 			int appleBiteCount = pCharacter->biteCount;
 
 			CharacterFactory* pCharacterFactory = CharacterFactory::Instance();
@@ -445,11 +486,7 @@ void AppleTreeScene::onTouchEnded(Touch* touch, Event *unused_event)
 				}
 
 				// 사과를 지운다.
-				Character* pApple = pCharacterFactory->GetCharacterWithID(biteAppleID);
-				if (pApple)
-				{
-					pApple->type = CT_NONE;
-				}
+				Character* pApple = pCharacterFactory->GetCharacterWithID(biteAppleID);				
 				this->RemoveApple(biteAppleID);
 
 			}
@@ -458,11 +495,15 @@ void AppleTreeScene::onTouchEnded(Touch* touch, Event *unused_event)
 
 		}
 
+		this->reorderChild(_touchedHandlerLayer, this->getChildrenCount());
 
+
+		RefreshScene();
 
 		const float heightOfJump = frameSize.height*0.03f;
 		Point jump2Point(_touchedHandlerLayer->getPosition());
 		auto actionTo = JumpTo::create(0.2f, jump2Point, heightOfJump, 1);
+		actionTo->setTag(101);
 		_touchedHandlerLayer->runAction(actionTo);
 	}
 

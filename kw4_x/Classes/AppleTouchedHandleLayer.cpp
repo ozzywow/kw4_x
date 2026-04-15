@@ -128,11 +128,6 @@ void AppleTouchedHandleLayer::onTouchEnded(Touch* touch, Event *unused_event)
 				}
 
 				// 사과를 지운다.
-				Character* pApple = pCharacterFactory->GetCharacterWithID(biteAppleID);
-				if (pApple)
-				{
-					pApple->type = CT_NONE;
-				}
 				_appleTreeScene->RemoveApple(biteAppleID);
 
 			}
