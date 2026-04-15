@@ -59,16 +59,11 @@ int		PointManager::AddPoint(int point)
 		SoundFactory* sound = SoundFactory::Instance();
 		sound->play(SOUND_FILE_excellent_voice);
 
-		for (int i = 0; i<1; ++i)
+		Character* pNewCharacter = CharacterFactory::Instance()->NewCharacter();
+		if (pNewCharacter)
 		{
-			Character* pNewCharacter = CharacterFactory::Instance()->NewCharacter();
-			if (pNewCharacter)
-			{
-				pNewCharacter->type = CT_APPLE;
-			}
+			pNewCharacter->type = CT_APPLE;
 		}
-
-
 		_point = 0;
 	}
 
