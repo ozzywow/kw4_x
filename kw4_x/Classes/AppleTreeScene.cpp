@@ -441,6 +441,20 @@ void AppleTreeScene::onTouchMoved(Touch* touch, Event* unused_event)
 
 	Point location = touch->getLocation();
 
+	if (_touchedLayerID >= 0)
+	{
+		Character* pCharacter = (Character*)_touchedHandlerLayer->getUserData();
+
+		if (pCharacter != NULL && pCharacter->type == CT_LAVER)
+		{
+			if(CheckAndLaverBiteApple(location))
+			{
+				RefreshScene();
+			}
+		}
+	}
+
+
 	_touchedHandlerLayer->setPosition(location);
 
 	return;
@@ -458,41 +472,13 @@ void AppleTreeScene::onTouchEnded(Touch* touch, Event *unused_event)
 		Character* pCharacter = (Character*)_touchedHandlerLayer->getUserData();
 		if (pCharacter == NULL) return;
 		
-		// 사과이면..
-		if (pCharacter->type == CT_APPLE || pCharacter->type == CT_FLY)
-		{
+		pCharacter->posX = (int)location.x;
+		pCharacter->posY = (int)location.y;
 
-			pCharacter->posX = (int)location.x;
-			pCharacter->posY = (int)location.y;
-		}
 		// 애벌레면..
-		else if (pCharacter->type == CT_LAVER)
+		if (pCharacter->type == CT_LAVER)
 		{
-			int appleBiteCount = pCharacter->biteCount;
-
-			CharacterFactory* pCharacterFactory = CharacterFactory::Instance();
-			int biteAppleID = pCharacterFactory->FindAppleIDByPos(location);
-			if (biteAppleID >= 0)
-			{
-				appleBiteCount += 1;
-				if (appleBiteCount >= 10)
-				{
-					_touchedHandlerLayer = this->ChangeToFly(_touchedLayerID);
-				}
-				else
-				{
-					pCharacter->biteCount = appleBiteCount;
-					this->ChangeBiteCount(_touchedLayerID);
-				}
-
-				// 사과를 지운다.g
-				Character* pApple = pCharacterFactory->GetCharacterWithID(biteAppleID);				
-				this->RemoveApple(biteAppleID);
-
-			}
-			pCharacter->posX = (int)location.x;
-			pCharacter->posY = (int)location.y;
-
+			CheckAndLaverBiteApple(location);
 		}
 
 		this->reorderChild(_touchedHandlerLayer, this->getChildrenCount());
@@ -523,4 +509,47 @@ void AppleTreeScene::onTouchEnded(Touch* touch, Event *unused_event)
 void AppleTreeScene::onTouchCancelled(Touch* touch, Event* unused_event)
 {
 
+}
+
+// 애벌레가 사과를 물어뜯는지 체크한다.
+bool AppleTreeScene::CheckAndLaverBiteApple(Point location)
+{
+	if (_touchedHandlerLayer == NULL) return false;
+	if (_touchedLayerID < 0)
+	{
+		return false;
+	}
+
+	Character* pCharacter = (Character*)_touchedHandlerLayer->getUserData();
+	if (pCharacter == NULL) return false;
+
+	if (pCharacter->type != CT_LAVER)
+	{
+		return false;
+	}
+	
+	int appleBiteCount = pCharacter->biteCount;
+
+	CharacterFactory* pCharacterFactory = CharacterFactory::Instance();
+	int biteAppleID = pCharacterFactory->FindAppleIDByPos(location);
+	if (biteAppleID >= 0)
+	{
+		appleBiteCount += 1;
+		if (appleBiteCount >= 10)
+		{
+			_touchedHandlerLayer = this->ChangeToFly(_touchedLayerID);
+		}
+		else
+		{
+			pCharacter->biteCount = appleBiteCount;
+			this->ChangeBiteCount(_touchedLayerID);
+		}
+
+		// 사과를 지운다.
+		Character* pApple = pCharacterFactory->GetCharacterWithID(biteAppleID);				
+		this->RemoveApple(biteAppleID);
+
+	}
+	
+	return true;
 }

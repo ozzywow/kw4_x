@@ -49,5 +49,6 @@ public:
 	virtual void onTouchCancelled(Touch* touch, Event* unused_event);
 	virtual void onTouchEnded(Touch* touch, Event *unused_event);
 	
+	bool CheckAndLaverBiteApple(Point location);
 	
 };
