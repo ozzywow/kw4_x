@@ -16,6 +16,6 @@ public:
 	~WordFactory();
 	
 	std::string			RandomWord();
-	TextLayer*		GetEmptyLayer();
+	static TextLayer*		CreateEmptyLayer();
 	
 };

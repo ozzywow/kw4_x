@@ -29,4 +29,10 @@ public:
 	void	setWorldText(std::string& wordText);
 	void	replaceToGenPlace();
 	void	replaceToPoint(Point destPos);
+
+	bool isPlacedInAnswerBox() { return m_lastPlacedAnswerBoxID >= 0; }
+	bool isPlacedInGenPos() { return m_lastPlacedAnswerBoxID == -1; }
+	bool isPlaced() { return m_lastPlacedAnswerBoxID != -1; }
+	bool isEmpty() { return m_textStr.empty(); }
+	bool isSameText(std::string& otherText) { return m_textStr == otherText; }	
 };

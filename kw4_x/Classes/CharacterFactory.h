@@ -8,6 +8,8 @@
 
 class CharacterFactory : public Singleton<CharacterFactory>
 {
+public :
+	static const int s_maxLaverCount = 3;
 private:
 
 	std::vector<Character*>	        m_characterPool;
@@ -24,5 +26,8 @@ public:
 	int				FindAppleIDByPos(Point pos);
 	int				GetCountWithType(int ty);
 	std::vector<Character*>& GetCharacterPool() { return m_characterPool; }
+
+	int				GetCountOfApple() { return GetCountWithType(CT_APPLE); }			
+	int				GetCountOfLaver() { return GetCountWithType(CT_LAVER); }
 };
 
