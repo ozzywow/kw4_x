@@ -428,7 +428,6 @@ void	PointManager::GetNextScene(bool isEnter, bool isNextStage)
 	if (false == isGotNextScene)
 	{
 		AppleTreeScene* appleScene = (AppleTreeScene*)AppleTreeScene::createScene(false);
-		appleScene->initWithVal(false);
 		TransitionSlideInL* sceneSlide = TransitionSlideInL::create(0.2f, appleScene);
 		auto director = Director::getInstance();
 		director->replaceScene(sceneSlide);

@@ -10,15 +10,11 @@ WordFactory::WordFactory()
 	fgets(buffer, sizeof(buffer), fp);
 	fclose(fp);
 
-	m_hanWordFactory = buffer;
-	// word_factory.txt is UTF-8; no conversion needed
-	std::string initStr("");
-	m_emptyLayer = TextLayer::createWithWordText(NULL, Point(0, 0), initStr);
+	m_hanWordFactory = buffer;	
 }
 
 WordFactory::~WordFactory()
 {	
-	m_emptyLayer->autorelease();
 }
 
 std::string	WordFactory::RandomWord()
@@ -32,7 +28,8 @@ std::string	WordFactory::RandomWord()
 }
 
 
-TextLayer*		WordFactory::GetEmptyLayer() 
+TextLayer*		WordFactory::CreateEmptyLayer() 
 {
-	return m_emptyLayer;
+	auto emptyLayer = TextLayer::createWithWordText(NULL, Point(0, 0), std::string(""));
+	return emptyLayer;
 }

@@ -485,7 +485,7 @@ void AppleTreeScene::onTouchEnded(Touch* touch, Event *unused_event)
 					this->ChangeBiteCount(_touchedLayerID);
 				}
 
-				// 사과를 지운다.
+				// 사과를 지운다.g
 				Character* pApple = pCharacterFactory->GetCharacterWithID(biteAppleID);				
 				this->RemoveApple(biteAppleID);
 

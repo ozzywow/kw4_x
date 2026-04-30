@@ -45,8 +45,15 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 
 	InitRandNum();
 
-	TextLayer* pEmptyLayer = WordFactory::Instance()->GetEmptyLayer();
-	m_wordQueue.assign(4, pEmptyLayer);
+	
+	for (auto* layer : m_wordQueue) { layer->release(); }
+	m_wordQueue.clear();
+	for(int i = 0; i < 4; ++i)
+	{
+		TextLayer* pEmptyLayer = WordFactory::Instance()->CreateEmptyLayer();
+		pEmptyLayer->retain();
+		m_wordQueue.push_back(pEmptyLayer);
+	}		
 	
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();
@@ -213,11 +220,14 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 		this->ShowHint();
 	}
 
-
-	if (0 == (rand() % 30))	
+	if(CharacterFactory::Instance()->GetCountOfLaver() < CharacterFactory::s_maxLaverCount)
 	{
-		this->TimeRun(10);
+		if (0 == (rand() % 30))	
+		{
+			this->TimeRun(10);
+		}
 	}
+	
 	
 
 	if (this->m_level < 5)
@@ -490,7 +500,7 @@ bool		StudyScene::checkWord()
 	for (int i = 0; i < max_size; ++i)
 	{
 		TextLayer* pTextLayer = m_wordQueue[i];
-		if(WordFactory::Instance()->GetEmptyLayer() == pTextLayer)
+		if(pTextLayer->isEmpty())
 		{
 			continue;
 		}
@@ -510,7 +520,7 @@ int			StudyScene::GetEmptyBoxID()
 	for (int i = 0; i < 4; ++i)
 	{
 		TextLayer* pCurrPlacedLayer = m_wordQueue[i];
-		if (WordFactory::Instance()->GetEmptyLayer() == pCurrPlacedLayer)
+		if (pCurrPlacedLayer->isEmpty())
 		{
 			return i;
 		}
