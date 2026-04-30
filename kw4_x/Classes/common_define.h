@@ -4,10 +4,10 @@
 using namespace cocos2d;
 
 //#define LITE_VER // LITE version
-//#define TEST_MODE
+#define TEST_MODE
 //#define IPAD_VER // IPAD version
 
-#define MAX_SIZE_OF_CHARACTER_POOL  128
+#define MAX_SIZE_OF_CHARACTER_POOL  64
 
 #define FRAME_HEIGHT				960.0f
 #define FRAME_WIDTH					640.0f
@@ -24,6 +24,15 @@ static inline float CalcActiveHeight(float designHeight)
 static inline float CalcHOffset(float designHeight)
 {
     return (designHeight - CalcActiveHeight(designHeight)) * 0.5f;
+}
+static inline float CalcCenterX()
+{
+    return FRAME_WIDTH * 0.5f;
+}
+static inline float CalcCenterY()
+{
+    float h = Director::getInstance()->getOpenGLView()->getDesignResolutionSize().height;
+    return h * 0.5f;
 }
 
 
