@@ -81,27 +81,33 @@ void TouchedHandleLayer::ReplaceLayerToAnswerBox(TextLayer* pLayer, Point locati
 				// 이전에 넣어놨던 배열의 빈자리를 채운다.
 				if (pCurrPlacedLayer->m_lastPlacedAnswerBoxID >= 0)
 				{
-					TextLayer* emptyLayer = WordFactory::Instance()->GetEmptyLayer();
+					TextLayer* emptyLayer = WordFactory::CreateEmptyLayer();
+					emptyLayer->retain();
+					m_studyScene->m_wordQueue[pCurrPlacedLayer->m_lastPlacedAnswerBoxID]->release();
 					m_studyScene->m_wordQueue[pCurrPlacedLayer->m_lastPlacedAnswerBoxID] = emptyLayer;
 				}
 
 				pCurrPlacedLayer->replaceToGenPlace();
 			}
 			// 다른 레이어인지 검사한다.
-			else if (WordFactory::Instance()->GetEmptyLayer() != pCurrPlacedLayer)
+			else if (pCurrPlacedLayer->isPlaced() == true)
 			{
 				pCurrPlacedLayer->replaceToGenPlace();
 
 				// 이전에 넣어놨던 배열의 빈자리를 채운다.
 				if (pLayer->m_lastPlacedAnswerBoxID >= 0)
 				{
-					TextLayer* emptyLayer = WordFactory::Instance()->GetEmptyLayer();
-					m_studyScene->m_wordQueue[pLayer->m_lastPlacedAnswerBoxID] = emptyLayer;						
+					TextLayer* emptyLayer = WordFactory::CreateEmptyLayer();
+					emptyLayer->retain();
+					m_studyScene->m_wordQueue[pLayer->m_lastPlacedAnswerBoxID]->release();
+					m_studyScene->m_wordQueue[pLayer->m_lastPlacedAnswerBoxID] = emptyLayer;
 				}
 				// 새 위치로 이동시킨다.
-				pLayer->replaceToPoint(boxPoint);				
+				pLayer->replaceToPoint(boxPoint);
 				// 새 배열 위치에 넣어준다.
+				m_studyScene->m_wordQueue[i]->release();
 				m_studyScene->m_wordQueue[i] = pLayer;
+				pLayer->retain();
 				pLayer->m_lastPlacedAnswerBoxID = i;
 				
 			}
@@ -114,13 +120,16 @@ void TouchedHandleLayer::ReplaceLayerToAnswerBox(TextLayer* pLayer, Point locati
 				// 이전에 넣어놨던 배열의 빈자리를 채운다.
 				if (pLayer->m_lastPlacedAnswerBoxID >= 0)
 				{
-					TextLayer* emptyLayer = WordFactory::Instance()->GetEmptyLayer();
-
+					TextLayer* emptyLayer = WordFactory::CreateEmptyLayer();
+					emptyLayer->retain();
+					m_studyScene->m_wordQueue[pLayer->m_lastPlacedAnswerBoxID]->release();
 					m_studyScene->m_wordQueue[pLayer->m_lastPlacedAnswerBoxID] = emptyLayer;
 				}
 
 				// 새 배열 위치에 넣어준다.
+				m_studyScene->m_wordQueue[i]->release();
 				m_studyScene->m_wordQueue[i] = pLayer;
+				pLayer->retain();
 				pLayer->m_lastPlacedAnswerBoxID = i;
 			}
 
@@ -150,7 +159,9 @@ void TouchedHandleLayer::ReplaceLayerToAnswerBox(TextLayer* pLayer, Point locati
 					Point boxPoint = m_studyScene->getBoxPoint(boxID);
 					pLayer->replaceToPoint(boxPoint);
 
+					m_studyScene->m_wordQueue[boxID]->release();
 					m_studyScene->m_wordQueue[boxID] = pLayer;
+					pLayer->retain();
 					pLayer->m_lastPlacedAnswerBoxID = boxID;
 
 					return;
@@ -168,7 +179,10 @@ void TouchedHandleLayer::ReplaceLayerToAnswerBox(TextLayer* pLayer, Point locati
 	// 이전에 넣어놨던 배열의 빈자리를 채운다.
 	if (pLayer->m_lastPlacedAnswerBoxID >= 0)
 	{
-		m_studyScene->m_wordQueue[pLayer->m_lastPlacedAnswerBoxID] = WordFactory::Instance()->GetEmptyLayer();
+		TextLayer* emptyLayer = WordFactory::CreateEmptyLayer();
+		emptyLayer->retain();
+		m_studyScene->m_wordQueue[pLayer->m_lastPlacedAnswerBoxID]->release();
+		m_studyScene->m_wordQueue[pLayer->m_lastPlacedAnswerBoxID] = emptyLayer;
 	}
 
 	pLayer->replaceToGenPlace();

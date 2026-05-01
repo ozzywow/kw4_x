@@ -40,6 +40,8 @@ public:
 	void	callbackOnPushedHomeMenuItem(Ref* pSender);
 	void	callbackOnPushedNewGameMenuItem(Ref* pSender);
 	void	callbackOnPushedBuyMenuItem(Ref* pSender);
+
+	void	RefreshScene();
 	
 	Sprite* GetTouchedLayer(Point location);
 	virtual bool onTouchBegan(Touch* touch, Event* unused_event);
@@ -47,5 +49,6 @@ public:
 	virtual void onTouchCancelled(Touch* touch, Event* unused_event);
 	virtual void onTouchEnded(Touch* touch, Event *unused_event);
 	
+	bool CheckAndLaverBiteApple(Point location);
 	
 };

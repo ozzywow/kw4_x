@@ -10,49 +10,31 @@ CharacterFactory::~CharacterFactory()
 
 }
 
-
 void			CharacterFactory::init()
 {	
-	auto director = Director::getInstance();
-	auto glview = director->getOpenGLView();
-	auto frameSize = glview->getDesignResolutionSize();
-	float H_OFFSET = frameSize.height - FRAME_HEIGHT;
-
-	const float begginXOffset = 50;
-	const float Xoffset = 7;
-	const float yOffset = 50;
-
 	for (int i = 0; i < MAX_SIZE_OF_CHARACTER_POOL; ++i)
 	{
-		const float  offsetVal = begginXOffset + (i*Xoffset);
-
 		Character* pCharacter = new Character(i);
-		pCharacter->posX = offsetVal;
-		pCharacter->posY = H_OFFSET + yOffset;
-
-		m_characterPool.push_back(pCharacter);
+		m_characterPool.push_back(pCharacter);		
 	}
+	resetData();
 }
 
+// 캐릭터 풀을 초기화한다. 모든 캐릭터의 type을 CT_NONE으로 바꾼다.
 void			CharacterFactory::resetData()
 {
-	auto director = Director::getInstance();
-	auto glview = director->getOpenGLView();
-	auto frameSize = glview->getDesignResolutionSize();
-	float H_OFFSET = frameSize.height - FRAME_HEIGHT;
-
-	const float begginXOffset = 50;
-	const float Xoffset = 7;
-	const float yOffset = 50;
+	const float cx     = CalcCenterX();
+	const float cy     = CalcCenterY();
+	const float rangeX = cx * 0.7f;
+	const float rangeY = cy * 0.7f;
 
 	for (int i = 0; i < MAX_SIZE_OF_CHARACTER_POOL; ++i)
 	{
+		// 화면의 중앙을 기준으로 70% 범위 내 랜덤한 위치에 캐릭터를 배치한다.
 		Character* pCharacter = m_characterPool[i];
 		pCharacter->init(i);
-
-		const float  offsetVal = begginXOffset + (i*Xoffset);
-		pCharacter->posX = offsetVal;
-		pCharacter->posY = H_OFFSET + yOffset;
+		pCharacter->posX = cx + (((float)rand() / RAND_MAX) * 2.0f - 1.0f) * rangeX;
+		pCharacter->posY = cy + (((float)rand() / RAND_MAX) * 2.0f - 1.0f) * rangeY;
 	}
 }
 
@@ -79,19 +61,16 @@ Character*		CharacterFactory::GetCharacterWithID(int id)
 
 int				CharacterFactory::FindAppleIDByPos(Point pos)
 {
-	float xx = pos.x;
-	float yy = pos.y;
-	
-	for (int i = 0; i< MAX_SIZE_OF_CHARACTER_POOL; ++i)
+	const float FIND_RANGE = FRAME_WIDTH * 0.10f; // 화면 너비의 약 10% (~100px)
+
+	for (int i = 0; i < MAX_SIZE_OF_CHARACTER_POOL; ++i)
 	{
 		Character* pCharacter = m_characterPool[i];
 		if (pCharacter->type != CT_APPLE) { continue; }
 
-		int x = pCharacter->posX;
-		int y = pCharacter->posY;
-
-		if (xx  < (x + 50) && xx  >(x - 50) &&
-			yy  < (y + 50) && yy  >(y - 50))
+		float dx = pos.x - pCharacter->posX;
+		float dy = pos.y - pCharacter->posY;
+		if (std::abs(dx) < FIND_RANGE && std::abs(dy) < FIND_RANGE)
 		{
 			return i;
 		}
