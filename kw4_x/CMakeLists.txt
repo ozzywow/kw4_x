@@ -16,6 +16,10 @@ if(APPLE OR WINDOWS)
     cocos_mark_multi_resources(common_res_files RES_TO "Resources" FOLDERS ${GAME_RES_FOLDER})
 endif()
 
+if(ANDROID)
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--build-id")
+endif()
+
 # Cross-platform source files (exclude iOS/Mac Objective-C .mm/.m files)
 set(GAME_SOURCE
     Classes/AppDelegate.cpp
@@ -28,6 +32,7 @@ set(GAME_SOURCE
     Classes/MainMenuScene.cpp
     Classes/MKStoreManagerDelegate.cpp
     Classes/MKStoreManager_cpp.cpp
+    Classes/NativeShare.cpp
     Classes/PointManager.cpp
     Classes/SoundFactory.cpp
     Classes/StudyScene.cpp
@@ -53,6 +58,7 @@ set(GAME_HEADER
     Classes/MKStoreManagerDelegate.h
     Classes/MKStoreManager_cpp.h
     Classes/MKStoreManager_mm.h
+    Classes/NativeShare.h
     Classes/PointManager.h
     Classes/Singleton.h
     Classes/SoundFactory.h
@@ -98,10 +104,21 @@ elseif(APPLE)
             Classes/MKDelegateCPP.mm
             Classes/MKStoreManager_mm.mm
             Classes/MKStoreObserver.mm
+            Classes/NativeShare_apple.mm
             ${APP_UI_RES}
         )
     endif()
     list(APPEND GAME_SOURCE ${common_res_files})
+elseif(ANDROID)
+    list(APPEND GAME_SOURCE
+        Classes/AndroidBilling.cpp
+        ${COCOS2DX_ROOT_PATH}/cocos/platform/android/javaactivity-android.cpp
+        ${COCOS2DX_ROOT_PATH}/cocos/platform/android/jni/Java_org_cocos2dx_lib_Cocos2dxHelper.cpp
+        ${COCOS2DX_ROOT_PATH}/cocos/platform/android/jni/Java_org_cocos2dx_lib_Cocos2dxAccelerometer.cpp
+        ${COCOS2DX_ROOT_PATH}/cocos/platform/android/jni/Java_org_cocos2dx_lib_Cocos2dxBitmap.cpp
+        ${COCOS2DX_ROOT_PATH}/cocos/platform/android/jni/Java_org_cocos2dx_lib_Cocos2dxRenderer.cpp
+        ${COCOS2DX_ROOT_PATH}/cocos/platform/android/jni/TouchesJni.cpp
+    )
 endif()
 
 set(all_code_files
@@ -109,7 +126,11 @@ set(all_code_files
     ${GAME_SOURCE}
 )
 
-add_executable(${APP_NAME} ${all_code_files})
+if(ANDROID)
+    add_library(${APP_NAME} SHARED ${all_code_files})
+else()
+    add_executable(${APP_NAME} ${all_code_files})
+endif()
 
 target_link_libraries(${APP_NAME} cocos2d)
 target_include_directories(${APP_NAME}

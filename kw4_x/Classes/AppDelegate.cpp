@@ -29,6 +29,12 @@ static cocos2d::Size designResolutionSize = cocos2d::Size(FRAME_WIDTH, FRAME_HEI
 
 USING_NS_CC;
 
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#include <jni.h>
+void cocos_android_app_init(JNIEnv* env) {
+    AppDelegate *pAppDelegate = new AppDelegate();
+}
+#endif
 
 AppDelegate::AppDelegate()
 {
