@@ -42,7 +42,7 @@
   <section>
     <div class="split">
       <figure class="phone">
-        <img src="art/title.png" alt="우리아이 한글떼기 시작 화면">
+        <img src="shots/2.png" alt="개미 그림 카드를 보고 글자 버튼으로 낱말을 만드는 화면">
       </figure>
       <div>
         <h3 lang="ko">글자를 외우지 않아요.<br>낱말로 만나요.</h3>
@@ -137,33 +137,37 @@
     </div>
   </section>
 
-  <!-- ── 사과나무 ── -->
+  <!-- ── 정답과 보상 ── -->
   <section>
     <div class="split">
       <div>
-        <h3 lang="ko">잘했어요! 사과가 하나 열렸어요</h3>
-        <h3 lang="en">Well done — that's another apple</h3>
+        <h3 lang="ko">한 글자씩 채우고,<br>맞히면 사과 하나</h3>
+        <h3 lang="en">Fill it in,<br>earn an apple</h3>
+        <p lang="ko">글자를 하나 고를 때마다 카드 아래 빈칸이 채워집니다. 낱말을 완성하면 소리로 읽어주고, 왼쪽 위 사과 개수가 하나 올라가요.</p>
+        <p lang="en">Each letter a child picks fills one more slot under the card. Complete the word and it is read aloud — and the apple count in the corner ticks up by one.</p>
+        <p lang="ko">막히면 <strong>힌트</strong> 버튼이, 다른 낱말을 보고 싶으면 <strong>이전·다음</strong> 버튼이 있습니다.</p>
+        <p lang="en">A <strong>hint</strong> button is there when they are stuck, and <strong>previous / next</strong> move between cards.</p>
+      </div>
+      <figure class="phone">
+        <img src="shots/3.png" alt="기린 카드에서 '기', '린' 글자를 채워 넣은 화면" loading="lazy">
+      </figure>
+    </div>
+  </section>
+
+  <!-- ── 사과나무 ── -->
+  <section>
+    <div class="split">
+      <figure class="phone">
+        <img src="shots/4.png" alt="사과가 하나 열린 칭찬나무 화면" loading="lazy">
+      </figure>
+      <div>
+        <h3 lang="ko">모은 사과는<br>칭찬나무에 열려요</h3>
+        <h3 lang="en">The apples grow<br>on the reward tree</h3>
         <p lang="ko">낱말을 맞힐 때마다 나무에 사과가 하나씩 열립니다. 점수판이 아니라 눈에 보이는 나무라서, 아이가 스스로 “오늘 이만큼 했다”를 알 수 있어요.</p>
         <p lang="en">Each word a child gets right grows one more apple on the tree. It is not a score board — it is something they can look at and feel proud of.</p>
         <p lang="ko">틀려도 벌점은 없습니다. 다시 해보면 돼요.</p>
         <p lang="en">Nothing is taken away for a wrong answer. They simply try again.</p>
       </div>
-      <figure class="phone">
-        <img src="art/tree.png" alt="사과나무 보상 화면">
-      </figure>
-    </div>
-  </section>
-
-  <!-- ── 실제 화면(스크린샷을 shots/ 에 넣으면 자동으로 표시됨) ── -->
-  <section id="shots" hidden>
-    <div class="eyebrow" lang="ko">실제 화면</div>
-    <div class="eyebrow" lang="en">Screenshots</div>
-    <h2 lang="ko">게임 화면 미리보기</h2>
-    <h2 lang="en">See it in action</h2>
-    <div class="grid">
-      <figure class="phone"><img src="shots/1.png" alt="게임 화면 1" loading="lazy"></figure>
-      <figure class="phone"><img src="shots/2.png" alt="게임 화면 2" loading="lazy"></figure>
-      <figure class="phone"><img src="shots/3.png" alt="게임 화면 3" loading="lazy"></figure>
     </div>
   </section>
 
@@ -173,6 +177,11 @@
     <div class="eyebrow" lang="en">For parents</div>
     <h2 lang="ko">아이 혼자 켜도 괜찮습니다</h2>
     <h2 lang="en">Safe to hand over</h2>
+    <figure class="phone" style="margin-bottom:26px">
+      <img src="shots/1.png" alt="앱 첫 화면 — 놀이시작, 놀이정보, 칭찬나무 세 개의 큰 버튼" loading="lazy">
+      <figcaption lang="ko">첫 화면. 큰 버튼 세 개가 전부입니다.</figcaption>
+      <figcaption lang="en">The first screen — three big buttons, nothing else.</figcaption>
+    </figure>
     <div class="grid">
       <div class="feat"><span class="ic">🚫</span>
         <h3 lang="ko">광고가 없습니다</h3><h3 lang="en">No advertising</h3>
@@ -236,25 +245,6 @@
   tag.textContent = document.documentElement.getAttribute("data-lang") === "en" ? "YOUR DEVICE" : "내 기기";
   b.appendChild(tag);
   b.parentNode.insertBefore(b, b.parentNode.firstChild);
-})();
-
-// shots/ 폴더에 스크린샷을 넣으면 '실제 화면' 섹션이 자동으로 나타난다.
-// (없으면 섹션 전체를 감춘 채로 둔다 — 깨진 이미지가 보이지 않도록)
-(function () {
-  var sec = document.getElementById("shots");
-  if (!sec) return;
-  var imgs = sec.querySelectorAll("img");
-  var left = imgs.length, ok = 0;
-  function done() {
-    if (--left > 0) return;
-    if (ok) sec.hidden = false;
-  }
-  Array.prototype.forEach.call(imgs, function (img) {
-    var probe = new Image();
-    probe.onload = function () { ok++; done(); };
-    probe.onerror = function () { img.closest("figure").remove(); done(); };
-    probe.src = img.getAttribute("src");
-  });
 })();
 </script>
 </body>
