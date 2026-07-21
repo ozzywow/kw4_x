@@ -136,44 +136,62 @@ $env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
 
 ## 3. Xcode (iOS)
 
-> **주의: 아래 절차는 Windows에서 검증할 수 없어 실제로 실행해 본 적이 없습니다.**
-> CMake 구성 파일의 문법과 Win32 빌드까지만 확인했습니다.
+### 빌드 경로: Mac 에 있는 기존 Xcode 프로젝트
 
-### Xcode 프로젝트 생성
+iOS 는 **Mac 에 있는 기존 `.xcodeproj` 로 빌드합니다.** App Store 출시까지 그 프로젝트로
+해 왔습니다.
 
-```bash
-cmake -S kw4_x -B build_ios -GXcode \
-  -DCMAKE_TOOLCHAIN_FILE=cocos2d-x/cmake/ios.toolchain.cmake \
-  -DIOS_PLATFORM=OS          # 시뮬레이터는 SIMULATOR
-open build_ios/kw4_x.xcodeproj
-```
+> **그 프로젝트는 이 저장소에 없습니다.**
+> `.xcodeproj` 뿐 아니라 iOS 앱 셸 소스(`main.m`, `AppController.mm`,
+> `RootViewController.mm`, `Prefix.pch`, `LaunchScreen.storyboard`, `Images.xcassets`)도
+> 추적되지 않습니다. 추적 중인 것은 아이콘·런치 이미지 24개뿐입니다.
+> **즉 그 Mac 이 iOS 빌드 환경의 유일한 사본입니다.** 잃어버리면 다시 만들어야 하므로
+> 여유가 될 때 커밋해 두는 것을 권합니다 (Mac 에서 `git status` 로 확인).
 
-### Windows에서 미리 고쳐둔 것
+따라서 빌드 설정(소스 목록, StoreKit 링크, 방향, 번들 ID, 배포 타깃, 서명)은
+**모두 그 Xcode 프로젝트가 갖고 있습니다.** 이미 출시에 성공했으므로 그대로 두면 됩니다.
 
-이 저장소에는 iOS 빌드가 깨지는 문제 네 가지가 이미 수정돼 있습니다 (커밋 `2828eb2`).
-**아래는 "이미 해결됨" 목록이므로 다시 손댈 필요가 없습니다.**
+### Windows 에서 새 코드를 받은 뒤 해야 할 일
 
-| 증상 | 원인 | 조치 |
+`git pull` 후, **이번에 추가된 파일을 Xcode 타깃에 직접 넣어야 합니다.**
+Xcode 프로젝트는 자체 소스 목록을 갖고 있어 자동으로 따라오지 않습니다.
+
+| 항목 | 할 일 | 안 하면 |
 |---|---|---|
-| 링크 실패 `MKStoreManager` undefined | `MKStoreManager.mm`이 CMake 소스 목록에 없었음 | 목록에 추가 |
-| 링크 실패 `_OBJC_CLASS_$_SKPaymentQueue` | cocos2d가 StoreKit을 링크하지 않음 | `if(IOS)`에 `-framework StoreKit` |
-| 앱이 **가로로 실행됨** | cocos2d-x 기본 plist 템플릿이 가로 전용 | `proj.ios_mac/ios/kw4xBundleInfo.plist.in` 사본을 만들어 세로로 교체 |
-| 기존 앱에 업로드 불가 / 인앱결제 상품 조회 안 됨 | 번들 ID가 기본값 `org.cocos2dx.kw4_x` | `com.ozzywow.kw4iphonelite` 로 지정 |
-| 홈 화면 이름이 `kw4_x` | 템플릿에 `CFBundleDisplayName` 없음 | 추가 (한글떼기1단계) |
-| Xcode가 배포 타깃 거부 | cocos2d-x 기본값 8.0 | 12.0 으로 상향 |
+| `Classes/NativeShare.h` | 타깃에 추가 | — |
+| `Classes/NativeShare.cpp` | 타깃에 추가 | — |
+| `Classes/NativeShare_apple.mm` | **타깃에 추가 (필수)** | `NativeShare::share` undefined 로 링크 실패 |
+| `Resources/UI4HD/shareBtn_n-hd.png`<br>`Resources/UI4HD/shareBtn_s-hd.png` | 리소스가 **폴더 참조(파란 폴더)** 면 자동. 개별 파일 참조면 추가 | 공유 버튼이 안 보임 |
 
-번들 ID 출처는 예전 `Resources/Info_lite.plist`입니다.
-현재 빌드는 `LITE_VER` + `kw4iphonelite.*` 상품 ID이므로 **라이트판**에 해당합니다.
+`MainMenuScene::cfShare()` 가 `NativeShare::share()` 를 호출하는데 iOS 구현이
+`NativeShare_apple.mm` 에만 있습니다 (`NativeShare.cpp` 의 Apple 분기는 비어 있음).
+
+기존 버튼 이미지 6개(`startBtn`/`infoBtn`/`treeBtn` × n/s)는 **파일명이 그대로**라
+따로 추가할 필요 없이 교체된 그림이 반영됩니다.
+
+### CMake 경로 (참고용, 현재 사용하지 않음)
+
+`kw4_x/CMakeLists.txt` 에도 iOS 설정이 있고 2026-07 에 여러 문제를 고쳐 두었습니다
+(커밋 `2828eb2`). 다만 위에 적었듯 **앱 셸 소스가 저장소에 없어 이 경로는 지금 그대로는
+구성되지 않습니다.** 나중에 CMake 로 옮기거나 프로젝트를 새로 만들 때 참고하세요.
+
+| 문제 | 조치 |
+|---|---|
+| `MKStoreManager.mm` 이 소스 목록에 없어 링크 실패 | 목록에 추가 |
+| StoreKit 미링크 (`_OBJC_CLASS_$_SKPaymentQueue`) | `if(IOS)` 에 `-framework StoreKit` |
+| cocos2d-x 기본 plist 템플릿이 **가로 전용** | `proj.ios_mac/ios/kw4xBundleInfo.plist.in` 사본을 세로로 |
+| 번들 ID 기본값 `org.cocos2dx.kw4_x` | `com.ozzywow.kw4iphonelite` 로 지정 |
+| 홈 화면 이름이 `kw4_x` | `CFBundleDisplayName` 추가 |
+| 배포 타깃 8.0 (최신 Xcode 미지원) | 12.0 |
+
+번들 ID 출처는 예전 `Resources/Info_lite.plist` 입니다.
+현재 빌드는 `LITE_VER` + `kw4iphonelite.*` 상품 ID 이므로 **라이트판**에 해당합니다.
 (유료 정식판은 `com.ozzywow.kw4iphone`, `Resources/Info.plist`)
 
-### Mac에서 직접 해야 하는 것
+### 그 밖에 확인할 것
 
-1. **폰트 복사** — 0번 항목 참고. 안 하면 낱말 글자가 안 나옵니다.
-2. **서명** — `CMakeLists.txt`의 `DEVELOPMENT_TEAM`이 비어 있습니다.
-   Xcode에서 본인 팀 지정(자동 서명 권장).
-3. **버전** — `CFBundleShortVersionString`이 기본값 `1.0`입니다.
-   App Store 업데이트라면 게시된 버전보다 높여야 합니다.
-   `CMakeLists.txt`의 `cocos_pak_xcode(... SHORT_VERSION_STRING ...)`로 지정할 수 있습니다.
+1. **폰트** — 0번 항목. Mac 에 이미 있다면 그대로 두면 됩니다.
+2. **버전** — App Store 업데이트라면 `CFBundleShortVersionString` 을 게시된 버전보다 높일 것.
 
 ### 알려진 경고 (빌드는 됨)
 
@@ -188,7 +206,8 @@ open build_ios/kw4_x.xcodeproj
 ### 건드리면 안 되는 파일
 
 `Classes/MKStoreManager.m`, `Classes/MKStoreObserver.m` 은 `.mm` 버전과 중복된 레거시입니다.
-빌드에 포함돼 있지 않습니다. **CMake 소스 목록에 추가하면 심볼 중복으로 링크가 깨집니다.**
+**Xcode 타깃이나 CMake 목록에 추가하면 심볼 중복으로 링크가 깨집니다.**
+새 파일을 타깃에 넣을 때 이 둘이 딸려 들어가지 않도록 주의하세요.
 
 ---
 
@@ -219,3 +238,6 @@ open build_ios/kw4_x.xcodeproj
 | `com.enhance.gameservice` 를 찾을 수 없음 | 엔진 패치 미적용 | `patches/` 의 엔진 패치 적용 |
 | `namespace` / `compileSdkVersion` Gradle 오류 | 엔진 패치 미적용 (AGP 8 문법) | 위와 동일 |
 | `JniHelper` / `CCDevice` 심볼 undefined | 엔진 패치 미적용 | 위와 동일 |
+| iOS 링크 실패 `NativeShare::share` undefined | `NativeShare_apple.mm` 이 Xcode 타깃에 없음 | 3번 항목 표 참고 |
+| iOS 에서 공유 버튼이 안 보임 | `shareBtn_*.png` 가 번들에 없음 | 리소스 참조 방식 확인 |
+| iOS 링크 실패 `duplicate symbol MKStoreManager` | 레거시 `.m` 파일이 타깃에 들어감 | `.mm` 만 남길 것 |
