@@ -80,8 +80,11 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 
 	backGround->setAnchorPoint(Point::ANCHOR_MIDDLE);
 	backGround->setPosition(frameSize.width*0.5f, frameSize.height*0.5f);
-	backGround->setScaleX(frameSize.width  / backGround->getContentSize().width);	
-	backGround->setScaleY(frameSize.height / backGround->getContentSize().height);
+	{
+		float bgScaleX = frameSize.width  / backGround->getContentSize().width;
+		float bgScaleY = frameSize.height / backGround->getContentSize().height;
+		backGround->setScale(std::max(bgScaleX, bgScaleY));
+	}
 	this->addChild(backGround, kGameSceneTagBackground, kGameSceneTagBackground);
 
 	m_fileName = StringUtils::format("word_card_pic_h/%s.jpg", worldName.c_str());

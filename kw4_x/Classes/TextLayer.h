@@ -22,11 +22,11 @@ public:
 	TextLayer();
 	~TextLayer();
 
-	static TextLayer* createWithWordText(StudyScene* scene, Point destPos, std::string& wordText);
+	static TextLayer* createWithWordText(StudyScene* scene, Point destPos, const std::string& wordText);
 
-	bool	initWithVal(StudyScene* scene, Point destPos, std::string& wordText);
+	bool	initWithVal(StudyScene* scene, Point destPos, const std::string& wordText);
 
-	void	setWorldText(std::string& wordText);
+	void	setWorldText(const std::string& wordText);
 	void	replaceToGenPlace();
 	void	replaceToPoint(Point destPos);
 

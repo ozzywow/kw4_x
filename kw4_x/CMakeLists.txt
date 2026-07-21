@@ -16,6 +16,10 @@ if(APPLE OR WINDOWS)
     cocos_mark_multi_resources(common_res_files RES_TO "Resources" FOLDERS ${GAME_RES_FOLDER})
 endif()
 
+if(ANDROID)
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--build-id")
+endif()
+
 # Cross-platform source files (exclude iOS/Mac Objective-C .mm/.m files)
 set(GAME_SOURCE
     Classes/AppDelegate.cpp
@@ -28,6 +32,7 @@ set(GAME_SOURCE
     Classes/MainMenuScene.cpp
     Classes/MKStoreManagerDelegate.cpp
     Classes/MKStoreManager_cpp.cpp
+    Classes/NativeShare.cpp
     Classes/PointManager.cpp
     Classes/SoundFactory.cpp
     Classes/StudyScene.cpp
@@ -53,6 +58,7 @@ set(GAME_HEADER
     Classes/MKStoreManagerDelegate.h
     Classes/MKStoreManager_cpp.h
     Classes/MKStoreManager_mm.h
+    Classes/NativeShare.h
     Classes/PointManager.h
     Classes/Singleton.h
     Classes/SoundFactory.h
@@ -96,8 +102,10 @@ elseif(APPLE)
             proj.ios_mac/ios/RootViewController.mm
             proj.ios_mac/ios/Prefix.pch
             Classes/MKDelegateCPP.mm
+            Classes/MKStoreManager.mm
             Classes/MKStoreManager_mm.mm
             Classes/MKStoreObserver.mm
+            Classes/NativeShare_apple.mm
             ${APP_UI_RES}
         )
     elseif(MACOSX)
@@ -106,6 +114,16 @@ elseif(APPLE)
         )
     endif()
     list(APPEND GAME_SOURCE ${common_res_files})
+elseif(ANDROID)
+    list(APPEND GAME_SOURCE
+        Classes/AndroidBilling.cpp
+        ${COCOS2DX_ROOT_PATH}/cocos/platform/android/javaactivity-android.cpp
+        ${COCOS2DX_ROOT_PATH}/cocos/platform/android/jni/Java_org_cocos2dx_lib_Cocos2dxHelper.cpp
+        ${COCOS2DX_ROOT_PATH}/cocos/platform/android/jni/Java_org_cocos2dx_lib_Cocos2dxAccelerometer.cpp
+        ${COCOS2DX_ROOT_PATH}/cocos/platform/android/jni/Java_org_cocos2dx_lib_Cocos2dxBitmap.cpp
+        ${COCOS2DX_ROOT_PATH}/cocos/platform/android/jni/Java_org_cocos2dx_lib_Cocos2dxRenderer.cpp
+        ${COCOS2DX_ROOT_PATH}/cocos/platform/android/jni/TouchesJni.cpp
+    )
 endif()
 
 set(all_code_files
@@ -113,9 +131,19 @@ set(all_code_files
     ${GAME_SOURCE}
 )
 
-add_executable(${APP_NAME} ${all_code_files})
+if(ANDROID)
+    add_library(${APP_NAME} SHARED ${all_code_files})
+else()
+    add_executable(${APP_NAME} ${all_code_files})
+endif()
 
 target_link_libraries(${APP_NAME} cocos2d)
+
+# 인앱결제(MKStoreKit)가 StoreKit 을 쓰는데 cocos2d 는 이 프레임워크를 링크하지 않는다.
+# 빠지면 _OBJC_CLASS_$_SKPaymentQueue 등이 undefined 로 링크 실패한다.
+if(IOS)
+    target_link_libraries(${APP_NAME} "-framework StoreKit")
+endif()
 target_include_directories(${APP_NAME}
     PRIVATE Classes
     PRIVATE ${COCOS2DX_ROOT_PATH}/cocos/audio/include/
@@ -125,9 +153,18 @@ setup_cocos_app_config(${APP_NAME})
 
 if(APPLE)
     if(IOS)
-        set_target_properties(${APP_NAME} PROPERTIES RESOURCE "${APP_UI_RES}")
-        cocos_pak_xcode(${APP_NAME} INFO_PLIST "iOSBundleInfo.plist.in")
+        # cocos2d-x 기본 plist 템플릿은 가로 전용이고 번들 ID 도 org.cocos2dx.kw4_x 가 된다.
+        # 번들 ID 가 다르면 기존 App Store 앱에 업로드할 수 없고 인앱결제 상품도 조회되지 않는다.
+        # 값 출처: Resources/Info_lite.plist (라이트판, LITE_VER 빌드가 이것에 해당)
+        cocos_pak_xcode(${APP_NAME}
+            INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/proj.ios_mac/ios/kw4xBundleInfo.plist.in"
+            GUI_IDENTIFIER "com.ozzywow.kw4iphonelite"
+            BUNDLE_NAME "한글떼기1단계"
+        )
         set_xcode_property(${APP_NAME} ASSETCATALOG_COMPILER_APPICON_NAME "AppIcon")
+        # cocos2d-x 는 배포 타깃을 8.0 으로 두는데 최신 Xcode 는 12.0 미만을 받지 않는다
+        set_xcode_property(${APP_NAME} IPHONEOS_DEPLOYMENT_TARGET "12.0")
+        # 서명은 Xcode 에서 본인 팀으로 지정할 것 (자동 서명 권장)
         set_xcode_property(${APP_NAME} DEVELOPMENT_TEAM "")
         set_xcode_property(${APP_NAME} CODE_SIGN_IDENTITY "iPhone Developer")
     elseif(MACOSX)

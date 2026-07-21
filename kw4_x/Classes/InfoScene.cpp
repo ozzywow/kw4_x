@@ -643,12 +643,13 @@ void InfoScene::cfStep5(Ref* sender)
 
 void InfoScene::cfTotal(Ref* sender)
 {
+	cocos2d::log("[Billing] InfoScene::cfTotal clicked (isProgress=%d, id=%s)", (int)isProgress, ckProductIdTotal);
 	if (isProgress == true) return;
 	isProgress = true;
 
 	this->PlayBuySound();
 	CMKStoreManager::Instance()->ToggleIndicator(true);
-	CMKStoreManager::Instance()->buyFeature(ckProductIdTotal);	
+	CMKStoreManager::Instance()->buyFeature(ckProductIdTotal);
 }
 
 void InfoScene::productFetchComplete()
@@ -660,9 +661,9 @@ void InfoScene::productFetchComplete()
 }
 void InfoScene::productPurchased(std::string productId)
 {
-	cocos2d::log("productPurchased /%s", productId.c_str());
+	cocos2d::log("[Billing] InfoScene::productPurchased <- %s (unlocking)", productId.c_str());
     CMKStoreManager::Instance()->ToggleIndicator(false);
-    isProgress = false;    
+    isProgress = false;
 
 	if (productId == ckProductIdTotal)
 	{

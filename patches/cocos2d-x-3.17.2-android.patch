@@ -1,0 +1,161 @@
+diff --git a/cocos/platform/CMakeLists.txt b/cocos/platform/CMakeLists.txt
+index e577564..c3d1362 100644
+--- a/cocos/platform/CMakeLists.txt
++++ b/cocos/platform/CMakeLists.txt
+@@ -27,9 +27,11 @@ if(ANDROID)
+     set(COCOS_PLATFORM_SPECIFIC_SRC
+         platform/android/CCApplication-android.cpp
+         platform/android/CCCommon-android.cpp
++        platform/android/CCDevice-android.cpp
+         platform/android/CCGLViewImpl-android.cpp
+         platform/android/CCFileUtils-android.cpp
+         platform/android/CCEnhanceAPI-android.cpp
++        platform/android/jni/JniHelper.cpp
+     )
+ elseif(WINDOWS)
+     set(COCOS_PLATFORM_SPECIFIC_HEADER
+diff --git a/cocos/platform/android/java/src/org/cocos2dx/lib/Cocos2dxHelper.java b/cocos/platform/android/java/src/org/cocos2dx/lib/Cocos2dxHelper.java
+index a86c566..f02030f 100644
+--- a/cocos/platform/android/java/src/org/cocos2dx/lib/Cocos2dxHelper.java
++++ b/cocos/platform/android/java/src/org/cocos2dx/lib/Cocos2dxHelper.java
+@@ -59,7 +59,6 @@ import android.view.WindowManager;
+ import com.android.vending.expansion.zipfile.APKExpansionSupport;
+ import com.android.vending.expansion.zipfile.ZipResourceFile;
+ 
+-import com.enhance.gameservice.IGameTuningService;
+ 
+ import java.io.IOException;
+ import java.io.File;
+@@ -98,10 +97,6 @@ public class Cocos2dxHelper {
+     private static Cocos2dxHelperListener sCocos2dxHelperListener;
+     private static Set<OnActivityResultListener> onActivityResultListeners = new LinkedHashSet<OnActivityResultListener>();
+     private static Vibrator sVibrateService = null;
+-    //Enhance API modification begin
+-    private static IGameTuningService mGameServiceBinder = null;
+-    private static final int BOOST_TIME = 7;
+-    //Enhance API modification end
+ 
+     // The absolute path to the OBB if it exists, else the absolute path to the APK.
+     private static String sAssetsPath = "";
+@@ -171,11 +166,6 @@ public class Cocos2dxHelper {
+ 
+             sInited = true;
+             
+-            //Enhance API modification begin
+-            Intent serviceIntent = new Intent(IGameTuningService.class.getName());
+-            serviceIntent.setPackage("com.enhance.gameservice");
+-            boolean suc = activity.getApplicationContext().bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE);
+-            //Enhance API modification end
+         }
+     }
+     
+@@ -227,18 +217,6 @@ public class Cocos2dxHelper {
+         return sOBBFile;
+     }
+     
+-    //Enhance API modification begin
+-    private static ServiceConnection connection = new ServiceConnection() {
+-        public void onServiceConnected(ComponentName name, IBinder service) {
+-            mGameServiceBinder = IGameTuningService.Stub.asInterface(service);
+-            fastLoading(BOOST_TIME);
+-        }
+-
+-        public void onServiceDisconnected(ComponentName name) {
+-            sActivity.getApplicationContext().unbindService(connection);
+-        }
+-    };
+-    //Enhance API modification end
+     
+     public static Activity getActivity() {
+         return sActivity;
+@@ -699,65 +677,24 @@ public class Cocos2dxHelper {
+         public void runOnGLThread(final Runnable pRunnable);
+     }
+ 
+-    //Enhance API modification begin
+     public static int setResolutionPercent(int per) {
+-        try {
+-            if (mGameServiceBinder != null) {
+-                return mGameServiceBinder.setPreferredResolution(per);
+-            }
+-            return -1;
+-        } catch (Exception e) {
+-            e.printStackTrace();
+-            return -1;
+-        }
++        return -1;
+     }
+ 
+     public static int setFPS(int fps) {
+-        try {
+-            if (mGameServiceBinder != null) {
+-                return mGameServiceBinder.setFramePerSecond(fps);
+-            }
+-            return -1;
+-        } catch (Exception e) {
+-            e.printStackTrace();
+-            return -1;
+-        }
++        return -1;
+     }
+ 
+     public static int fastLoading(int sec) {
+-        try {
+-            if (mGameServiceBinder != null) {
+-                return mGameServiceBinder.boostUp(sec);
+-            }
+-            return -1;
+-        } catch (Exception e) {
+-            e.printStackTrace();
+-            return -1;
+-        }
++        return -1;
+     }
+ 
+     public static int getTemperature() {
+-        try {
+-            if (mGameServiceBinder != null) {
+-                return mGameServiceBinder.getAbstractTemperature();
+-            }
+-            return -1;
+-        } catch (Exception e) {
+-            e.printStackTrace();
+-            return -1;
+-        }
++        return -1;
+     }
+ 
+     public static int setLowPowerMode(boolean enable) {
+-        try {
+-            if (mGameServiceBinder != null) {
+-                return mGameServiceBinder.setGamePowerSaving(enable);
+-            }
+-            return -1;
+-        } catch (Exception e) {
+-            e.printStackTrace();
+-            return -1;
+-        }
++        return -1;
+     }
+ 
+     /**
+diff --git a/cocos/platform/android/libcocos2dx/build.gradle b/cocos/platform/android/libcocos2dx/build.gradle
+index 44f9a32..4d684bb 100644
+--- a/cocos/platform/android/libcocos2dx/build.gradle
++++ b/cocos/platform/android/libcocos2dx/build.gradle
+@@ -1,11 +1,12 @@
+ apply plugin: 'com.android.library'
+ 
+ android {
+-    compileSdkVersion PROP_COMPILE_SDK_VERSION.toInteger()
++    namespace "org.cocos2dx.lib"
++    compileSdk PROP_COMPILE_SDK_VERSION.toInteger()
+ 
+     defaultConfig {
+-        minSdkVersion PROP_MIN_SDK_VERSION
+-        targetSdkVersion PROP_TARGET_SDK_VERSION
++        minSdk PROP_MIN_SDK_VERSION.toInteger()
++        targetSdk PROP_TARGET_SDK_VERSION.toInteger()
+         versionCode 1
+         versionName "1.0"
+     }

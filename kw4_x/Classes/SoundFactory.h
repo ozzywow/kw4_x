@@ -5,7 +5,11 @@
 
 //bgm
 #define SOUND_FILE_bgm					"Sound/click.mp3"
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#define SOUND_FILE_apple_tree_bgm		"Sound/appleTree.ogg"
+#else
 #define SOUND_FILE_apple_tree_bgm		"Sound/appleTree.aiff"
+#endif
 
 //effect
 #define SOUND_FILE_click_effect			"Sound/click.mp3"
@@ -18,13 +22,22 @@
 #define SOUND_FILE_puck_effect			"Sound/puck.wav"
 #define SOUND_FILE_wind_effect			"Sound/Chimes.wav"
 #define SOUND_FILE_levelup_effect		"Sound/levelup.wav"
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#define SOUND_FILE_giggle_effect		"Sound/giggle.ogg"
+#else
 #define SOUND_FILE_giggle_effect		"Sound/giggle.m4a"
+#endif
 
 
 //voice
 #define SOUND_FILE_intro_voice			"Sound/intro.mp3"		//우리아이 한글떼기
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#define SOUND_FILE_goodjob_voice		"Sound/goodjob.ogg"
+#define SOUND_FILE_excellent_voice		"Sound/excellent.ogg"
+#else
 #define SOUND_FILE_goodjob_voice		"Sound/goodjob.m4a"
 #define SOUND_FILE_excellent_voice		"Sound/excellent.m4a"
+#endif
 #define SOUND_FILE_fighting_voice		"Sound/fighting.mp3"	// 시작
 
 #define PRELOAD_SOUND_FILE(fileName)		CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect(fileName)

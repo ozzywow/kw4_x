@@ -1,6 +1,24 @@
 # Build output
 kw4_x/build_win32/
 
+# Android build output (.cxx 는 수 GB 규모)
+kw4_x/proj.android/.gradle/
+kw4_x/proj.android/.idea/
+kw4_x/proj.android/build/
+kw4_x/proj.android/app/build/
+kw4_x/proj.android/app/.cxx/
+kw4_x/proj.android/libcocos2dx/build/
+kw4_x/proj.android/libcocos2dx/.cxx/
+# 서명된 배포 산출물
+kw4_x/proj.android/app/release/
+*.aab
+*.apk
+# 로컬 SDK 경로 — 머신마다 다르므로 커밋 금지
+kw4_x/proj.android/local.properties
+
+# IDE
+.vscode/
+
 # cocos2d-x engine (large, download separately)
 cocos2d-x/
 
