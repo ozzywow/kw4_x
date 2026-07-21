@@ -327,12 +327,19 @@ bool PointManager::LoadXML()
 		
 	
 	std::string fullpath = FileUtils::getInstance()->fullPathForFilename("word_card_data_x.xml");
+
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+	cocos2d::Data fileData = FileUtils::getInstance()->getDataFromFile(fullpath);
+	pugi::xml_parse_result result = _xmlDoc.load_buffer(fileData.getBytes(), fileData.getSize());
+#else
 	pugi::xml_parse_result result = _xmlDoc.load_file(fullpath.c_str());
+#endif
+
 	if (!result)
 	{
 		assertSmartlyWithMsg(false, fullpath.c_str());
 		return false;
-	}	
+	}
 
 	_xmlNode = _xmlDoc.child("root");
 

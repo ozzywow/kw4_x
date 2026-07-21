@@ -3,14 +3,23 @@
 #include "wordFactory.h"
 
 WordFactory::WordFactory()
-{	
+{
 	std::string fullpath = FileUtils::getInstance()->fullPathForFilename("word_factory.txt");
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+	cocos2d::Data fileData = FileUtils::getInstance()->getDataFromFile(fullpath);
+	if (fileData.getSize() > 0)
+	{
+		m_hanWordFactory = std::string(reinterpret_cast<const char*>(fileData.getBytes()), fileData.getSize());
+		auto pos = m_hanWordFactory.find_first_of("\r\n");
+		if (pos != std::string::npos) m_hanWordFactory = m_hanWordFactory.substr(0, pos);
+	}
+#else
 	char buffer[258];
 	FILE* fp = fopen(fullpath.c_str(), "r");
 	fgets(buffer, sizeof(buffer), fp);
 	fclose(fp);
-
-	m_hanWordFactory = buffer;	
+	m_hanWordFactory = buffer;
+#endif
 }
 
 WordFactory::~WordFactory()
