@@ -10,7 +10,7 @@ TextLayer::~TextLayer()
 
 }
 
-TextLayer* TextLayer::createWithWordText(StudyScene* scene, Point destPos, std::string& wordText)
+TextLayer* TextLayer::createWithWordText(StudyScene* scene, Point destPos, const std::string& wordText)
 {
 	auto ret = new (std::nothrow) TextLayer();
 	if (ret && ret->initWithVal(scene, destPos, wordText))
@@ -25,7 +25,7 @@ TextLayer* TextLayer::createWithWordText(StudyScene* scene, Point destPos, std::
 	return ret;
 }
 
-bool TextLayer::initWithVal(StudyScene* scene, Point destPos, std::string& wordText)
+bool TextLayer::initWithVal(StudyScene* scene, Point destPos, const std::string& wordText)
 {
 	m_textStr = wordText;
 	m_genPos = destPos;
@@ -54,7 +54,7 @@ bool TextLayer::initWithVal(StudyScene* scene, Point destPos, std::string& wordT
 }
 
 
-void	TextLayer::setWorldText(std::string& wordText)
+void	TextLayer::setWorldText(const std::string& wordText)
 {
 	m_textStr = wordText;
 	m_hanWord->setString(m_textStr);
