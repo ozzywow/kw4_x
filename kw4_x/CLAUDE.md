@@ -1,7 +1,11 @@
 # Project Overview
 
 This project is a 2D game built using cocos2d-x (v3.17.x) in C++.
-The project uses a Scene-based architecture and supports multiple platforms including Windows and iOS.
+The project uses a Scene-based architecture and supports multiple platforms including Windows, Android and iOS.
+
+**Before building on Android Studio or Xcode, read `docs/BUILD.md`** (repo root).
+It covers files excluded from git that must be prepared (cocos2d-x engine, malgun.ttf),
+signing setup and its encoding pitfall, menus that always fail, and iOS fixes already applied.
 
 # Tech Stack
 
