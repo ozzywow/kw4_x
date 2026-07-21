@@ -6,6 +6,8 @@
 # gh-pages 커밋으로 만들어 push 한다. landing/ 변경은 먼저 커밋해 두어야 한다.
 
 $ErrorActionPreference = "Stop"
+# 콘솔 코드페이지가 949여도 한글 메시지가 깨지지 않도록
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 Set-Location ($PSScriptRoot)
 
 # 커밋되지 않은 landing/ 변경이 있으면 중단 (배포 내용은 항상 커밋된 상태여야 함)
