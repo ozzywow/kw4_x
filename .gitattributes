@@ -1,0 +1,63 @@
+# Windows 개발 / Mac 빌드 혼용이라 줄바꿈을 명시적으로 고정한다.
+# 이게 없으면 저장소에 CRLF 와 LF 가 섞여 들어가 diff 가 통째로 뒤집히거나
+# 스크립트가 실행되지 않는다.
+
+# 기본: 텍스트는 저장소에 LF 로 저장, 체크아웃 시 플랫폼에 맞게
+* text=auto
+
+# ── 실행 파일: 줄바꿈이 틀리면 동작하지 않는다 ──
+*.sh        text eol=lf
+gradlew     text eol=lf
+*.bat       text eol=crlf
+*.cmd       text eol=crlf
+*.ps1       text eol=crlf
+
+# ── 패치: git apply 가 읽으므로 LF 고정 ──
+*.patch     text eol=lf
+*.diff      text eol=lf
+
+# ── 소스 ──
+*.c         text
+*.cpp       text
+*.h         text
+*.hpp       text
+*.m         text
+*.mm        text
+*.java      text
+*.py        text
+*.gradle    text
+*.cmake     text
+CMakeLists.txt text
+
+# ── 설정·문서 ──
+*.properties text
+*.xml       text
+*.plist     text
+*.plist.in  text
+*.json      text
+*.md        text
+*.txt       text
+*.html      text
+*.css       text
+*.js        text
+
+# ── 바이너리: 절대 변환하지 않는다 ──
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.ico       binary
+*.psd       binary
+*.ogg       binary
+*.mp3       binary
+*.wav       binary
+*.m4a       binary
+*.aiff      binary
+*.ttf       binary
+*.otf       binary
+*.jar       binary
+*.aab       binary
+*.apk       binary
+*.jks       binary
+*.keystore  binary
+*.pdf       binary
