@@ -3,7 +3,7 @@
 #include "cocos2d.h"
 using namespace cocos2d;
 
-//#define LITE_VER // LITE version
+#define LITE_VER // LITE version
 //#define TEST_MODE
 //#define IPAD_VER // IPAD version
 
@@ -36,23 +36,36 @@ static inline float CalcCenterY()
 }
 
 
-#ifdef IPAD_VER
-#define BUY_AT_STORE_URL "https://itunes.apple.com/app/id504138737?mt=8"
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#define ckConsumableBaseFeatureId "com.ozzywow.kw4android"
+#define ckProductIdStep2 "com.ozzywow.kw4android.total"
+#define ckProductIdStep3 "com.ozzywow.kw4android.total"
+#define ckProductIdStep4 "com.ozzywow.kw4android.total"
+#define ckProductIdStep5 "com.ozzywow.kw4android.total"
+#define ckProductIdTotal "com.ozzywow.kw4android.total"
+#elif defined(IPAD_VER)
 #define ckConsumableBaseFeatureId "com.ozzywow.kw4ipadlite"
 #define ckProductIdStep2 "com.ozzywow.kw4ipadlite.step2"
 #define ckProductIdStep3 "com.ozzywow.kw4ipadlite.step3"
 #define ckProductIdStep4 "com.ozzywow.kw4ipadlite.step4"
 #define ckProductIdStep5 "com.ozzywow.kw4ipadlite.step5"
 #define ckProductIdTotal "com.ozzywow.kw4ipadlite.total"
-#else //IPAD_VER
-#define BUY_AT_STORE_URL "http://itunes.apple.com/app/id509909625?mt=8"
+#else
 #define ckConsumableBaseFeatureId "com.ozzywow.kw4iphonelite"
 #define ckProductIdStep2 "com.ozzywow.kw4iphonelite.step2"
 #define ckProductIdStep3 "com.ozzywow.kw4iphonelite.step3"
 #define ckProductIdStep4 "com.ozzywow.kw4iphonelite.step4"
 #define ckProductIdStep5 "com.ozzywow.kw4iphonelite.step5"
 #define ckProductIdTotal "com.ozzywow.kw4iphonelite.total"
-#endif //IPAD_VER
+#endif
+
+// 유료 정식버전(별도 앱)의 App Store 페이지. 메인메뉴 배너에서만 사용하며 iOS 전용이다.
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+#define BUY_AT_STORE_URL "https://apps.apple.com/app/id509909625"
+#endif
+
+// 앱 소개 페이지. 메인메뉴 공유 버튼이 이 링크를 내보낸다.
+#define SHARE_URL "https://ozzywow.github.io/kw4_x/"
 
 
 enum 
@@ -102,27 +115,27 @@ static int GetRandNum(int max = 8)
 
 static void PrintStyle(Node* parent, std::string& str, int fontSize, Point pos)
 {
-	auto label0 = Label::createWithSystemFont(str, "Arial", fontSize);
+	auto label0 = Label::createWithTTF(str, "fonts/arial.ttf", fontSize);
 	label0->setPosition(pos.x - 1, pos.y);
 	label0->setColor(Color3B::BLACK);
 	parent->addChild(label0, kGameSceneTagAnswerText);
 
-	auto label1 = Label::createWithSystemFont(str, "Arial", fontSize);
+	auto label1 = Label::createWithTTF(str, "fonts/arial.ttf", fontSize);
 	label1->setPosition(pos.x + 1, pos.y);
 	label1->setColor(Color3B::BLACK);
 	parent->addChild(label1, kGameSceneTagAnswerText);
 
-	auto label2 = Label::createWithSystemFont(str, "Arial", fontSize);
+	auto label2 = Label::createWithTTF(str, "fonts/arial.ttf", fontSize);
 	label2->setPosition(pos.x, pos.y - 1);
 	label2->setColor(Color3B::BLACK);
 	parent->addChild(label2, kGameSceneTagAnswerText);
 
-	auto label3 = Label::createWithSystemFont(str, "Arial", fontSize);
+	auto label3 = Label::createWithTTF(str, "fonts/arial.ttf", fontSize);
 	label3->setPosition(pos.x, pos.y + 1);
 	label3->setColor(Color3B::BLACK);
 	parent->addChild(label3, kGameSceneTagAnswerText);
 
-	auto label = Label::createWithSystemFont(str, "Arial", fontSize);
+	auto label = Label::createWithTTF(str, "fonts/arial.ttf", fontSize);
 	label->setPosition(pos.x, pos.y);
 	label->setColor(Color3B::WHITE);
 	parent->addChild(label, kGameSceneTagAnswerText);

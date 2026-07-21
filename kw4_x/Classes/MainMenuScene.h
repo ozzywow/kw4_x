@@ -26,6 +26,7 @@ public:
 	void callbackOnPushedAppleTreeGameMenuItem(Ref* pSender);
 	void callbackOnPushedBuyGameMenuItem(Ref* pSender);
 	void cfFullVersion(Ref* pSender);
+	void cfShare(Ref* pSender);
 
 	virtual void productFetchComplete();
 	virtual void productPurchased(std::string productId);
