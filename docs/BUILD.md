@@ -7,6 +7,34 @@ Windows(Visual Studio + CMake)에서 개발한 내용을 **Android Studio / Xcod
 
 ---
 
+## 먼저 — `git pull` 후 이것부터 돌리세요
+
+```bash
+python tools/check_env.py          # Windows / Android
+python tools/check_env.py --ios    # Mac (iOS 항목 포함)
+```
+
+`pull` 후 빌드가 깨지는 원인 대부분은 **저장소에 없는 것**(엔진, 엔진 패치, 폰트)과
+**새 파일이 빌드 목록에 안 들어간 것** 두 가지입니다. 이 스크립트가 그걸 먼저 잡습니다.
+
+점검 항목:
+
+- cocos2d-x 3.17.2 존재 및 `external/` 준비 여부
+- **엔진 Android 패치 적용 여부** (결과물로 판정)
+- `malgun.ttf` 존재
+- `Classes/*.cpp` 가 전부 `CMakeLists.txt` 에 등록됐는지 ← 파일 추가 후 등록 누락 방지
+- 서명 속성 4개 존재 및 **비밀번호가 ASCII 인지** (값은 출력하지 않음)
+- 키스토어 파일 존재, `gradle-wrapper.jar` 존재
+- `--ios`: Xcode 타깃에 넣어야 할 `.mm` 목록과 넣으면 안 되는 레거시 `.m` 안내
+
+실패가 하나라도 있으면 종료코드 1 을 돌려줍니다.
+
+> **iOS 는 자동 검사에 한계가 있습니다.** Xcode 프로젝트가 저장소에 없어
+> 소스 목록을 읽을 수 없으므로, `.mm` 파일이 타깃에 실제로 들어갔는지는
+> 확인해 주지 못하고 목록만 보여줍니다.
+
+---
+
 ## 0. 저장소에 없는 것 — 먼저 챙길 것
 
 `.gitignore`로 제외된 것들이라 클론만 해서는 빌드가 되지 않습니다.
