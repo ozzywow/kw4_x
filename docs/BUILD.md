@@ -13,7 +13,7 @@ Windows(Visual Studio + CMake)에서 개발한 내용을 **Android Studio / Xcod
 
 | 대상 | 경로 | 제외 이유 | 준비 방법 |
 |---|---|---|---|
-| cocos2d-x 엔진 | `<repo>/cocos2d-x/` | 용량 | 3.17.2 를 이 경로에 배치. 최초 1회 `python download-deps.py` |
+| cocos2d-x 엔진 | `<repo>/cocos2d-x/` | 용량 | 3.17.2 를 이 경로에 배치. 최초 1회 `python download-deps.py` → **아래 패치 적용** |
 | 한글 폰트 | `kw4_x/Resources/fonts/malgun.ttf` | MS 독점 폰트 | Windows `C:\Windows\Fonts\malgun.ttf` 복사 |
 | Android 빌드 산출물 | `proj.android/app/{build,.cxx}` | 수 GB | 빌드하면 생성됨 |
 | 로컬 SDK 경로 | `proj.android/local.properties` | 머신마다 다름 | Android Studio가 자동 생성 |
@@ -23,6 +23,35 @@ Windows(Visual Studio + CMake)에서 개발한 내용을 **Android Studio / Xcod
 글자 없이 뜹니다. 메인메뉴 버튼 글자는 이미지에 구워져 있어 폰트 없이도 정상입니다.
 
 경로 기준: `COCOS2DX_ROOT_PATH = kw4_x/../cocos2d-x` (`kw4_x/CMakeLists.txt:7`)
+
+### 엔진 패치 (Android 빌드에 필수)
+
+cocos2d-x 3.17.2 는 2018년 릴리스라 **최신 AGP/NDK 로는 Android 빌드가 되지 않습니다.**
+필요한 수정을 `patches/cocos2d-x-3.17.2-android.patch` 로 보존해 두었습니다.
+
+```bash
+cd cocos2d-x            # 태그 cocos2d-x-3.17.2 체크아웃 상태여야 함
+git apply ../patches/cocos2d-x-3.17.2-android.patch
+```
+
+패치 내용 (3개 파일):
+
+| 파일 | 수정 | 없으면 |
+|---|---|---|
+| `cocos/platform/CMakeLists.txt` | Android 소스에 `CCDevice-android.cpp`, `jni/JniHelper.cpp` 추가 | JNI/디바이스 심볼 undefined |
+| `cocos/platform/android/libcocos2dx/build.gradle` | AGP 8 문법 (`namespace`, `compileSdk`, `minSdk`) | Gradle 구성 실패 |
+| `.../lib/Cocos2dxHelper.java` | 존재하지 않는 `com.enhance.gameservice` 참조 제거 | Java 컴파일 실패 |
+
+**iOS 빌드에는 영향이 없습니다.** 세 수정 모두 Android 전용 경로이고,
+`cocos/platform/CMakeLists.txt` 변경도 `if(ANDROID)` 블록 안입니다.
+
+> 엔진은 별도 저장소(upstream `cocos2d/cocos2d-x`)를 detached HEAD 로 체크아웃한 것이라
+> 이 수정을 커밋해 둘 곳이 없습니다. 엔진 폴더를 다시 받거나 `git checkout .` 하면 사라지므로,
+> **변경이 생기면 패치를 다시 뽑아 두세요.**
+>
+> ```powershell
+> git -C cocos2d-x diff > patches/cocos2d-x-3.17.2-android.patch
+> ```
 
 ---
 
@@ -187,3 +216,6 @@ open build_ios/kw4_x.xcodeproj
 | `JAVA_HOME is not set` | 터미널에 JDK 미지정 | Android Studio 번들 JBR 지정 |
 | 이미지 교체가 반영 안 됨 | APK/실행 폴더가 옛 에셋 | 재빌드 후 재설치 |
 | 낱말 글자가 안 보임 | `malgun.ttf` 없음 | 0번 항목 |
+| `com.enhance.gameservice` 를 찾을 수 없음 | 엔진 패치 미적용 | `patches/` 의 엔진 패치 적용 |
+| `namespace` / `compileSdkVersion` Gradle 오류 | 엔진 패치 미적용 (AGP 8 문법) | 위와 동일 |
+| `JniHelper` / `CCDevice` 심볼 undefined | 엔진 패치 미적용 | 위와 동일 |
