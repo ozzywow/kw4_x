@@ -727,7 +727,8 @@ void InfoScene::productPurchased(std::string productId)
      */
 
 	this->DrawItemBox();
-	SoundFactory::Instance()->play(SOUND_FILE_levelup_effect);
+    if (!isRestoringPurchases)
+        SoundFactory::Instance()->play(SOUND_FILE_levelup_effect);
 }
 void InfoScene::transactionCanceled()
 {
@@ -746,6 +747,7 @@ void InfoScene::restorePreviousTransactions(int count)
     CMKStoreManager::Instance()->ToggleIndicator(false);
     isRestored = true;
     isProgress = false;
+    isRestoringPurchases = false;
 
     // IAP 콜백은 백그라운드 스레드에서 올 수 있으므로 사운드·UI를 메인 스레드로 디스패치
     Director::getInstance()->getScheduler()->performFunctionInCocosThread([this, count]()
