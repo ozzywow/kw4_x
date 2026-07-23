@@ -1,5 +1,6 @@
 # Build output
 kw4_x/build_win32/
+kw4_x/build_ios/
 
 # Android build output (.cxx 는 수 GB 규모)
 kw4_x/proj.android/.gradle/
