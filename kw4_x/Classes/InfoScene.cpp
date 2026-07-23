@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+#include "stdafx.h"
 
 #include "InfoScene.h"
 #include "PointManager.h"
@@ -40,7 +40,8 @@ bool InfoScene::init()
 	this->DrawItemBox();
 
 	this->isProgress = false;
-    this->isRestored = false;   
+    this->isRestored = false;
+    this->isRestoringPurchases = false;
 #ifdef LITE_VER
 	CMKStoreManager::Instance()->SetDelegate(this);
 #endif
@@ -60,7 +61,20 @@ void InfoScene::onExitTransitionDidStart()
 void InfoScene::DrawItemBox()
 {
     CCLOG("DrawItemBox");
-    
+
+    // Remove previously built UI (menus, labels) while keeping the background (tag 0)
+    // and scene-internal nodes like the default Camera (which has no tag / tag -1).
+    {
+        Vector<Node*> toRemove;
+        for (auto child : this->getChildren())
+        {
+            if (child->getTag() != 0 && dynamic_cast<Camera*>(child) == nullptr)
+                toRemove.pushBack(child);
+        }
+        for (auto child : toRemove)
+            this->removeChild(child, true);
+    }
+
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();
 	auto frameSize = glview->getDesignResolutionSize();
@@ -233,8 +247,8 @@ void InfoScene::DrawItemBox()
 		}
 		else
 		{
-			m_btnLevel4 = MenuItemImage::create("UI4HD/btn_level_5_n-hd.png", "UI4HD/btn_level_5_n-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel5, this));
-			PrintStyle(m_btnLevel4, strStep5, sizeofFont_s, posOfDesc);
+			m_btnLevel5 = MenuItemImage::create("UI4HD/btn_level_5_n-hd.png", "UI4HD/btn_level_5_n-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel5, this));
+			PrintStyle(m_btnLevel5, strStep5, sizeofFont_s, posOfDesc);
 		}
 	}
 	else
@@ -518,7 +532,8 @@ void InfoScene::callbackOnPushedRestoreMenuItem(Ref* sender)
     if( isProgress == true ) return;
     isProgress = true;
     isRestored = false;
-  
+    isRestoringPurchases = true;  // productPurchased의 levelup 사운드 억제
+
 	CMKStoreManager::Instance()->ToggleIndicator(true);
 	CMKStoreManager::Instance()->restorePreviousTransactions();
 }
@@ -665,6 +680,21 @@ void InfoScene::productPurchased(std::string productId)
     CMKStoreManager::Instance()->ToggleIndicator(false);
     isProgress = false;
 
+    // 신규개선 : 아무거나 구매해도 모든 단계 다 언락처리한다. -ozzywow-
+    if (productId == ckProductIdTotal ||
+        productId == ckProductIdStep2 ||
+        productId == ckProductIdStep3 ||
+        productId == ckProductIdStep4 ||
+        productId == ckProductIdStep5 )
+    {
+        PointManager::Instance()->SetCartWithPID(PID_STEP2, true);
+        PointManager::Instance()->SetCartWithPID(PID_STEP3, true);
+        PointManager::Instance()->SetCartWithPID(PID_STEP4, true);
+        PointManager::Instance()->SetCartWithPID(PID_STEP5, true);
+        PointManager::Instance()->SetCartWithPID(PID_TOTAL, true);
+        PointManager::Instance()->SaveData();
+    }
+    /* 이전 코드
 	if (productId == ckProductIdTotal)
 	{
 		PointManager::Instance()->SetCartWithPID(PID_STEP2, true);
@@ -694,6 +724,7 @@ void InfoScene::productPurchased(std::string productId)
 		PointManager::Instance()->SetCartWithPID(PID_STEP5, true);
 		PointManager::Instance()->SaveData();
 	}
+     */
 
 	this->DrawItemBox();
 	SoundFactory::Instance()->play(SOUND_FILE_levelup_effect);
@@ -709,40 +740,105 @@ void InfoScene::transactionCanceled()
 void InfoScene::restorePreviousTransactions(int count)
 {
     if(true == isRestored){ return; }
-    
-    cocos2d::log("restorePreviousTransactions");
-    
-	CMKStoreManager::Instance()->ToggleIndicator(false);
-	isRestored = true;
+
+    cocos2d::log("restorePreviousTransactions count=%d", count);
+
+    CMKStoreManager::Instance()->ToggleIndicator(false);
+    isRestored = true;
     isProgress = false;
-	SoundFactory::Instance()->play(SOUND_FILE_click_effect);
 
-	//Purchase items restored.
-	auto director = Director::getInstance();
-	auto glview = director->getOpenGLView();
-	auto frameSize = glview->getDesignResolutionSize();
-	const int		sizeOfFont = FRAME_WIDTH*0.05f;
-
-
-	UIPopupWindow *pPopupOK = UIPopupWindow::create(Sprite::create("UI4HD/black_bg.png"), Sprite::create("UI4HD/pop_common.png"));
-	pPopupOK->setCallBackFunc(CC_CALLBACK_1(InfoScene::popCallback_ResetOk, this)); //콕백을 받을 함수를 설정해주시면 됩니다
-																					
-	pPopupOK->addButton("UI4HD/btn_ok_s_01.png", "UI4HD/btn_ok_s_01.png", "", ui::Widget::TextureResType::LOCAL, Point(0, -70), "", 2);
-
-    std::string strWarning;
-    if(count > 0)
+    // IAP 콜백은 백그라운드 스레드에서 올 수 있으므로 사운드·UI를 메인 스레드로 디스패치
+    Director::getInstance()->getScheduler()->performFunctionInCocosThread([this, count]()
     {
-        strWarning = "Purchase items\n Restored.";
-    }
-    else
-    {
-        strWarning = "No items purchased.";
-    }
-	
-	strWarning = UTF8(strWarning);
-	pPopupOK->setFontSize_Msg(sizeOfFont);
-	pPopupOK->setColor_Msg(Color3B::BLACK);
-	pPopupOK->setMessageString(strWarning); // 메시지 출력부분이죠 그외 타이틀도 출력가능하구요, 위치또한 바꿀수있는 멤버함수가 존재합니다.
-	pPopupOK->showPopup(NULL);  //마지막으로 화면에 띄우주면 끝~  showPopup()함수의 인자는 자신이 부모다~ 라는걸 넣어주는겁니다 현재 실행되는 클래스겠죠(Layer가 아닌경우는 필히 NULL을 입력하세요)
+        if (count > 0)
+            SoundFactory::Instance()->play(SOUND_FILE_wind_effect);
+        else
+            SoundFactory::Instance()->play(SOUND_FILE_dingling_effect);
 
+        auto frameSize = Director::getInstance()->getOpenGLView()->getDesignResolutionSize();
+        const float cx = frameSize.width  * 0.5f;
+        const float cy = frameSize.height * 0.5f;
+        const int sizeOfFont      = (int)(FRAME_WIDTH * 0.048f);
+        const int sizeOfTitleFont = (int)(FRAME_WIDTH * 0.062f);
+
+        // UIPopupWindow 없이 직접 Node 조합 — OK 버튼 없이 3초 후 자동 닫힘
+        auto popup = Node::create();
+        popup->setCascadeOpacityEnabled(true);
+        popup->setPosition(cx, cy);
+        this->addChild(popup, 20);
+
+        // 반투명 어두운 오버레이
+        auto overlay = Sprite::create("UI4HD/black_bg.png");
+        overlay->setPosition(Vec2::ZERO);
+        popup->addChild(overlay, 0);
+
+        // 패널 배경 (사이즈를 먼저 확보한 뒤 z=2에 추가)
+        auto panel = Sprite::create("UI4HD/pop_common.png");
+        panel->setPosition(Vec2::ZERO);
+        const Size ps = panel->getContentSize();
+
+        // 황금빛 테두리: 패널보다 큰 채운 사각형 두 겹을 z=1에 배치
+        // 외곽(황금 갈색) → 내측(밝은 금색) → 패널(z=2)이 중앙을 덮는 구조
+        const float outerPad = 12.0f;
+        const float innerPad =  4.0f;
+        auto border = DrawNode::create();
+        border->drawSolidRect(
+            Vec2(-ps.width * 0.5f - outerPad, -ps.height * 0.5f - outerPad),
+            Vec2( ps.width * 0.5f + outerPad,  ps.height * 0.5f + outerPad),
+            Color4F(0.76f, 0.48f, 0.09f, 1.0f));   // 진한 황금 갈색
+        border->drawSolidRect(
+            Vec2(-ps.width * 0.5f - innerPad, -ps.height * 0.5f - innerPad),
+            Vec2( ps.width * 0.5f + innerPad,  ps.height * 0.5f + innerPad),
+            Color4F(0.98f, 0.87f, 0.52f, 1.0f));   // 밝은 금색 내측선
+        popup->addChild(border, 1);
+        popup->addChild(panel,  2);
+
+        // 캐릭터 (패널 위쪽, 페이드인 + 살짝 튀어오름)
+        const char* charImg = (count > 0) ? "UI4HD/boxboyHappy-hd.png" : "UI4HD/boxboySad-hd.png";
+        Sprite* character = Sprite::create(charImg);
+        if (character)
+        {
+            character->setPosition(Vec2(0.0f, 148.0f));
+            character->setOpacity(0);
+            popup->addChild(character, 3);
+            character->runAction(Sequence::create(
+                FadeIn::create(0.3f),
+                EaseBackOut::create(MoveBy::create(0.3f, Vec2(0.0f, 12.0f))),
+                nullptr));
+        }
+
+        // 제목 (진한 황금 갈색)
+        std::string strTitle = (count > 0) ? "복구 완료!" : "구매 복구";
+        auto titleLabel = Label::createWithTTF(UTF8(strTitle), "fonts/malgun.ttf", sizeOfTitleFont);
+        titleLabel->setColor(Color3B(122, 66, 8));
+        titleLabel->setPosition(Vec2(0.0f, 42.0f));
+        popup->addChild(titleLabel, 3);
+
+        // 메시지 (중간 갈색)
+        std::string strMsg = (count > 0)
+            ? "구매한 단계가\n모두 복구되었습니다!"
+            : "복구할 구매 내역이\n없습니다.";
+        auto msgLabel = Label::createWithTTF(UTF8(strMsg), "fonts/malgun.ttf", sizeOfFont);
+        msgLabel->setColor(Color3B(82, 50, 18));
+        msgLabel->setHorizontalAlignment(TextHAlignment::CENTER);
+        msgLabel->setLineSpacing(6.0f);
+        msgLabel->setPosition(Vec2(0.0f, -18.0f));
+        popup->addChild(msgLabel, 3);
+
+        // 등장: 스프링 팝업 → 2.4초 대기 → 부드럽게 사라짐
+        popup->setScale(0.75f);
+        popup->setOpacity(0);
+        popup->runAction(Sequence::create(
+            Spawn::create(
+                EaseBackOut::create(ScaleTo::create(0.35f, 1.0f)),
+                FadeIn::create(0.25f),
+                nullptr),
+            DelayTime::create(2.4f),
+            Spawn::create(
+                ScaleTo::create(0.3f, 0.88f),
+                FadeOut::create(0.3f),
+                nullptr),
+            RemoveSelf::create(),
+            nullptr));
+    });
 }

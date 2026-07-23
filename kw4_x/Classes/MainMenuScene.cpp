@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+#include "stdafx.h"
 
 #include "MainMenuScene.h"
 #include "SoundFactory.h"
@@ -190,6 +190,7 @@ void MainMenuScene::cfShare(Ref* pSender)
 // 유료 정식버전(별도 앱) 스토어 페이지로 이동
 void MainMenuScene::cfFullVersion(Ref* pSender)
 {
+	SoundFactory::Instance()->play(SOUND_FILE_click_effect);
 #if( CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 	cocos2d::Application::getInstance()->openURL(BUY_AT_STORE_URL);
 #endif
@@ -204,6 +205,22 @@ void MainMenuScene::productPurchased(std::string productId)
 {
 	cocos2d::log("productPurchased /%s", productId.c_str());
 	
+    //개선코드 : 아무거나 하나 구매하면 모든단계 다 풀어준다.
+    if (productId == ckProductIdTotal ||
+        productId == ckProductIdStep2 ||
+        productId == ckProductIdStep3 ||
+        productId == ckProductIdStep4 ||
+        productId == ckProductIdStep5 )
+    {
+        PointManager::Instance()->SetCartWithPID(PID_STEP2, true);
+        PointManager::Instance()->SetCartWithPID(PID_STEP3, true);
+        PointManager::Instance()->SetCartWithPID(PID_STEP4, true);
+        PointManager::Instance()->SetCartWithPID(PID_STEP5, true);
+        PointManager::Instance()->SetCartWithPID(PID_TOTAL, true);
+        PointManager::Instance()->SaveData();
+    }
+    
+    /* 이전 코드
 	if (productId == ckProductIdTotal)
 	{
 		PointManager::Instance()->SetCartWithPID(PID_STEP2, true);
@@ -232,7 +249,7 @@ void MainMenuScene::productPurchased(std::string productId)
 	{
 		PointManager::Instance()->SetCartWithPID(PID_STEP5, true);
 		PointManager::Instance()->SaveData();
-	}
+	}*/
 }
 void MainMenuScene::transactionCanceled()
 {

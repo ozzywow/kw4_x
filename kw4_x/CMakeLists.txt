@@ -14,6 +14,10 @@ add_subdirectory(${COCOS2DX_ROOT_PATH}/cocos ${ENGINE_BINARY_PATH}/cocos/core)
 set(GAME_RES_FOLDER "${CMAKE_CURRENT_SOURCE_DIR}/Resources")
 if(APPLE OR WINDOWS)
     cocos_mark_multi_resources(common_res_files RES_TO "Resources" FOLDERS ${GAME_RES_FOLDER})
+    # Resources/Info.plist·Info_lite.plist 는 번들 ID 참조용 plist 일 뿐 런타임 리소스가 아니다.
+    # 그대로 두면 앱 번들 루트로 복사되어 생성되는 Info.plist 와 충돌한다
+    # (error: Multiple commands produce .../kw4_x.app/Info.plist).
+    list(FILTER common_res_files EXCLUDE REGEX "Resources/Info(_lite)?\\.plist$")
 endif()
 
 if(ANDROID)
@@ -96,6 +100,14 @@ elseif(APPLE)
             proj.ios_mac/ios/LaunchScreenBackground.png
             proj.ios_mac/ios/Images.xcassets
         )
+        # xcassets/storyboard 는 MACOSX_PACKAGE_LOCATION 을 지정해야
+        # CMake Xcode 제너레이터가 CopyFiles 빌드 페이즈에 포함시켜 actool/ibtool 이 실행된다.
+        foreach(_ui_res ${APP_UI_RES})
+            set_source_files_properties(
+                "${CMAKE_CURRENT_SOURCE_DIR}/${_ui_res}"
+                PROPERTIES MACOSX_PACKAGE_LOCATION ""
+            )
+        endforeach()
         list(APPEND GAME_SOURCE
             proj.ios_mac/ios/main.m
             proj.ios_mac/ios/AppController.mm
@@ -131,54 +143,83 @@ set(all_code_files
     ${GAME_SOURCE}
 )
 
-if(ANDROID)
+# ---------------------------------------------------------------------------
+# 앱 타깃 구성
+#   iOS 는 유료(kw4)·무료(kw4_lite) 두 실행 타깃을 만들어 한 프로젝트에서
+#   두 버전을 함께 관리한다(Xcode 상단에서 스킴만 바꿔 전환).
+#   Windows/macOS/Android 는 기존처럼 단일 kw4_x 타깃을 유지한다.
+#   두 버전의 코드 차이는 LITE_VER 매크로 하나뿐이다. 기본은 라이트이며
+#   (common_define.h), 유료 타깃만 KW4_PAID 를 정의해 라이트 기능을 끈다.
+# ---------------------------------------------------------------------------
+if(IOS)
+    add_executable(kw4      ${all_code_files})   # 유료(정식)
+    add_executable(kw4_lite ${all_code_files})   # 무료(라이트)
+    set(APP_TARGETS kw4 kw4_lite)
+elseif(ANDROID)
     add_library(${APP_NAME} SHARED ${all_code_files})
+    set(APP_TARGETS ${APP_NAME})
 else()
     add_executable(${APP_NAME} ${all_code_files})
+    set(APP_TARGETS ${APP_NAME})
 endif()
 
-target_link_libraries(${APP_NAME} cocos2d)
-
-# 인앱결제(MKStoreKit)가 StoreKit 을 쓰는데 cocos2d 는 이 프레임워크를 링크하지 않는다.
-# 빠지면 _OBJC_CLASS_$_SKPaymentQueue 등이 undefined 로 링크 실패한다.
-if(IOS)
-    target_link_libraries(${APP_NAME} "-framework StoreKit")
-endif()
-target_include_directories(${APP_NAME}
-    PRIVATE Classes
-    PRIVATE ${COCOS2DX_ROOT_PATH}/cocos/audio/include/
-)
-
-setup_cocos_app_config(${APP_NAME})
-
-if(APPLE)
+# 모든 앱 타깃 공통 설정
+foreach(app_target ${APP_TARGETS})
+    target_link_libraries(${app_target} cocos2d)
+    # 인앱결제(MKStoreKit)가 StoreKit 을 쓰는데 cocos2d 는 이 프레임워크를 링크하지 않는다.
+    # 빠지면 _OBJC_CLASS_$_SKPaymentQueue 등이 undefined 로 링크 실패한다.
     if(IOS)
-        # cocos2d-x 기본 plist 템플릿은 가로 전용이고 번들 ID 도 org.cocos2dx.kw4_x 가 된다.
-        # 번들 ID 가 다르면 기존 App Store 앱에 업로드할 수 없고 인앱결제 상품도 조회되지 않는다.
-        # 값 출처: Resources/Info_lite.plist (라이트판, LITE_VER 빌드가 이것에 해당)
-        cocos_pak_xcode(${APP_NAME}
-            INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/proj.ios_mac/ios/kw4xBundleInfo.plist.in"
-            GUI_IDENTIFIER "com.ozzywow.kw4iphonelite"
-            BUNDLE_NAME "한글떼기1단계"
-        )
-        set_xcode_property(${APP_NAME} ASSETCATALOG_COMPILER_APPICON_NAME "AppIcon")
-        # cocos2d-x 는 배포 타깃을 8.0 으로 두는데 최신 Xcode 는 12.0 미만을 받지 않는다
-        set_xcode_property(${APP_NAME} IPHONEOS_DEPLOYMENT_TARGET "12.0")
-        # 서명은 Xcode 에서 본인 팀으로 지정할 것 (자동 서명 권장)
-        set_xcode_property(${APP_NAME} DEVELOPMENT_TEAM "")
-        set_xcode_property(${APP_NAME} CODE_SIGN_IDENTITY "iPhone Developer")
-    elseif(MACOSX)
-        set_target_properties(${APP_NAME} PROPERTIES
-            XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY ""
-            XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED "NO"
-            XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED "NO"
-        )
-        set(APP_RES_DIR "$<TARGET_FILE_DIR:${APP_NAME}>/../Resources")
-        add_custom_command(TARGET ${APP_NAME} POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E make_directory "${APP_RES_DIR}"
-            COMMAND rsync -a --update "${GAME_RES_FOLDER}/" "${APP_RES_DIR}/"
-        )
+        target_link_libraries(${app_target} "-framework StoreKit")
     endif()
+    target_include_directories(${app_target}
+        PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Classes
+        PRIVATE ${COCOS2DX_ROOT_PATH}/cocos/audio/include/
+    )
+    setup_cocos_app_config(${app_target})
+endforeach()
+
+if(IOS)
+    # 유료(정식) 타깃만 KW4_PAID 정의 → common_define.h 의 LITE_VER 를 끈다.
+    # (무료 kw4_lite 는 정의하지 않으므로 기본값인 라이트로 빌드된다)
+    target_compile_definitions(kw4 PRIVATE KW4_PAID)
+
+    # 버전별 번들 메타데이터는 각자 plist 로 분리한다(유료 Info.plist.in / 무료 Info_lite.plist.in).
+    # 같은 디렉터리에서 cocos_pak_xcode 를 두 번 호출하면 MACOSX_BUNDLE_* 변수가 마지막 값으로
+    # 덮여 두 타깃이 같은 번들ID/이름을 갖는 CMake 함정이 있다. 그래서 번들ID·실행파일명은 plist
+    # 안에서 Xcode 빌드 설정($(PRODUCT_BUNDLE_IDENTIFIER)/$(EXECUTABLE_NAME))으로 주입하고,
+    # 번들ID 는 아래에서 타깃별 Xcode 속성으로 지정한다. 표시이름은 각 plist 에 하드코딩돼 있다.
+    cocos_pak_xcode(kw4      INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/proj.ios_mac/ios/Info.plist.in")
+    cocos_pak_xcode(kw4_lite INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/proj.ios_mac/ios/Info_lite.plist.in")
+    set_xcode_property(kw4      PRODUCT_BUNDLE_IDENTIFIER "com.ozzywow.kw4iphone")
+    set_xcode_property(kw4_lite PRODUCT_BUNDLE_IDENTIFIER "com.ozzywow.kw4iphonelite")
+
+    # 유료/무료 아이콘을 별도 appiconset 으로 분리
+    set_xcode_property(kw4      ASSETCATALOG_COMPILER_APPICON_NAME "AppIcon")
+    set_xcode_property(kw4_lite ASSETCATALOG_COMPILER_APPICON_NAME "AppIcon_lite")
+
+    foreach(app_target kw4 kw4_lite)
+        # cocos2d-x 는 배포 타깃을 8.0 으로 두는데 최신 Xcode 는 12.0 미만을 받지 않는다
+        set_xcode_property(${app_target} IPHONEOS_DEPLOYMENT_TARGET "12.0")
+        # 서명은 Xcode 에서 본인 팀으로 지정할 것 (자동 서명 권장)
+        set_xcode_property(${app_target} DEVELOPMENT_TEAM "GFX32EJL53")
+        set_xcode_property(${app_target} CODE_SIGN_IDENTITY "iPhone Developer")
+        # 아카이브가 App Store 배포로 인식되려면 앱이 .xcarchive 의 Applications/ 에 설치돼야 한다.
+        # CMake 기본값은 INSTALL_PATH="" 라 Organizer 가 "일반 아카이브"로 분류하고
+        # 배포 화면에 App Store Connect 옵션이 사라진 채 Custom 만 뜬다.
+        set_xcode_property(${app_target} INSTALL_PATH "$(LOCAL_APPS_DIR)")
+        set_xcode_property(${app_target} SKIP_INSTALL "NO")
+    endforeach()
+elseif(MACOSX)
+    set_target_properties(${APP_NAME} PROPERTIES
+        XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY ""
+        XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED "NO"
+        XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED "NO"
+    )
+    set(APP_RES_DIR "$<TARGET_FILE_DIR:${APP_NAME}>/../Resources")
+    add_custom_command(TARGET ${APP_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${APP_RES_DIR}"
+        COMMAND rsync -a --update "${GAME_RES_FOLDER}/" "${APP_RES_DIR}/"
+    )
 elseif(WINDOWS)
     cocos_copy_target_dll(${APP_NAME})
 endif()

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    무료(라이트) 버전 번들 정보. cocos2d-x 기본 템플릿(가로 전용)을 세로 게임에 맞게 고친 사본.
+    유료판은 Info.plist.in 이며, 두 파일의 차이는 표시 이름(CFBundleName/DisplayName)뿐이다.
+    번들ID·실행파일명은 Xcode 빌드 설정($(PRODUCT_BUNDLE_IDENTIFIER)/$(EXECUTABLE_NAME))으로
+    타깃별 주입된다(같은 디렉터리에서 cocos_pak_xcode 를 두 번 호출할 때 생기는 값 덮어쓰기 회피).
+-->
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>ko</string>
+    <key>CFBundleExecutable</key>
+    <string>$(EXECUTABLE_NAME)</string>
+    <key>CFBundleIdentifier</key>
+    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundleName</key>
+    <string>한글떼기1단계</string>
+    <key>CFBundleDisplayName</key>
+    <string>한글떼기1단계</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.05</string>
+    <key>CFBundleSignature</key>
+    <string>????</string>
+    <key>CFBundleVersion</key>
+    <string>1.05</string>
+    <key>CSResourcesFileMapped</key>
+    <true/>
+    <key>LSRequiresIPhoneOS</key>
+    <true/>
+    <key>UIStatusBarHidden</key>
+    <true/>
+    <key>UIRequiresFullScreen</key>
+    <true/>
+    <key>UILaunchStoryboardName</key>
+    <string>LaunchScreen</string>
+    <key>UISupportedInterfaceOrientations</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationPortraitUpsideDown</string>
+    </array>
+</dict>
+</plist>

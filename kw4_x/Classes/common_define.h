@@ -3,7 +3,11 @@
 #include "cocos2d.h"
 using namespace cocos2d;
 
+// LITE_VER: 무료(라이트) 버전 표시. 기본은 라이트로 두고,
+// 유료(정식) 빌드 타깃만 KW4_PAID 를 정의해 라이트 기능을 끈다(iOS CMake: kw4 타깃).
+#ifndef KW4_PAID
 #define LITE_VER // LITE version
+#endif
 //#define TEST_MODE
 //#define IPAD_VER // IPAD version
 
@@ -60,8 +64,9 @@ static inline float CalcCenterY()
 #endif
 
 // 유료 정식버전(별도 앱)의 App Store 페이지. 메인메뉴 배너에서만 사용하며 iOS 전용이다.
+// itms-apps:// 스킴은 Safari 우회 없이 App Store 앱을 직접 연다 (https:// 는 무반응 실패 가능).
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
-#define BUY_AT_STORE_URL "https://apps.apple.com/app/id509909625"
+#define BUY_AT_STORE_URL "itms-apps://itunes.apple.com/app/id509909625"
 #endif
 
 // 앱 소개 페이지. 메인메뉴 공유 버튼이 이 링크를 내보낸다.

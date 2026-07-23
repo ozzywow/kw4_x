@@ -30,6 +30,7 @@ public:
 
 	bool isProgress;
     bool isRestored;
+    bool isRestoringPurchases; // 복구 진행 중 플래그 — productPurchased의 levelup 사운드를 억제
 
 
 
