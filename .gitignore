@@ -1,6 +1,9 @@
 # Build output
 kw4_x/build_win32/
 kw4_x/build_ios/
+kw4_x/build_mac/
+# IPA 배포 아카이브 (빌드 산출물)
+kw4_x/Classes/kw4_x_lite*/
 
 # Android build output (.cxx 는 수 GB 규모)
 kw4_x/proj.android/.gradle/
