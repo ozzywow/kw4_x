@@ -10,11 +10,13 @@ import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.PendingPurchasesParams;
 import com.android.billingclient.api.ProductDetails;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.QueryProductDetailsParams;
 import com.android.billingclient.api.QueryPurchasesParams;
+import com.android.billingclient.api.UnfetchedProduct;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -41,7 +43,13 @@ public class BillingManager implements PurchasesUpdatedListener {
         this.activity = activity;
         billingClient = BillingClient.newBuilder(activity)
             .setListener(this)
-            .enablePendingPurchases()
+            // PBL 8+ removed the no-arg enablePendingPurchases().
+            .enablePendingPurchases(
+                PendingPurchasesParams.newBuilder()
+                    .enableOneTimeProducts()
+                    .build())
+            // Lets the library re-establish a dropped service connection itself.
+            .enableAutoServiceReconnection()
             .build();
         connectToStore();
     }
@@ -100,10 +108,17 @@ public class BillingManager implements PurchasesUpdatedListener {
         }
         billingClient.queryProductDetailsAsync(
             QueryProductDetailsParams.newBuilder().setProductList(productList).build(),
-            (result, details) -> {
+            // PBL 8+ hands back a QueryProductDetailsResult instead of a bare list,
+            // so products that could not be fetched are reported too.
+            (result, productDetailsResult) -> {
+                List<ProductDetails> details = productDetailsResult.getProductDetailsList();
                 Log.i(TAG, "queryProductDetails result: " + result.getResponseCode()
                     + " / " + result.getDebugMessage()
                     + ", loaded " + details.size() + " products");
+                for (UnfetchedProduct u : productDetailsResult.getUnfetchedProductList()) {
+                    Log.w(TAG, "  unfetched: " + u.getProductId()
+                        + ", status=" + u.getStatusCode());
+                }
                 if (result.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                     productDetailsList = details;
                     for (ProductDetails d : details) {
