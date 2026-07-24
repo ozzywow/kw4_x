@@ -21,6 +21,49 @@
 #import <StoreKit/StoreKit.h>
 #import "MKStoreManager.h"
 #import "PointManager.h"
+#import <UIKit/UIKit.h>
+
+// ── UIAlertController 표시 헬퍼 (구 UIAlertView 대체) ──
+// UIAlertView 는 iOS 9 부터 deprecated 되어 최신 iOS 에서 표시가 보장되지 않는다.
+// UIAlertController 는 표시할 뷰컨트롤러가 필요하므로, NativeShare_apple.mm 과
+// 동일한 방식으로 iOS 13 UIScene 대응 최상단 뷰컨트롤러를 찾아 표시한다.
+static UIWindow* kw4xKeyWindowForAlert()
+{
+	if (@available(iOS 13.0, *)) {
+		for (UIScene* scene in [UIApplication sharedApplication].connectedScenes) {
+			if (![scene isKindOfClass:[UIWindowScene class]]) continue;
+			for (UIWindow* w in ((UIWindowScene*)scene).windows) {
+				if (w.isKeyWindow) return w;
+			}
+		}
+	}
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+	UIWindow* w = [UIApplication sharedApplication].keyWindow;
+	if (!w) w = [[UIApplication sharedApplication].windows firstObject];
+#pragma clang diagnostic pop
+	return w;
+}
+
+// 정보성 알림을 메인 스레드에서 표시한다.
+// 기존 UIAlertView 도 delegate 동작이 없었으므로(버튼 핸들러 미구현) Dismiss 버튼만 둔다.
+static void kw4xShowInfoAlert(NSString* title, NSString* message)
+{
+	dispatch_async(dispatch_get_main_queue(), ^{
+		UIViewController* root = kw4xKeyWindowForAlert().rootViewController;
+		while (root.presentedViewController) root = root.presentedViewController;
+		if (!root) return;
+
+		UIAlertController* alert =
+			[UIAlertController alertControllerWithTitle:title
+												message:message
+										 preferredStyle:UIAlertControllerStyleAlert];
+		[alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Dismiss", @"")
+												  style:UIAlertActionStyleCancel
+												handler:nil]];
+		[root presentViewController:alert animated:YES completion:nil];
+	});
+}
 
 @interface MKStoreManager (PrivateMethods)
 
@@ -218,14 +261,9 @@ static MKStoreManager* _sharedStoreManager;
 {
 	if([self canCurrentDeviceUseFeature: featureId])
 	{
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Review request approved", @"")
-														message:NSLocalizedString(@"You can use this feature for reviewing the app.", @"")
-													   delegate:self 
-											  cancelButtonTitle:NSLocalizedString(@"Dismiss", @"")
-											  otherButtonTitles:nil];
-		[alert show];
-		[alert release];
-		
+		kw4xShowInfoAlert(NSLocalizedString(@"Review request approved", @""),
+						  NSLocalizedString(@"You can use this feature for reviewing the app.", @""));
+
 		[self enableContentForThisSession:featureId];
 		return;
 	}
@@ -237,13 +275,8 @@ static MKStoreManager* _sharedStoreManager;
 	}
 	else
 	{
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"In-App Purchasing disabled", @"")
-														message:NSLocalizedString(@"Check your parental control settings and try again later", @"")
-													   delegate:self 
-											  cancelButtonTitle:NSLocalizedString(@"Dismiss", @"")
-											  otherButtonTitles: nil];
-		[alert show];
-		[alert release];
+		kw4xShowInfoAlert(NSLocalizedString(@"In-App Purchasing disabled", @""),
+						  NSLocalizedString(@"Check your parental control settings and try again later", @""));
 	}
 }
 
@@ -335,13 +368,8 @@ static MKStoreManager* _sharedStoreManager;
 
 - (void) failedTransaction: (SKPaymentTransaction *)transaction
 {
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[transaction.error localizedFailureReason] 
-													message:[transaction.error localizedRecoverySuggestion]
-												   delegate:self 
-										  cancelButtonTitle:NSLocalizedString(@"Dismiss", @"")
-										  otherButtonTitles: nil];
-	[alert show];
-	[alert release];
+	kw4xShowInfoAlert([transaction.error localizedFailureReason],
+					  [transaction.error localizedRecoverySuggestion]);
 }
 
 
