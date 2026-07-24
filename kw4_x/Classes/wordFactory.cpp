@@ -14,10 +14,13 @@ WordFactory::WordFactory()
 		if (pos != std::string::npos) m_hanWordFactory = m_hanWordFactory.substr(0, pos);
 	}
 #else
-	char buffer[258];
+	char buffer[258] = { 0 };
 	FILE* fp = fopen(fullpath.c_str(), "r");
-	fgets(buffer, sizeof(buffer), fp);
-	fclose(fp);
+	if (fp)
+	{
+		if (fgets(buffer, sizeof(buffer), fp) == nullptr) buffer[0] = '\0';
+		fclose(fp);
+	}
 	m_hanWordFactory = buffer;
 #endif
 }
