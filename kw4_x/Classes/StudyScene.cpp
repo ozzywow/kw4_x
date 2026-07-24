@@ -186,6 +186,12 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 	for (int i = 0; i<lenth; ++i)
 	{
 		int randID = GetRandNum();
+		// 빈 버튼이 없으면(정답 글자 수가 버튼 수를 초과 등) 더 배치하지 않는다.
+		// GetRandNum 이 -1 을 돌려줄 때 배열 범위 밖 접근으로 크래시하던 것을 방어한다.
+		if (randID < 0 || randID >= (int)m_arrayTextLayer.size())
+		{
+			break;
+		}
 		TextLayer *tmpLayer = m_arrayTextLayer[randID];
 		std::string singleWord = m_wordName.substr(i*3, 3);
 		tmpLayer->setWorldText(singleWord);
