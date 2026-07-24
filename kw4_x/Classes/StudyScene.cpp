@@ -384,7 +384,13 @@ void		StudyScene::ChangeEmotion(int emotionID)
 		break;
 	}
 
-	
+	// 알 수 없는 emotionID(default) 이거나 스프라이트 로드 실패 시 faceBtn 이 NULL 이다.
+	// 아래에서 바로 역참조하므로 여기서 막지 않으면 크래시한다. 아바타 갱신만 건너뛴다.
+	if (faceBtn == nullptr)
+	{
+		return;
+	}
+
 	const float ACTIVE_HEIGHT = CalcActiveHeight(frameSize.height);
 	const Point posOfBox(FRAME_WIDTH*0.88f, H_OFFSET + (ACTIVE_HEIGHT*0.55f));
 	faceBtn->setPosition(posOfBox);
