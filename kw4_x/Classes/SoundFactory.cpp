@@ -45,7 +45,7 @@ SoundFactory::~SoundFactory()
 	UNLOAD_SOUND_FILE(SOUND_FILE_fighting_voice);
 }
 
-void SoundFactory::play(char* soundFile)
+void SoundFactory::play(const char* soundFile)
 {	
 	CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(soundFile);
 }

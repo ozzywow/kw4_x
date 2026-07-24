@@ -54,7 +54,7 @@ public:
 	SoundFactory( float initVol = 1 );
 	~SoundFactory();
 
-	void play(char* soundFile);
+	void play(const char* soundFile);
 
 
 };

@@ -88,35 +88,9 @@ enum
 };
 
 
-static bool arrRandFlag[8];
-
-static void InitRandNum()
-{
-	memset(arrRandFlag, 0, sizeof(arrRandFlag));
-}
-
-static int GetRandNum(int max = 8)
-{
-	// 우선 랜덤으로 빈 슬롯을 찾는다.
-	for (int i = 0; i< 100; ++i) {
-		int ran = rand() % max;
-		if (arrRandFlag[ran] == false)
-		{
-			arrRandFlag[ran] = true;
-			return ran;
-		}
-	}
-	// 랜덤 시도가 모두 실패해도(빈 슬롯이 거의 남지 않았을 때) 선형 탐색으로 확실히 찾는다.
-	// 이 보정이 없으면 -1 이 반환되어 호출부에서 배열 범위 밖 접근(크래시) 위험이 있다.
-	for (int i = 0; i < max; ++i) {
-		if (arrRandFlag[i] == false)
-		{
-			arrRandFlag[i] = true;
-			return i;
-		}
-	}
-	return -1; // 모든 슬롯이 사용됨(요청이 슬롯 수를 초과한 경우)
-}
+// 정답 글자 랜덤 배치용 상태/함수(arrRandFlag, InitRandNum, GetRandNum)는
+// 유일 사용처인 StudyScene.cpp 로 이동했다. 헤더(PCH)에 두면 TU 마다 별도 사본이
+// 생기는 취약점이 있었다.
 
 
 

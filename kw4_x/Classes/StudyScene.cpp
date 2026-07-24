@@ -11,6 +11,39 @@
 #include "TouchedHandleLayer.h"
 
 
+// 정답 글자를 8개 버튼 중 겹치지 않는 위치에 랜덤 배치하기 위한 상태.
+// 유일 사용처가 이 파일뿐이라 헤더(common_define.h) 대신 여기 파일 지역으로 둔다.
+static bool arrRandFlag[8];
+
+static void InitRandNum()
+{
+	memset(arrRandFlag, 0, sizeof(arrRandFlag));
+}
+
+static int GetRandNum(int max = 8)
+{
+	// 우선 랜덤으로 빈 슬롯을 찾는다.
+	for (int i = 0; i< 100; ++i) {
+		int ran = rand() % max;
+		if (arrRandFlag[ran] == false)
+		{
+			arrRandFlag[ran] = true;
+			return ran;
+		}
+	}
+	// 랜덤 시도가 모두 실패해도(빈 슬롯이 거의 남지 않았을 때) 선형 탐색으로 확실히 찾는다.
+	// 이 보정이 없으면 -1 이 반환되어 호출부에서 배열 범위 밖 접근(크래시) 위험이 있다.
+	for (int i = 0; i < max; ++i) {
+		if (arrRandFlag[i] == false)
+		{
+			arrRandFlag[i] = true;
+			return i;
+		}
+	}
+	return -1; // 모든 슬롯이 사용됨(요청이 슬롯 수를 초과한 경우)
+}
+
+
 StudyScene::StudyScene()
 {
 	m_timeFuncAction = NULL;
@@ -465,7 +498,7 @@ void		StudyScene::ShowHint()
 void		StudyScene::PlayWordSound()
 {
 	std::string path = StringUtils::format("word_card_sound/%s.mp3", m_wordName.c_str());	
-	SoundFactory::Instance()->play(const_cast<char*>(path.c_str()) );
+	SoundFactory::Instance()->play(path.c_str());
 }
 void		StudyScene::TimeRun(int sec)
 {
