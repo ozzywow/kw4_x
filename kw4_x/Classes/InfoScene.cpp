@@ -500,7 +500,7 @@ void InfoScene::PlayBuySound()
 void InfoScene::callbackOnPushedHomeMenuItem(Ref* sender)
 {	
 	auto mainScene = MainMenuScene::createScene();
-	auto tr = TransitionSlideInR::create(0.5, mainScene);
+	auto tr = TransitionSlideInR::create(SCENE_TRANSITION_TIME, mainScene);
 	Director::getInstance()->replaceScene(tr);
 }
 

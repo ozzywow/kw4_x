@@ -310,8 +310,9 @@ void	AppleTreeScene::ChangeBiteCount(int ID)
 
 void	AppleTreeScene::callbackOnPushedHomeMenuItem(Ref* pSender)
 {
-	auto  mainScene = MainMenuScene::createScene();	
-	TransitionSlideInL* sceneSlide = TransitionSlideInL::create(0.5, mainScene);
+	auto  mainScene = MainMenuScene::createScene();
+	// 홈으로 나가기(back) → 뒤로 가는 느낌의 SlideInR
+	TransitionSlideInR* sceneSlide = TransitionSlideInR::create(SCENE_TRANSITION_TIME, mainScene);
 	auto director = Director::getInstance();
 	director->replaceScene(sceneSlide);
 }

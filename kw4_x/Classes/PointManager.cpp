@@ -435,7 +435,7 @@ void	PointManager::GetNextScene(bool isEnter, bool isNextStage)
 	if (false == isGotNextScene)
 	{
 		AppleTreeScene* appleScene = (AppleTreeScene*)AppleTreeScene::createScene(false);
-		TransitionSlideInL* sceneSlide = TransitionSlideInL::create(0.2f, appleScene);
+		TransitionSlideInL* sceneSlide = TransitionSlideInL::create(SCENE_TRANSITION_TIME, appleScene);
 		auto director = Director::getInstance();
 		director->replaceScene(sceneSlide);
 
@@ -479,7 +479,7 @@ void	PointManager::GetNextScene(bool isEnter, bool isNextStage)
 			if (false == GetCartWithPID(pid))
 			{
 				InfoScene* infoScene = (InfoScene*)InfoScene::createScene();
-				TransitionSlideInL* sceneSlide = TransitionSlideInL::create(0.2f, infoScene);
+				TransitionSlideInL* sceneSlide = TransitionSlideInL::create(SCENE_TRANSITION_TIME, infoScene);
 				auto director = Director::getInstance();
 				director->replaceScene(sceneSlide);
 				return;
@@ -498,12 +498,12 @@ void	PointManager::GetNextScene(bool isEnter, bool isNextStage)
 	auto director = Director::getInstance();	
 	if (isEnter == true)
 	{
-		TransitionSlideInL* sceneSlide = TransitionSlideInL::create(0.2f, studyScene);
+		TransitionSlideInL* sceneSlide = TransitionSlideInL::create(SCENE_TRANSITION_TIME, studyScene);
 		director->replaceScene(sceneSlide);
 	}
 	else
 	{
-		TransitionPageTurn* scenePageTurn = TransitionPageTurn::create(0.2f, studyScene, false);
+		TransitionPageTurn* scenePageTurn = TransitionPageTurn::create(SCENE_TRANSITION_TIME, studyScene, false);
 		director->replaceScene(scenePageTurn);
 	}
 	
@@ -514,10 +514,10 @@ void	PointManager::GetPrevSecene()
 	// 첫 페이지에서 이전버튼이 눌려지면 홈으로 간다.
 	if (m_currStage == 0)
 	{
-		auto mainScene = MainMenuScene::createScene();		
-		TransitionSlideInR* sceneSlide = TransitionSlideInR::create(0.2f, mainScene);
+		auto mainScene = MainMenuScene::createScene();
+		TransitionSlideInR* sceneSlide = TransitionSlideInR::create(SCENE_TRANSITION_TIME, mainScene);
 		auto director = Director::getInstance();
-		director->replaceScene(mainScene);
+		director->replaceScene(sceneSlide);
 		return;
 	}
 
@@ -539,9 +539,10 @@ void	PointManager::GetPrevSecene()
 	int level = wordCard.level;
 
 	auto studyScene = StudyScene::createScene(wordName, level, text);
-	TransitionSlideInL* sceneSlide = TransitionSlideInL::create(0.2f, studyScene);
+	// 이전(back)은 다음(next, SlideInL)과 반대 방향(SlideInR)으로 밀려나와 뒤로 가는 느낌을 준다.
+	TransitionSlideInR* sceneSlide = TransitionSlideInR::create(SCENE_TRANSITION_TIME, studyScene);
 	auto director = Director::getInstance();
-	director->replaceScene(studyScene);
+	director->replaceScene(sceneSlide);
 
 }
 

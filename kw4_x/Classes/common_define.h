@@ -15,6 +15,10 @@ using namespace cocos2d;
 #define FRAME_HEIGHT				960.0f
 #define FRAME_WIDTH					640.0f
 
+// 씬 전환 시간(초). 모든 replaceScene 전환에서 공통 사용해 스타일을 통일한다.
+// 방향 규칙: 앞으로/진입 = SlideInL, 뒤로/홈 = SlideInR, 낱말 넘김 = PageTurn.
+#define SCENE_TRANSITION_TIME		0.3f
+
 // ACTIVE_HEIGHT: actual usable vertical space for this device.
 // On tall phones (iPhone 5~17): equals FRAME_HEIGHT (960) — H_OFFSET pads top/bottom.
 // On wide-ratio iPads (iPad Pro 13"): design height < 960 — UI compresses to fit.

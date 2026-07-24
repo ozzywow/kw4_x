@@ -148,7 +148,8 @@ void MainMenuScene::callbackOnPushedNewGameMenuItem(Ref* pSender)
 void MainMenuScene::callbackOnPushedControlGameMenuItem(Ref* pSender)
 {
 	auto infoScene = InfoScene::createScene();
-	Director::getInstance()->replaceScene(infoScene);
+	TransitionSlideInL* sceneSlide = TransitionSlideInL::create(SCENE_TRANSITION_TIME, infoScene);
+	Director::getInstance()->replaceScene(sceneSlide);
 }
 
 
@@ -157,7 +158,7 @@ void MainMenuScene::callbackOnPushedAppleTreeGameMenuItem(Ref* pSender)
 
 	AppleTreeScene* appleScene = (AppleTreeScene*)AppleTreeScene::createScene(false);
 
-	TransitionSlideInL* sceneSlide = TransitionSlideInL::create(0.5, appleScene);
+	TransitionSlideInL* sceneSlide = TransitionSlideInL::create(SCENE_TRANSITION_TIME, appleScene);
 	
 	auto director = Director::getInstance();	
 	director->replaceScene(sceneSlide);

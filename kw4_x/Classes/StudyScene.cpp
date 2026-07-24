@@ -374,7 +374,7 @@ void		StudyScene::TurnPage()
 void		StudyScene::GoAppleTreeScene()
 {
 	auto appleScene = AppleTreeScene::createScene(true);
-	TransitionSlideInL* sceneSlide = TransitionSlideInL::create(0.5, appleScene);
+	TransitionSlideInL* sceneSlide = TransitionSlideInL::create(SCENE_TRANSITION_TIME, appleScene);
 	
 	Director* pDirector = Director::getInstance();
 	pDirector->replaceScene(sceneSlide);	
@@ -383,10 +383,11 @@ void		StudyScene::OnExitStudy()
 {
 	auto mainScene = MainMenuScene::createScene();
 
-	TransitionSlideInL* sceneSlide = TransitionSlideInL::create(0.5, mainScene);
+	// 홈으로 나가기(back) → 뒤로 가는 느낌의 SlideInR
+	TransitionSlideInR* sceneSlide = TransitionSlideInR::create(SCENE_TRANSITION_TIME, mainScene);
 
 	Director* pDirector = Director::getInstance();
-	pDirector->replaceScene(sceneSlide);	
+	pDirector->replaceScene(sceneSlide);
 }
 void		StudyScene::ChangeEmotion(int emotionID)
 {
