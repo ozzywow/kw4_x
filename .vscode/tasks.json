@@ -2,45 +2,39 @@
     "version": "2.0.0",
     "tasks": [
         {
+            // 기본 빌드(Ctrl/Cmd+Shift+B). OS 에 따라 알맞은 빌드 폴더를 빌드한다.
+            //   Windows → build_win32 (Visual Studio 제너레이터)
+            //   macOS   → build_mac   (Xcode 제너레이터, kw4_x 데스크톱 타깃)
             "label": "cmake build Debug",
             "type": "shell",
+            "command": "cmake",
             "windows": {
-                "command": "cmake --build \"${workspaceFolder}/kw4_x/build_win32\" --config Debug"
+                "args": [
+                    "--build", "${workspaceFolder}/kw4_x/build_win32",
+                    "--config", "Debug"
+                ]
             },
             "osx": {
-                "command": "echo '[cmake build Debug] Windows 전용 구성입니다. macOS에서는 실행되지 않습니다.'"
+                "args": [
+                    "--build", "${workspaceFolder}/kw4_x/build_mac",
+                    "--config", "Debug",
+                    "--target", "kw4_x",
+                    "-j4"
+                ]
             },
-            "command": "echo '[cmake build Debug] Windows 전용 구성입니다.'",
-            "group": "build",
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared"
-            },
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "cmake-build-mac-debug",
-            "type": "shell",
-            "command": "cmake",
-            "args": [
-                "--build",
-                "${workspaceFolder}/kw4_x/build_mac",
-                "--config", "Debug",
-                "--target", "kw4_x",
-                "-j4"
-            ],
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
-            "problemMatcher": ["$gcc"],
+            "problemMatcher": ["$msCompile", "$gcc"],
             "presentation": {
                 "reveal": "always",
                 "panel": "shared"
             }
         },
         {
-            "label": "xcode build Debug",
+            // macOS 전용: Xcode 프로젝트를 직접 빌드
+            "label": "xcode build Debug (mac only)",
             "type": "shell",
             "command": "xcodebuild",
             "args": [
