@@ -9,7 +9,6 @@ using namespace cocos2d;
 #define LITE_VER // LITE version
 #endif
 //#define TEST_MODE
-//#define IPAD_VER // IPAD version
 
 #define MAX_SIZE_OF_CHARACTER_POOL  64
 
@@ -47,13 +46,6 @@ static inline float CalcCenterY()
 #define ckProductIdStep4 "com.ozzywow.kw4android.total"
 #define ckProductIdStep5 "com.ozzywow.kw4android.total"
 #define ckProductIdTotal "com.ozzywow.kw4android.total"
-#elif defined(IPAD_VER)
-#define ckConsumableBaseFeatureId "com.ozzywow.kw4ipadlite"
-#define ckProductIdStep2 "com.ozzywow.kw4ipadlite.step2"
-#define ckProductIdStep3 "com.ozzywow.kw4ipadlite.step3"
-#define ckProductIdStep4 "com.ozzywow.kw4ipadlite.step4"
-#define ckProductIdStep5 "com.ozzywow.kw4ipadlite.step5"
-#define ckProductIdTotal "com.ozzywow.kw4ipadlite.total"
 #else
 #define ckConsumableBaseFeatureId "com.ozzywow.kw4iphonelite"
 #define ckProductIdStep2 "com.ozzywow.kw4iphonelite.step2"
