@@ -24,8 +24,20 @@
 | A2 ChangeEmotion NULL 역참조 | ✅ 완료 (Windows 빌드 검증) |
 | B1 데이터 정합성 | ✅ 정상 확인 — 불일치는 결함 아님(레벨 5는 설계상 음성 없음) |
 | D1 UIAlertView→UIAlertController | ✅ 코드 완료 — ⚠️ iOS 전용이라 Xcode/실기기 검증 필요 |
-| A3, B2, B3, D2 | ⬜ 미착수 |
+| A3 회귀 점검 | ✅ 완료 — AppleTreeScene stopActionByTag(101) 회귀 복원 + wordFactory NULL 가드(신규) |
+| B2 랜덤 헬퍼 헤더 분리 | ✅ 완료 (Windows 빌드 검증) |
+| B3 SoundFactory const | ✅ 완료 (Windows 빌드 검증) |
+| D2 구매/복구 흐름 | ✅ 코드 검토 완료 — 로직 정상, 변경 불필요. ⚠️ 실기기 결제/복구 테스트 필요 |
+| **1단계 안정성** | ✅ **주요 항목 완료** (남은 것: iOS 실기기 검증 D1·D2) |
 | 2단계 UI (U1~U5) | ⬜ 미착수 |
+
+### iOS 실기기 검증 체크리스트 (다음 Mac 작업 시)
+
+- [ ] **D1**: 결제 실패(카드 거절 등) 시 UIAlertController 알림이 실제로 뜨는가 (최신 iOS)
+- [ ] **D1**: 자녀보호로 IAP 비활성일 때 "In-App Purchasing disabled" 알림 표시 확인
+- [ ] **D2**: 단계별 상품 구매 → 전체 단계 즉시 언락 + 재실행 후 유지(SaveData) 확인
+- [ ] **D2**: "구매 복구" → 복구 완료 팝업, 복구 중 levelup 사운드 미재생 확인
+- [ ] **D2**: 구매/복구 중 버튼 연타해도 중복 처리 안 되는지(isProgress) 확인
 
 ---
 
