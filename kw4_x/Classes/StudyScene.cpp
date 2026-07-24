@@ -490,7 +490,10 @@ void		StudyScene::ShowHint()
 	{		
 		std::string singleWord = m_wordName.substr(i * 3, 3);
 		Label* singleWordLayer = Label::createWithTTF(singleWord, KR_FONT_TTF, sizeOfFont);
-		singleWordLayer->setColor(Color3B(120, 120, 120));
+		// 힌트는 어두운 정답칸 위에 얹힌다. 기존 회색(120)은 유아에게 대비가 약해 흐릿했다.
+		// 밝은 톤 + 약한 투명도로 "임시 힌트" 느낌은 유지하되 또렷하게 보이도록 한다.
+		singleWordLayer->setColor(Color3B(240, 240, 240));
+		singleWordLayer->setOpacity(180);
 		singleWordLayer->setPosition(arrayPoint[i]);
 		this->addChild(singleWordLayer, kGameSecceTagHintLayer + i, kGameSecceTagHintLayer + i);
 	}
