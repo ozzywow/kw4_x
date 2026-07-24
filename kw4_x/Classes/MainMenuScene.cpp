@@ -147,6 +147,7 @@ void MainMenuScene::callbackOnPushedNewGameMenuItem(Ref* pSender)
 
 void MainMenuScene::callbackOnPushedControlGameMenuItem(Ref* pSender)
 {
+	SoundFactory::Instance()->play(SOUND_FILE_click_effect);
 	auto infoScene = InfoScene::createScene();
 	TransitionSlideInL* sceneSlide = TransitionSlideInL::create(SCENE_TRANSITION_TIME, infoScene);
 	Director::getInstance()->replaceScene(sceneSlide);
@@ -155,6 +156,8 @@ void MainMenuScene::callbackOnPushedControlGameMenuItem(Ref* pSender)
 
 void MainMenuScene::callbackOnPushedAppleTreeGameMenuItem(Ref* pSender)
 {
+
+	SoundFactory::Instance()->play(SOUND_FILE_click_effect);
 
 	AppleTreeScene* appleScene = (AppleTreeScene*)AppleTreeScene::createScene(false);
 

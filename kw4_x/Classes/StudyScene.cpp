@@ -593,6 +593,7 @@ void StudyScene::callbackOnPushedPrevBtnItem(Ref* sender)
 {
 	if (m_isSuccessed == true) return;
 
+	SoundFactory::Instance()->play(SOUND_FILE_click_effect);
 	PointManager::Instance()->GetPrevSecene();
 	m_isSuccessed = true;
 }
