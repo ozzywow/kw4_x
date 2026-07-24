@@ -80,10 +80,12 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 
 	backGround->setAnchorPoint(Point::ANCHOR_MIDDLE);
 	backGround->setPosition(frameSize.width*0.5f, frameSize.height*0.5f);
+	float bgScale;
 	{
 		float bgScaleX = frameSize.width  / backGround->getContentSize().width;
 		float bgScaleY = frameSize.height / backGround->getContentSize().height;
-		backGround->setScale(std::max(bgScaleX, bgScaleY));
+		bgScale = std::max(bgScaleX, bgScaleY);
+		backGround->setScale(bgScale);
 	}
 	this->addChild(backGround, kGameSceneTagBackground, kGameSceneTagBackground);
 
@@ -123,17 +125,19 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 	Point posOfImage(FRAME_WIDTH*0.5f, H_OFFSET + (ACTIVE_HEIGHT*0.90f));
 	image->setPosition(posOfImage);
 
-	// 이미지가 정답칸 위 영역(ACTIVE_HEIGHT의 약 60%)을 벗어나지 않도록 스케일 조정
+	// 배경 프레임이 이미지보다 위에 그려지며(z: Background=1 > Img=0), 프레임에는 그림이
+	// 비쳐 보이는 투명 창이 있다. 창은 원본 PNG(640px 기준) 폭 583 / 높이 375이고,
+	// 배경과 함께 bgScale로 확대된다. 그림이 창보다 작으면 그림 아래(클리어컬러=검정)가
+	// 양옆에 비치므로, 창을 완전히 덮도록 스케일(cover)하고 넘치는 부분은 프레임이 가린다.
 	{
-		float maxH = ACTIVE_HEIGHT * 0.60f;
-		float maxW = FRAME_WIDTH  * 0.90f;
+		const float WINDOW_W = 583.0f;
+		const float WINDOW_H = 375.0f;
 		float imgW = image->getContentSize().width;
 		float imgH = image->getContentSize().height;
 		if (imgH > 0 && imgW > 0)
 		{
-			float scale = std::min({ maxH / imgH, maxW / imgW, 1.0f });
-			if (scale < 1.0f)
-				image->setScale(scale);
+			float scale = std::max((WINDOW_W * bgScale) / imgW, (WINDOW_H * bgScale) / imgH);
+			image->setScale(scale);
 		}
 	}
 
@@ -145,10 +149,12 @@ void StudyScene::initVal(std::string& worldName, int level, std::string& text)
 	this->addChild(faceBtn, kGameSceneTagAvatar, kGameSceneTagAvatar);
 
 
-	const Point posOfLevel(FRAME_WIDTH*0.82f, H_OFFSET + (ACTIVE_HEIGHT*0.82f));
-	std::string levelLable = StringUtils::format("%d Level", level);
-	levelLable = UTF8(levelLable);
-	PrintStyle(this, levelLable, FRAME_WIDTH*0.07f, posOfLevel);
+	// 카드 우상단 레벨 표시: "n 단계". 프레임 상단에 가깝게 위로 올리고 폰트는 작게.
+	// "단계"는 UTF-8 바이트(\xEB\x8B\xA8\xEA\xB3\x84)로 직접 지정한다. 소스 인코딩/컴파일러
+	// charset에 의존하지 않도록 UTF8() 매크로를 거치지 않으며, 한글 렌더를 위해 KR_FONT_TTF 사용.
+	const Point posOfLevel(FRAME_WIDTH*0.82f, H_OFFSET + (ACTIVE_HEIGHT*0.87f));
+	std::string levelLable = StringUtils::format("%d \xEB\x8B\xA8\xEA\xB3\x84", level); // "%d 단계"
+	PrintStyle(this, levelLable, FRAME_WIDTH*0.055f, posOfLevel, KR_FONT_TTF);
 
 	this->DrowApple(false, false);
 

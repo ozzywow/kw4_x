@@ -118,29 +118,30 @@ static int GetRandNum(int max = 8)
 
 
 
-static void PrintStyle(Node* parent, std::string& str, int fontSize, Point pos)
+// fontPath 기본값은 arial.ttf(한글 글리프 없음). 한글 문자열은 KR_FONT_TTF(malgun) 등을 넘겨야 한다.
+static void PrintStyle(Node* parent, std::string& str, int fontSize, Point pos, const char* fontPath = "fonts/arial.ttf")
 {
-	auto label0 = Label::createWithTTF(str, "fonts/arial.ttf", fontSize);
+	auto label0 = Label::createWithTTF(str, fontPath, fontSize);
 	label0->setPosition(pos.x - 1, pos.y);
 	label0->setColor(Color3B::BLACK);
 	parent->addChild(label0, kGameSceneTagAnswerText);
 
-	auto label1 = Label::createWithTTF(str, "fonts/arial.ttf", fontSize);
+	auto label1 = Label::createWithTTF(str, fontPath, fontSize);
 	label1->setPosition(pos.x + 1, pos.y);
 	label1->setColor(Color3B::BLACK);
 	parent->addChild(label1, kGameSceneTagAnswerText);
 
-	auto label2 = Label::createWithTTF(str, "fonts/arial.ttf", fontSize);
+	auto label2 = Label::createWithTTF(str, fontPath, fontSize);
 	label2->setPosition(pos.x, pos.y - 1);
 	label2->setColor(Color3B::BLACK);
 	parent->addChild(label2, kGameSceneTagAnswerText);
 
-	auto label3 = Label::createWithTTF(str, "fonts/arial.ttf", fontSize);
+	auto label3 = Label::createWithTTF(str, fontPath, fontSize);
 	label3->setPosition(pos.x, pos.y + 1);
 	label3->setColor(Color3B::BLACK);
 	parent->addChild(label3, kGameSceneTagAnswerText);
 
-	auto label = Label::createWithTTF(str, "fonts/arial.ttf", fontSize);
+	auto label = Label::createWithTTF(str, fontPath, fontSize);
 	label->setPosition(pos.x, pos.y);
 	label->setColor(Color3B::WHITE);
 	parent->addChild(label, kGameSceneTagAnswerText);
