@@ -1,7 +1,12 @@
 # Build output
 kw4_x/build_win32/
-kw4_x/build_ios/
 kw4_x/build_mac/
+# build_ios 는 내용물만 제외 (xcodeproj 예외를 위해 /* 사용)
+kw4_x/build_ios/*
+# Xcode 프로젝트 — App Store 빌드 설정을 담고 있으므로 추적 필요
+!kw4_x/build_ios/kw4_x.xcodeproj/
+kw4_x/build_ios/kw4_x.xcodeproj/xcuserdata/
+kw4_x/build_ios/kw4_x.xcodeproj/project.xcworkspace/xcuserdata/
 # IPA 배포 아카이브 (빌드 산출물)
 kw4_x/Classes/kw4_x_lite*/
 
