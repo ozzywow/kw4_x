@@ -518,8 +518,14 @@ void InfoScene::callbackOnPushedResetMenuItem(Ref* sender)
 	pPopupOK->addButton("UI4HD/btn_ok_s_00.png", "UI4HD/btn_ok_s_00.png", "", ui::Widget::TextureResType::LOCAL, Point(-100, -70), "", 0);
 	pPopupOK->addButton("UI4HD/btn_ok_s_01.png", "UI4HD/btn_ok_s_01.png", "", ui::Widget::TextureResType::LOCAL, Point(100, -70), "", 1);
 
-	std::string strWarning("Touch OK Butten.\n If you want to reset\n game data.");
-	strWarning = UTF8(strWarning);
+	// 한국 마켓 앱인데 안내가 영어(+오타)였다 → 한글로 교체.
+	// 이 파일은 UTF-8(pragma 없음)이라 UTF8() 매크로는 Win32 에서 이중변환으로 깨진다.
+	// StudyScene 의 "단계"처럼 UTF-8 바이트를 직접 지정하고 malgun 으로 렌더한다.
+	std::string strWarning =
+		"\xEA\xB2\x8C\xEC\x9E\x84 "                                          // 게임
+		"\xEB\x8D\xB0\xEC\x9D\xB4\xED\x84\xB0\xEB\xA5\xBC "                  // 데이터를
+		"\xEC\xB4\x88\xEA\xB8\xB0\xED\x99\x94\xED\x95\xA0\xEA\xB9\x8C\xEC\x9A\x94?"; // 초기화할까요?
+	pPopupOK->setFontName_Msg(KR_FONT_TTF);
 	pPopupOK->setFontSize_Msg(sizeOfFont);
 	pPopupOK->setColor_Msg(Color3B::BLACK);
 	pPopupOK->setMessageString(strWarning);
