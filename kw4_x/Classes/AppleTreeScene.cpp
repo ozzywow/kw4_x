@@ -426,6 +426,10 @@ bool AppleTreeScene::onTouchBegan(Touch* touch, Event* unused_event)
 
 	this->reorderChild(touchedLayer, this->getChildrenCount());
 
+	// 드롭 직후(onTouchEnded 의 0.2초 JumpTo, tag=101 진행 중) 같은 sprite 를 재터치하면
+	// JumpTo 와 이후 위치 갱신이 매 프레임 충돌해 떨림/복사본처럼 보인다.
+	// 진행 중인 드롭 점프를 취소해 방어한다.
+	touchedLayer->stopActionByTag(101);
 
 	SoundFactory* soundFactory = SoundFactory::Instance();
 	soundFactory->play(SOUND_FILE_giggle_effect);
