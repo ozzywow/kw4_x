@@ -31,7 +31,6 @@ set(GAME_SOURCE
     Classes/AppleTreeScene.cpp
     Classes/Character.cpp
     Classes/CharacterFactory.cpp
-    Classes/HelloWorldScene.cpp
     Classes/InfoScene.cpp
     Classes/MainMenuScene.cpp
     Classes/MKStoreManagerDelegate.cpp
@@ -55,7 +54,6 @@ set(GAME_HEADER
     Classes/AppleTreeScene.h
     Classes/Character.h
     Classes/CharacterFactory.h
-    Classes/HelloWorldScene.h
     Classes/InfoScene.h
     Classes/KoreanUTF8.h
     Classes/MainMenuScene.h
