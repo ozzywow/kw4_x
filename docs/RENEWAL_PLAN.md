@@ -13,6 +13,22 @@
 
 ---
 
+## 진행 현황 (2026-07-24 기준)
+
+| 항목 | 상태 |
+|------|------|
+| C1 배포 아카이브 추적 제거 + 히스토리 재작성 | ✅ 완료 (.git 1.5GB→40MB, force-push, [[project_history_rewrite_2026-07]]) |
+| C2 HelloWorldScene 제거 | ✅ 완료 |
+| C3 레거시 UI 폴더 제거 | ✅ 완료 |
+| A1 GetRandNum -1 크래시 | ✅ 완료 (Windows 빌드 검증) |
+| A2 ChangeEmotion NULL 역참조 | ✅ 완료 (Windows 빌드 검증) |
+| B1 데이터 정합성 | ✅ 정상 확인 — 불일치는 결함 아님(레벨 5는 설계상 음성 없음) |
+| D1 UIAlertView→UIAlertController | ✅ 코드 완료 — ⚠️ iOS 전용이라 Xcode/실기기 검증 필요 |
+| A3, B2, B3, D2 | ⬜ 미착수 |
+| 2단계 UI (U1~U5) | ⬜ 미착수 |
+
+---
+
 ## 1단계 — 시스템 안정성 점검 및 개선
 
 ### 1-A. 확인된 크래시/버그 수정 (최우선)
@@ -27,7 +43,7 @@
 
 | # | 항목 | 근거 | 영향 |
 |---|------|------|------|
-| B1 | 낱말 데이터 정합성 감사: **카드 350개 vs 발음 256개 vs 그림 415개** 불일치. 그림 누락은 처리되나 발음 누락은 무음 처리 | `word_card_data_x.xml`, `word_card_sound/`, `word_card_pic_h/` | 일부 낱말이 그림/소리 없이 나올 수 있음. **검증 스크립트**로 누락 목록화 |
+| ~~B1~~ | ✅ **정상 확인 — 결함 아님.** 카드 350 vs 발음 256 불일치는 **레벨 5(문장 읽기)가 설계상 음성이 없기 때문**. 그림 누락은 코드에서 이미 처리됨 | — | 조치 불필요 |
 | B2 | 헤더의 `static` 가변 전역(`arrRandFlag`, `GetRandNum`)은 헤더 포함 TU마다 별도 사본 — 현재는 StudyScene 단독 사용이라 우연히 동작 | [common_define.h:91-116](../kw4_x/Classes/common_define.h#L91) | 향후 확장 시 숨은 버그원. 구조 정리 |
 | B3 | `SoundFactory::play(char*)` 비-const + 호출부 `const_cast` | [SoundFactory.h:57](../kw4_x/Classes/SoundFactory.h#L57), [StudyScene.cpp:456](../kw4_x/Classes/StudyScene.cpp#L456) | 안전하지 않은 시그니처. `const std::string&` 로 정리 |
 
