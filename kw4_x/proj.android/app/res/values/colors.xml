@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 게임 메인 화면의 하늘색 (스플래시 배경) -->
+    <color name="splashBackground">#4B95C4</color>
+</resources>

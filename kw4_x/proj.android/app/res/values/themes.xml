@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 런치(스플래시) 테마. 기존 전체화면 테마를 상속해 fullscreen 을 유지한다.
+         Android 11 이하에서는 앱 시작 시 잠깐 보이는 창 배경을 게임 하늘색으로 둔다
+         (검정 대신). Android 12+ 는 values-v31/themes.xml 에서 스플래시 배경을 지정한다. -->
+    <style name="AppTheme" parent="@android:style/Theme.NoTitleBar.Fullscreen">
+        <item name="android:windowBackground">@color/splashBackground</item>
+    </style>
+</resources>
