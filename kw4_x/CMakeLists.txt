@@ -36,6 +36,7 @@ set(GAME_SOURCE
     Classes/MKStoreManagerDelegate.cpp
     Classes/MKStoreManager_cpp.cpp
     Classes/NativeShare.cpp
+    Classes/ParentalGate.cpp
     Classes/PointManager.cpp
     Classes/SoundFactory.cpp
     Classes/StudyScene.cpp
@@ -61,6 +62,7 @@ set(GAME_HEADER
     Classes/MKStoreManager_cpp.h
     Classes/MKStoreManager_mm.h
     Classes/NativeShare.h
+    Classes/ParentalGate.h
     Classes/PointManager.h
     Classes/Singleton.h
     Classes/SoundFactory.h

@@ -6,6 +6,7 @@
 #include "SoundFactory.h"
 #include "MainMenuScene.h"
 #include "UI_GameResultWindow.h"
+#include "ParentalGate.h"
 #include "MKStoreManager_cpp.h"
 
 
@@ -624,53 +625,72 @@ void InfoScene::callbackOnPushedLevel6(Ref* sender)
 void InfoScene::cfStep2(Ref* sender)
 {
 	if (isProgress == true) return;
-	isProgress = true;
 
-	this->PlayBuySound();
-	CMKStoreManager::Instance()->ToggleIndicator(true);
-	CMKStoreManager::Instance()->buyFeature(ckProductIdStep2);	
-
+	// Kids 카테고리 규정: 결제 전 부모 인증
+	ParentalGate::present(this, [this]()
+	{
+		isProgress = true;
+		this->PlayBuySound();
+		CMKStoreManager::Instance()->ToggleIndicator(true);
+		CMKStoreManager::Instance()->buyFeature(ckProductIdStep2);
+	});
 }
 
 void InfoScene::cfStep3(Ref* sender)
 {
 	if (isProgress == true) return;
-	isProgress = true;
 
-	this->PlayBuySound();	
-	CMKStoreManager::Instance()->ToggleIndicator(true);
-	CMKStoreManager::Instance()->buyFeature(ckProductIdStep3);	
+	// Kids 카테고리 규정: 결제 전 부모 인증
+	ParentalGate::present(this, [this]()
+	{
+		isProgress = true;
+		this->PlayBuySound();
+		CMKStoreManager::Instance()->ToggleIndicator(true);
+		CMKStoreManager::Instance()->buyFeature(ckProductIdStep3);
+	});
 }
 
 void InfoScene::cfStep4(Ref* sender)
 {
 	if (isProgress == true) return;
-	isProgress = true;
 
-	this->PlayBuySound();	
-	CMKStoreManager::Instance()->ToggleIndicator(true);
-	CMKStoreManager::Instance()->buyFeature(ckProductIdStep4);	
+	// Kids 카테고리 규정: 결제 전 부모 인증
+	ParentalGate::present(this, [this]()
+	{
+		isProgress = true;
+		this->PlayBuySound();
+		CMKStoreManager::Instance()->ToggleIndicator(true);
+		CMKStoreManager::Instance()->buyFeature(ckProductIdStep4);
+	});
 }
 
 void InfoScene::cfStep5(Ref* sender)
 {
 	if (isProgress == true) return;
-	isProgress = true;
 
-	this->PlayBuySound();	
-	CMKStoreManager::Instance()->ToggleIndicator(true);
-	CMKStoreManager::Instance()->buyFeature(ckProductIdStep5);	
+	// Kids 카테고리 규정: 결제 전 부모 인증
+	ParentalGate::present(this, [this]()
+	{
+		isProgress = true;
+		this->PlayBuySound();
+		CMKStoreManager::Instance()->ToggleIndicator(true);
+		CMKStoreManager::Instance()->buyFeature(ckProductIdStep5);
+	});
 }
 
 void InfoScene::cfTotal(Ref* sender)
 {
 	cocos2d::log("[Billing] InfoScene::cfTotal clicked (isProgress=%d, id=%s)", (int)isProgress, ckProductIdTotal);
 	if (isProgress == true) return;
-	isProgress = true;
 
-	this->PlayBuySound();
-	CMKStoreManager::Instance()->ToggleIndicator(true);
-	CMKStoreManager::Instance()->buyFeature(ckProductIdTotal);
+	// Kids 카테고리 규정: 결제 전 부모 인증
+	ParentalGate::present(this, [this]()
+	{
+		isProgress = true;
+		this->PlayBuySound();
+		CMKStoreManager::Instance()->ToggleIndicator(true);
+		CMKStoreManager::Instance()->buyFeature(ckProductIdTotal);
+	});
 }
 
 void InfoScene::productFetchComplete()

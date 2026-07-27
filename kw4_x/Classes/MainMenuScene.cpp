@@ -6,6 +6,7 @@
 #include "AppleTreeScene.h"
 #include "InfoScene.h"
 #include "NativeShare.h"
+#include "ParentalGate.h"
 
 
 MainMenuScene::MainMenuScene()
@@ -178,16 +179,20 @@ void MainMenuScene::cfShare(Ref* pSender)
 {
 	SoundFactory::Instance()->play(SOUND_FILE_click_effect);
 
-	if (NativeShare::isSupported())
+	// Kids 카테고리 규정: 외부로 나가는 공유 전에 부모 인증
+	ParentalGate::present(this, [this]()
 	{
-		std::string msg = UTF8("우리아이 한글떼기 - 그림과 소리로 배우는 우리 아이 첫 한글\n");
-		msg += SHARE_URL;
-		NativeShare::share(msg);
-	}
-	else
-	{
-		cocos2d::Application::getInstance()->openURL(SHARE_URL);
-	}
+		if (NativeShare::isSupported())
+		{
+			std::string msg = UTF8("우리아이 한글떼기 - 그림과 소리로 배우는 우리 아이 첫 한글\n");
+			msg += SHARE_URL;
+			NativeShare::share(msg);
+		}
+		else
+		{
+			cocos2d::Application::getInstance()->openURL(SHARE_URL);
+		}
+	});
 }
 
 
@@ -195,9 +200,13 @@ void MainMenuScene::cfShare(Ref* pSender)
 void MainMenuScene::cfFullVersion(Ref* pSender)
 {
 	SoundFactory::Instance()->play(SOUND_FILE_click_effect);
+	// Kids 카테고리 규정: 외부 스토어 링크로 나가기 전에 부모 인증
+	ParentalGate::present(this, [this]()
+	{
 #if( CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-	cocos2d::Application::getInstance()->openURL(BUY_AT_STORE_URL);
+		cocos2d::Application::getInstance()->openURL(BUY_AT_STORE_URL);
 #endif
+	});
 }
 
 

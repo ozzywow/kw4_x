@@ -189,6 +189,8 @@ Xcode 프로젝트는 자체 소스 목록을 갖고 있어 자동으로 따라�
 | `Classes/NativeShare.h` | 타깃에 추가 | — |
 | `Classes/NativeShare.cpp` | 타깃에 추가 | — |
 | `Classes/NativeShare_apple.mm` | **타깃에 추가 (필수)** | `NativeShare::share` undefined 로 링크 실패 |
+| `Classes/ParentalGate.h` | 타깃에 추가 | — |
+| `Classes/ParentalGate.cpp` | **타깃에 추가 (필수)** | `ParentalGate::present` undefined 로 링크 실패 (Kids 카테고리 부모 게이트) |
 | `Resources/UI4HD/shareBtn_n-hd.png`<br>`Resources/UI4HD/shareBtn_s-hd.png` | 리소스가 **폴더 참조(파란 폴더)** 면 자동. 개별 파일 참조면 추가 | 공유 버튼이 안 보임 |
 
 `MainMenuScene::cfShare()` 가 `NativeShare::share()` 를 호출하는데 iOS 구현이
