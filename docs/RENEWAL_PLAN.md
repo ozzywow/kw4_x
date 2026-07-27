@@ -56,7 +56,11 @@
 
 ## 추가 백로그 (2026-07-24 세션 중 발견, 다음 작업 대상)
 
-### B-UI-1. InfoScene(설정/레벨선택) 영어 라벨 → 한글
+### ✅ B-UI-1. InfoScene(설정/레벨선택) 영어 라벨 → 한글 — 완료 (커밋 `97b251f`)
+
+> 단계 선택·1~5단계·모든 학습·설정·힌트 보기·초기화·구매 복원으로 교체. PrintStyle 에 malgun 지정 + UTF-8 바이트 리터럴 사용, Windows 캡처 검증. (버튼 그래픽에 구워진 "Restore"·"쉽게하기" 텍스트는 이미지 에셋이라 별도 과제)
+>
+> _아래는 작업 당시 참고 메모:_
 
 한국 마켓 앱인데 [InfoScene.cpp](../kw4_x/Classes/InfoScene.cpp) `DrawItemBox`의 라벨이 영어로 남아 있다:
 `Select Step`, `1 Step`~`5 Step`, `Whole steps`, `Setting`, `SHOW HINT`, `RESET`, `Restore Purchases`.
