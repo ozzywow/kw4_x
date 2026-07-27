@@ -102,46 +102,35 @@ void InfoScene::DrawItemBox()
 	int nHeight = btn->getContentSize().height;
 	const Point	posOfDesc = Point(nWidth*0.5f, nHeight*-0.1f);
 
-	std::string strLevel("Select Step");
-	strLevel = UTF8(strLevel);
-	std::string strStep("Setting");
-	strStep = UTF8(strStep);
-	PrintStyle(this, strLevel, sizeOfFont, posOfLable_level);
-	PrintStyle(this, strStep, sizeOfFont, posOfLable_hint);
+	// 한글은 UTF-8 바이트 직접 지정(UTF8() 매크로는 Win32 UTF-8 소스에서 깨짐).
+	// PrintStyle 기본 폰트 arial 에는 한글 글리프가 없어 KR_FONT_TTF(malgun)를 넘긴다.
+	std::string strLevel("\xEB\x8B\xA8\xEA\xB3\x84 \xEC\x84\xA0\xED\x83\x9D");  // 단계 선택
+	std::string strStep("\xEC\x84\xA4\xEC\xA0\x95");                            // 설정
+	PrintStyle(this, strLevel, sizeOfFont, posOfLable_level, KR_FONT_TTF);
+	PrintStyle(this, strStep, sizeOfFont, posOfLable_hint, KR_FONT_TTF);
 
-	std::string strStep1("1 Step");
-	strStep1 = UTF8(strStep1);
-	std::string strStep2("2 Step");
-	strStep2 = UTF8(strStep2);
-	std::string strStep3("3 Step");
-	strStep3 = UTF8(strStep3);
-	std::string strStep4("4 Step");
-	strStep4 = UTF8(strStep4);
-	std::string strStep5("5 Step");
-	strStep5 = UTF8(strStep5);
+	std::string strStep1("1\xEB\x8B\xA8\xEA\xB3\x84"); // 1단계
+	std::string strStep2("2\xEB\x8B\xA8\xEA\xB3\x84"); // 2단계
+	std::string strStep3("3\xEB\x8B\xA8\xEA\xB3\x84"); // 3단계
+	std::string strStep4("4\xEB\x8B\xA8\xEA\xB3\x84"); // 4단계
+	std::string strStep5("5\xEB\x8B\xA8\xEA\xB3\x84"); // 5단계
 
 #ifdef LITE_VER
-	std::string strSaleTotal("Whole steps");
-	strSaleTotal = UTF8(strSaleTotal);
-	std::string strSaleStep1("1 Step)");
-	strSaleStep1 = UTF8(strSaleStep1);
-	std::string strSaleStep2("2 Step");
-	strSaleStep2 = UTF8(strSaleStep2);
-	std::string strSaleStep3("3 Step");
-	strSaleStep3 = UTF8(strSaleStep3);
-	std::string strSaleStep4("4 Step");
-	strSaleStep4 = UTF8(strSaleStep4);
-	std::string strSaleStep5("5 Step");
-	strSaleStep5 = UTF8(strSaleStep5);
+	std::string strSaleTotal("\xEB\xAA\xA8\xEB\x93\xA0 \xED\x95\x99\xEC\x8A\xB5"); // 모든 학습
+	std::string strSaleStep1("1\xEB\x8B\xA8\xEA\xB3\x84"); // 1단계
+	std::string strSaleStep2("2\xEB\x8B\xA8\xEA\xB3\x84"); // 2단계
+	std::string strSaleStep3("3\xEB\x8B\xA8\xEA\xB3\x84"); // 3단계
+	std::string strSaleStep4("4\xEB\x8B\xA8\xEA\xB3\x84"); // 4단계
+	std::string strSaleStep5("5\xEB\x8B\xA8\xEA\xB3\x84"); // 5단계
 
 	m_btnLevel1 = MenuItemImage::create("UI4HD/btn_level_1_n-hd.png", "UI4HD/btn_level_1_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel1, this));	
-	PrintStyle(m_btnLevel1, strStep1, sizeofFont_s, posOfDesc);
+	PrintStyle(m_btnLevel1, strStep1, sizeofFont_s, posOfDesc, KR_FONT_TTF);
 
 	if (false == PointManager::Instance()->GetCartWithPID(PID_TOTAL))
 	{
 
 		m_btnLevel6 = MenuItemImage::create("UI4HD/btn_level_total_n-hd.png", "UI4HD/btn_level_total_s-hd.png", CC_CALLBACK_1(InfoScene::cfTotal, this));
-		PrintStyle(m_btnLevel6, strSaleTotal, sizeofFont_s, posOfDesc);
+		PrintStyle(m_btnLevel6, strSaleTotal, sizeofFont_s, posOfDesc, KR_FONT_TTF);
 
 		Sprite* lock = Sprite::create("UI4HD/lock_icon-hd.png");
 		lock->setOpacity(64);
@@ -155,7 +144,7 @@ void InfoScene::DrawItemBox()
 		if (false == PointManager::Instance()->GetCartWithPID(PID_STEP2))
 		{
 			m_btnLevel2 = MenuItemImage::create("UI4HD/btn_level_2_n-hd.png", "UI4HD/btn_level_2_n-hd.png", CC_CALLBACK_1(InfoScene::cfStep2, this));
-			PrintStyle(m_btnLevel2, strSaleStep2, sizeofFont_s, posOfDesc);
+			PrintStyle(m_btnLevel2, strSaleStep2, sizeofFont_s, posOfDesc, KR_FONT_TTF);
 
 			Sprite* lock = Sprite::create("UI4HD/lock_icon-hd.png");
 			lock->setOpacity(64);
@@ -172,7 +161,7 @@ void InfoScene::DrawItemBox()
 		else
 		{
 			m_btnLevel2 = MenuItemImage::create("UI4HD/btn_level_2_n-hd.png", "UI4HD/btn_level_2_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel2, this));
-			PrintStyle(m_btnLevel2, strStep2, sizeofFont_s, posOfDesc);
+			PrintStyle(m_btnLevel2, strStep2, sizeofFont_s, posOfDesc, KR_FONT_TTF);
 		}
 
 
@@ -181,7 +170,7 @@ void InfoScene::DrawItemBox()
 		if (false == PointManager::Instance()->GetCartWithPID(PID_STEP3))
 		{
 			m_btnLevel3 = MenuItemImage::create("UI4HD/btn_level_3_n-hd.png", "UI4HD/btn_level_3_n-hd.png", CC_CALLBACK_1(InfoScene::cfStep3, this));
-			PrintStyle(m_btnLevel3, strSaleStep3, sizeofFont_s, posOfDesc);
+			PrintStyle(m_btnLevel3, strSaleStep3, sizeofFont_s, posOfDesc, KR_FONT_TTF);
 
 			Sprite* lock = Sprite::create("UI4HD/lock_icon-hd.png");
 			lock->setOpacity(64);
@@ -198,7 +187,7 @@ void InfoScene::DrawItemBox()
 		else
 		{
 			m_btnLevel3 = MenuItemImage::create("UI4HD/btn_level_3_n-hd.png", "UI4HD/btn_level_3_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel3, this));
-			PrintStyle(m_btnLevel3, strStep3, sizeofFont_s, posOfDesc);
+			PrintStyle(m_btnLevel3, strStep3, sizeofFont_s, posOfDesc, KR_FONT_TTF);
 		}
 
 
@@ -207,7 +196,7 @@ void InfoScene::DrawItemBox()
 		if (false == PointManager::Instance()->GetCartWithPID(PID_STEP4))
 		{
 			m_btnLevel4 = MenuItemImage::create("UI4HD/btn_level_4_n-hd.png", "UI4HD/btn_level_4_n-hd.png", CC_CALLBACK_1(InfoScene::cfStep4, this));
-			PrintStyle(m_btnLevel4, strSaleStep4, sizeofFont_s, posOfDesc);
+			PrintStyle(m_btnLevel4, strSaleStep4, sizeofFont_s, posOfDesc, KR_FONT_TTF);
 
 			Sprite* lock = Sprite::create("UI4HD/lock_icon-hd.png");
 			lock->setOpacity(64);
@@ -224,7 +213,7 @@ void InfoScene::DrawItemBox()
 		else
 		{
 			m_btnLevel4 = MenuItemImage::create("UI4HD/btn_level_4_n-hd.png", "UI4HD/btn_level_4_n-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel4, this));
-			PrintStyle(m_btnLevel4, strStep4, sizeofFont_s, posOfDesc);
+			PrintStyle(m_btnLevel4, strStep4, sizeofFont_s, posOfDesc, KR_FONT_TTF);
 		}
 
 
@@ -232,7 +221,7 @@ void InfoScene::DrawItemBox()
 		if (false == PointManager::Instance()->GetCartWithPID(PID_STEP5))
 		{
 			m_btnLevel5 = MenuItemImage::create("UI4HD/btn_level_5_n-hd.png", "UI4HD/btn_level_5_n-hd.png", CC_CALLBACK_1(InfoScene::cfStep5, this));
-			PrintStyle(m_btnLevel5, strSaleStep5, sizeofFont_s, posOfDesc);
+			PrintStyle(m_btnLevel5, strSaleStep5, sizeofFont_s, posOfDesc, KR_FONT_TTF);
 
 			Sprite* lock = Sprite::create("UI4HD/lock_icon-hd.png");
 			lock->setOpacity(64);
@@ -249,7 +238,7 @@ void InfoScene::DrawItemBox()
 		else
 		{
 			m_btnLevel5 = MenuItemImage::create("UI4HD/btn_level_5_n-hd.png", "UI4HD/btn_level_5_n-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel5, this));
-			PrintStyle(m_btnLevel5, strStep5, sizeofFont_s, posOfDesc);
+			PrintStyle(m_btnLevel5, strStep5, sizeofFont_s, posOfDesc, KR_FONT_TTF);
 		}
 	}
 	else
@@ -260,11 +249,11 @@ void InfoScene::DrawItemBox()
 		m_btnLevel5 = MenuItemImage::create("UI4HD/btn_level_5_n-hd.png", "UI4HD/btn_level_5_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel5, this));
 		m_btnLevel6 = MenuItemImage::create("UI4HD/btn_level_x_n-hd.png", "UI4HD/btn_level_x_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel6, this));
 
-		PrintStyle(m_btnLevel1, strStep1, sizeofFont_s, posOfDesc);
-		PrintStyle(m_btnLevel2, strStep2, sizeofFont_s, posOfDesc);
-		PrintStyle(m_btnLevel3, strStep3, sizeofFont_s, posOfDesc);
-		PrintStyle(m_btnLevel4, strStep4, sizeofFont_s, posOfDesc);
-		PrintStyle(m_btnLevel5, strStep5, sizeofFont_s, posOfDesc);
+		PrintStyle(m_btnLevel1, strStep1, sizeofFont_s, posOfDesc, KR_FONT_TTF);
+		PrintStyle(m_btnLevel2, strStep2, sizeofFont_s, posOfDesc, KR_FONT_TTF);
+		PrintStyle(m_btnLevel3, strStep3, sizeofFont_s, posOfDesc, KR_FONT_TTF);
+		PrintStyle(m_btnLevel4, strStep4, sizeofFont_s, posOfDesc, KR_FONT_TTF);
+		PrintStyle(m_btnLevel5, strStep5, sizeofFont_s, posOfDesc, KR_FONT_TTF);
 	}
 
 #else //LITE_VER
@@ -276,11 +265,11 @@ void InfoScene::DrawItemBox()
 	m_btnLevel5 = MenuItemImage::create("UI4HD/btn_level_5_n-hd.png", "UI4HD/btn_level_5_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel5, this));
 	m_btnLevel6 = MenuItemImage::create("UI4HD/btn_level_x_n-hd.png", "UI4HD/btn_level_x_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedLevel6, this));
 
-	PrintStyle(m_btnLevel1, strStep1, sizeofFont_s, posOfDesc);
-	PrintStyle(m_btnLevel2, strStep2, sizeofFont_s, posOfDesc);
-	PrintStyle(m_btnLevel3, strStep3, sizeofFont_s, posOfDesc);
-	PrintStyle(m_btnLevel4, strStep4, sizeofFont_s, posOfDesc);
-	PrintStyle(m_btnLevel5, strStep5, sizeofFont_s, posOfDesc);
+	PrintStyle(m_btnLevel1, strStep1, sizeofFont_s, posOfDesc, KR_FONT_TTF);
+	PrintStyle(m_btnLevel2, strStep2, sizeofFont_s, posOfDesc, KR_FONT_TTF);
+	PrintStyle(m_btnLevel3, strStep3, sizeofFont_s, posOfDesc, KR_FONT_TTF);
+	PrintStyle(m_btnLevel4, strStep4, sizeofFont_s, posOfDesc, KR_FONT_TTF);
+	PrintStyle(m_btnLevel5, strStep5, sizeofFont_s, posOfDesc, KR_FONT_TTF);
 
 
 #endif //LITE_VER
@@ -309,21 +298,18 @@ void InfoScene::DrawItemBox()
 	this->addChild(mainMenu, 2, 2);
 
 
-	std::string strHintOpt("SHOW HINT");
-	strHintOpt = UTF8(strHintOpt);
+	std::string strHintOpt("\xED\x9E\x8C\xED\x8A\xB8 \xEB\xB3\xB4\xEA\xB8\xB0"); // 힌트 보기
 	m_btnHintOpt = MenuItemImage::create("UI4HD/btn_hint_n-hd.png", "UI4HD/btn_hint_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedHintMenuItem, this));		
-	PrintStyle(m_btnHintOpt, strHintOpt, sizeofFont_s, posOfDesc);
+	PrintStyle(m_btnHintOpt, strHintOpt, sizeofFont_s, posOfDesc, KR_FONT_TTF);
 
 
-	std::string strReset("RESET");
-	strReset = UTF8(strReset);
+	std::string strReset("\xEC\xB4\x88\xEA\xB8\xB0\xED\x99\x94"); // 초기화
 	MenuItemImage* resetBtnItem = MenuItemImage::create("UI4HD/btn_eraser_n-hd.png", "UI4HD/btn_eraser_s-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedResetMenuItem, this));		
-	PrintStyle(resetBtnItem, strReset, sizeofFont_s, posOfDesc);
+	PrintStyle(resetBtnItem, strReset, sizeofFont_s, posOfDesc, KR_FONT_TTF);
 
-	std::string strRestore("Restore Purchases");
-	strRestore = UTF8(strRestore);
+	std::string strRestore("\xEA\xB5\xAC\xEB\xA7\xA4 \xEB\xB3\xB5\xEC\x9B\x90"); // 구매 복원
 	MenuItemImage* restoreBtnItem = MenuItemImage::create("UI4HD/btn_level_restore_s-hd.png", "UI4HD/btn_level_restore_n-hd.png", CC_CALLBACK_1(InfoScene::callbackOnPushedRestoreMenuItem, this));
-	PrintStyle(restoreBtnItem, strRestore, sizeofFont_s, posOfDesc);
+	PrintStyle(restoreBtnItem, strRestore, sizeofFont_s, posOfDesc, KR_FONT_TTF);
 
 	Sprite* hintOptImage = NULL;
 	bool hintOption = PointManager::Instance()->GetHintOption();
