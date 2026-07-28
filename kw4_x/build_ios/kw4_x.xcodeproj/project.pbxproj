@@ -190,6 +190,7 @@
 		0FE186900FCD4CC0BB582247 /* CCFastTMXLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 25BD3D64DA3D43A7AE507418 /* CCFastTMXLayer.cpp */; };
 		10308B7FD03E481182174D31 /* MKStoreManager_mm.mm in Sources */ = {isa = PBXBuildFile; fileRef = BABA14A146544C3CB63E5197 /* MKStoreManager_mm.mm */; };
 		103996656FE04C6188A47614 /* SoundFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CCCB8C686C904225ACFE9DDD /* SoundFactory.cpp */; };
+		0A17E9A7E9A7000000000001 /* ParentalGate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0A17E9A7E9A7000000000002 /* ParentalGate.cpp */; };
 		104413663A054C2E9933E438 /* ItunesArtwork in CopyFiles */ = {isa = PBXBuildFile; fileRef = AF82FCCCD31D452E8545CFB6 /* ItunesArtwork */; };
 		10720F25022343FC85E16BA5 /* 따끈따끈.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 654FB56BF5274FF5AFD198FD /* 따끈따끈.jpg */; };
 		10C2333AE720452EA3551C01 /* playScene-hdx.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8D56014DC8824702ABC7DD5D /* playScene-hdx.png */; };
@@ -206,6 +207,7 @@
 		119D3646081943569F7B340A /* 불.mp3 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 64293EFF48DD4D84B0439AFE /* 불.mp3 */; };
 		11A6009F21864BF89F6A3037 /* Light3DReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D157AEEAFC71439BA5422CD5 /* Light3DReader.cpp */; };
 		11B9A0E0D8FC4FAC9CA8D662 /* SoundFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14F30033FADC490281C8C0BB /* SoundFactory.cpp */; };
+		0A17E9A7E9A7000000000003 /* ParentalGate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0A17E9A7E9A7000000000004 /* ParentalGate.cpp */; };
 		11C6619FCC6D4581BBBE05D7 /* 울긋불긋.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 72B790E89A50486282A1AC6F /* 울긋불긋.jpg */; };
 		11FE5B577A864330BD8505DE /* MathUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C9522DF6E5DA4B008BBC8927 /* MathUtil.cpp */; };
 		12225334D60342CDAA3BB2BE /* 알쏭달쏭.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84FCE7EDD83A452290E805D6 /* 알쏭달쏭.jpg */; };
@@ -4889,6 +4891,7 @@
 		149AB6FD34A847919ED207E8 /* kw_banner-hd.png */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = image; name = "kw_banner-hd.png"; path = "Resources/UI4HD/kw_banner-hd.png"; sourceTree = SOURCE_ROOT; };
 		14EA3DD632634C68AB801E70 /* 허수아비.mp3 */ = {isa = PBXFileReference; explicitFileType = default; fileEncoding = 4; lastKnownFileType = audio.mp3; name = "허수아비.mp3"; path = "Resources/word_card_sound/허수아비.mp3"; sourceTree = SOURCE_ROOT; };
 		14F30033FADC490281C8C0BB /* SoundFactory.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = SoundFactory.cpp; path = Classes/SoundFactory.cpp; sourceTree = SOURCE_ROOT; };
+		0A17E9A7E9A7000000000004 /* ParentalGate.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ParentalGate.cpp; path = Classes/ParentalGate.cpp; sourceTree = SOURCE_ROOT; };
 		15017F998E254A22921EA3D6 /* CCApplication-ios.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = "CCApplication-ios.h"; path = "/Users/ozzy/Documents/kw4_x_ios/cocos2d-x/cocos/platform/ios/CCApplication-ios.h"; sourceTree = "<absolute>"; };
 		1510E14DC81E437C8ADC9369 /* CCPhysicsWorld.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = CCPhysicsWorld.h; path = "/Users/ozzy/Documents/kw4_x_ios/cocos2d-x/cocos/physics/CCPhysicsWorld.h"; sourceTree = "<absolute>"; };
 		15169A8E4BEB4B17B28937A9 /* 자동차.jpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = image; name = "자동차.jpg"; path = "Resources/word_card_pic_h/자동차.jpg"; sourceTree = SOURCE_ROOT; };
@@ -7133,6 +7136,7 @@
 		CC3F727B43EB4BA9B9DD951B /* 띄엄띄엄.jpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = image; name = "띄엄띄엄.jpg"; path = "Resources/word_card_pic_h/띄엄띄엄.jpg"; sourceTree = SOURCE_ROOT; };
 		CCC283A7AAC1454E8667AAA4 /* StudyScene.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = StudyScene.cpp; path = Classes/StudyScene.cpp; sourceTree = SOURCE_ROOT; };
 		CCCB8C686C904225ACFE9DDD /* SoundFactory.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = SoundFactory.cpp; path = Classes/SoundFactory.cpp; sourceTree = SOURCE_ROOT; };
+		0A17E9A7E9A7000000000002 /* ParentalGate.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ParentalGate.cpp; path = Classes/ParentalGate.cpp; sourceTree = SOURCE_ROOT; };
 		CCCFECD3D02B442586063E92 /* LocalizationManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = LocalizationManager.cpp; path = "/Users/ozzy/Documents/kw4_x_ios/cocos2d-x/cocos/editor-support/cocostudio/LocalizationManager.cpp"; sourceTree = "<absolute>"; };
 		CCE17A339994435589B415A7 /* 너덜너덜.jpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = image; name = "너덜너덜.jpg"; path = "Resources/word_card_pic_h/너덜너덜.jpg"; sourceTree = SOURCE_ROOT; };
 		CCF02544CD2D484CAA1F3B25 /* CCPUDoExpireEventHandler.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CCPUDoExpireEventHandler.cpp; path = "/Users/ozzy/Documents/kw4_x_ios/cocos2d-x/extensions/Particle3D/PU/CCPUDoExpireEventHandler.cpp"; sourceTree = "<absolute>"; };
@@ -8925,6 +8929,7 @@
 				28EF382D026D41C8BDF001AB /* PointManager.h */,
 				7945F36489B1464E91A794D0 /* Singleton.h */,
 				CCCB8C686C904225ACFE9DDD /* SoundFactory.cpp */,
+				0A17E9A7E9A7000000000002 /* ParentalGate.cpp */,
 				583206098DE249F7AA995F8A /* SoundFactory.h */,
 				CCC283A7AAC1454E8667AAA4 /* StudyScene.cpp */,
 				2694E2577C9645EEAE182002 /* StudyScene.h */,
@@ -10526,6 +10531,7 @@
 				7AE562ADD4484DC9B5D4C04F /* PointManager.h */,
 				7CCB1F59EDE44FD18AF84EE9 /* Singleton.h */,
 				14F30033FADC490281C8C0BB /* SoundFactory.cpp */,
+				0A17E9A7E9A7000000000004 /* ParentalGate.cpp */,
 				B7D9EB2A2B734627A8DD226C /* SoundFactory.h */,
 				E8D3C5B371F14A16B1EB8C1C /* StudyScene.cpp */,
 				124FB4ACAFEA4A64ACB9BAFA /* StudyScene.h */,
@@ -12421,6 +12427,7 @@
 				40646EFB7B6A4563B4EA70DD /* NativeShare_apple.mm in Sources */,
 				87E301A2DA9A4F77AA62DC9A /* PointManager.cpp in Sources */,
 				11B9A0E0D8FC4FAC9CA8D662 /* SoundFactory.cpp in Sources */,
+				0A17E9A7E9A7000000000003 /* ParentalGate.cpp in Sources */,
 				2A921B1DE0964EF3A77476E7 /* StudyScene.cpp in Sources */,
 				D3923B73A18F4655992B3F3B /* TextLayer.cpp in Sources */,
 				B56B425C4F954E8C872FD830 /* TouchedHandleLayer.cpp in Sources */,
@@ -12464,6 +12471,7 @@
 				DDB53F1F330B4DC4A5A02B53 /* NativeShare_apple.mm in Sources */,
 				235FDF7A0F29460FBAE4481B /* PointManager.cpp in Sources */,
 				103996656FE04C6188A47614 /* SoundFactory.cpp in Sources */,
+				0A17E9A7E9A7000000000001 /* ParentalGate.cpp in Sources */,
 				38D5C13C9EEC4C3998986180 /* StudyScene.cpp in Sources */,
 				EC65F9C640794678BF5FFE30 /* TextLayer.cpp in Sources */,
 				7247365F21F544C18D1EC691 /* TouchedHandleLayer.cpp in Sources */,
